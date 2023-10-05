@@ -1,10 +1,18 @@
 import { memo } from "react";
+// components
+import { Header } from "src/components/common/header/Header";
 
-interface PublicLayoutInerface {
-    children: JSX.Element
-}
-const PublicLayout = memo(({ children }: PublicLayoutInerface) => {
-    return <>{children}</>
-})
-PublicLayout.displayName='PublicLayout'
-export {PublicLayout};
+type PublicLayoutProps = {
+  children: JSX.Element;
+};
+const PublicLayout = memo(({ children }: PublicLayoutProps) => {
+  // render fns
+  return (
+    <>
+      <Header />
+      {children}
+    </>
+  );
+});
+PublicLayout.displayName = "PublicLayout";
+export { PublicLayout };

@@ -1,7 +1,14 @@
-
-import styles from './AboutPortal.module.scss'
+import styles from "./AboutPortal.module.scss";
 const AboutPortal = (): JSX.Element => {
-
-    return <span className={styles['about-portal__contianer']}>AboutPortal</span>
-}
+  return (
+    <div className={styles["about-portal__contianer"]}>
+      <span className={styles["about-content"]} >
+        This web-app provides a variety of financial data and information all in
+        one place. They act as information hubs for users or clients, who are
+        often individual investors and provide up-to-date financial informations
+        and data to make their investment decisions.
+      </span>
+    </div>
+  );
+};
 export { AboutPortal };
