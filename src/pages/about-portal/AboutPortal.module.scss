@@ -1,6 +1,6 @@
 @import 'src/styles/variables.scss';
 
-.about-portal__contianer {
+.about-portal__container {
     padding: 20px 10px 20px 30px;
     .about-content {
         font-size: $font-size-20;
@@ -10,7 +10,7 @@
 }
 
 @media screen and (max-width:$mobile-max-width) {
-    .about-portal__contianer {
+    .about-portal__container {
         padding: 10px 20px;
         .about-content {
             font-size: $font-size-16;
