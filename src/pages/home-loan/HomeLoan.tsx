@@ -1,78 +1,50 @@
-import { memo, useState } from "react";
+import { memo } from "react";
+import { useSelector } from "react-redux";
 // components
-import { LoanInputField } from "./loan-input-field/LoanInputField";
+import { LoanInputForm } from "./loan-input-form/LoanInputForm";
+// selectors
+import {
+  selectLoanAmount,
+  selectLoanInterestRate,
+  selectLoanTenure,
+} from "src/store/home-loan-reducer/home-loan-selectors";
 // utils
-import { isNumeric } from "src/utils/string-utils";
+import { calculateEMI } from "./home-loan-utils";
 // styles
 import styles from "./HomeLoan.module.scss";
-type LoanDetailsType = {
-  loanAmount: string;
-  loanTenure: string;
-  interestRate: string;
-};
-const INITIAL_LOAN_DETAILS: LoanDetailsType = {
-  loanAmount: "10000",
-  loanTenure: "5",
-  interestRate: "6.5",
-};
 
 const HomeLoan = memo((): JSX.Element => {
-  const [loanDetails, setLoanDetails] =
-    useState<LoanDetailsType>(INITIAL_LOAN_DETAILS);
-  // fns
-  const modifyLoanDetails = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const enteredValue: string = e.target.value;
+  // store
+  const loanAmount: string = useSelector(selectLoanAmount);
+  const interestRate: string = useSelector(selectLoanInterestRate);
+  const loanTenure: string = useSelector(selectLoanTenure);
 
-    if (!enteredValue || isNumeric(enteredValue)) {
-      setLoanDetails((loanDetails: LoanDetailsType): LoanDetailsType => {
-        return {
-          ...loanDetails,
-          [e.target.id]: e.target.value,
-        };
-      });
-    }
-  };
   // compute
-  const { loanAmount, loanTenure, interestRate }: LoanDetailsType = loanDetails;
-  const monthlyEmi: string = "19548";
+  const monthlyEmi: number = calculateEMI(+loanAmount, +interestRate, +loanTenure);
   const completionMonth: string = "April 2029";
   // render fns
   return (
     <div className={styles["home-loan__container"]}>
-      <div className={styles["loan-details__container"]}>
-        <LoanInputField
-          className={styles["loan-amount-field"]}
-          id="loanAmount"
-          label="Loan Amount"
-          icon="&#8377;"
-          value={loanAmount}
-          onChange={modifyLoanDetails}
-        />
-        <LoanInputField
-          id="interestRate"
-          label="Rate of interest (p.a)"
-          icon="%"
-          value={interestRate}
-          onChange={modifyLoanDetails}
-        />
-        <LoanInputField
-          id="loanTenure"
-          label="Loan Tenure"
-          icon="Yr"
-          value={loanTenure}
-          onChange={modifyLoanDetails}
-        />
-      </div>
+      <LoanInputForm />
       <div className={styles["loan-result__container"]}>
-        <span>
-          <label className={styles["result-label"]}>Monthly EMI :: </label>
-          <span>&#8377;</span>
-          {monthlyEmi}
-        </span>
-        <span>
-          <label className={styles["result-label"]}>Completion Month :: </label>
-          {completionMonth}
-        </span>
+        {+loanTenure === 0 && <span>Please enter at least some tenure</span>}
+        {+loanTenure > 0 && +loanTenure <= 30 ? (
+          <>
+            <span>
+              <label className={styles["result-label"]}>Monthly EMI :: </label>
+              <span>&#8377;</span>
+              {monthlyEmi}
+            </span>
+            <span>
+              <label className={styles["result-label"]}>
+                Completion Month ::{" "}
+              </label>
+              {completionMonth}
+            </span>
+          </>
+        ) : (
+          <span>Maximum Tenure is 30 Years</span>
+        )}
       </div>
     </div>
   );

@@ -1,21 +1,6 @@
 @import "src/styles/variables.scss";
 
 .home-loan__container {
-  .loan-details__container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 25px;
-    grid-gap: 25px;
-    padding: 20px 0;
-    .loan-amount-field {
-      flex-direction: row-reverse;
-      width: 200px;
-      :global(.MuiInputBase-root.MuiInput-root .MuiInput-input) {
-        text-align: left;
-      }
-    }
-  }
   .loan-result__container {
     display: flex;
     flex-wrap: wrap;
@@ -30,14 +15,6 @@
 
 @media screen and (max-width: $mobile-max-width) {
   .home-loan__container {
-    .loan-details__container {
-      gap: 10px;
-      grid-gap: 10px;
-      .loan-amount-field {
-        width: 65%;
-      }
-    }
-
     .loan-result__container {
       padding: 0 20px;
       font-size: $font-size-12;
