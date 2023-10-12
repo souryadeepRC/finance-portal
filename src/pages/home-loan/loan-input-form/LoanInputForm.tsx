@@ -35,8 +35,7 @@ const LoanInputForm = memo((): JSX.Element => {
 
   const modifyLoanDetails = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const enteredId: string = e.target.id;
-    const enteredValue: string = e.target.value;
-    console.log({enteredValue});
+    const enteredValue: string = e.target.value; 
     
     if (!isValidData(enteredValue)) return;  
     switch (enteredId) {

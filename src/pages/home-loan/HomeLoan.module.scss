@@ -1,23 +1,17 @@
 @import "src/styles/variables.scss";
 
 .home-loan__container {
-  .loan-result__container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    grid-gap: 20px;
-    .result-label {
-      font-weight: $font-weight-700;
-    }
-  }
+    align-items: center;
+    padding: 20px 0 0 0;
+ 
 }
 
 @media screen and (max-width: $mobile-max-width) {
   .home-loan__container {
-    .loan-result__container {
-      padding: 0 20px;
-      font-size: $font-size-12;
-    }
+    flex-direction: column;
+    gap: 25px;
+    grid-gap: 25px;
+ 
   }
 }
