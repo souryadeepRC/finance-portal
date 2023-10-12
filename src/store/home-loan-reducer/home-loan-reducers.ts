@@ -6,9 +6,9 @@ import { HomeLoanReducerActionType } from "./home-loan-types";
 
 
 const initialState: HomeLoanReducerType = {
-    loanAmount: '10000',
-    interestRate: '6.5',
-    loanTenure: '5'
+    loanAmount: '100000',
+    interestRate: '1',
+    loanTenure: '1'
 }
 const HomeLoanReducer = (state = initialState, action: HomeLoanReducerActionType): HomeLoanReducerType => {
     const { type, payload } = action;

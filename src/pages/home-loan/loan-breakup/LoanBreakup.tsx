@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { useSelector } from "react-redux";
 // library
-import { PieChart  } from "@mui/x-charts/PieChart";
+import { PieChart } from "@mui/x-charts/PieChart";
 // selectors
 import {
   selectLoanAmount,
@@ -12,13 +12,8 @@ import {
 import { calculateEMI } from "../home-loan-utils";
 // styles
 import styles from "./LoanBreakup.module.scss";
+import { HomeLoanBreakupType } from "src/store/home-loan-reducer/home-loan-types";
 // types
-type LoanBreakupType = {
-  principalAmount: number;
-  interestAmount: number;
-  totalAmount: number;
-  monthlyEmi: number;
-};
 type BreakupLabelProps = {
   label: string;
   value: number;
@@ -37,34 +32,14 @@ const LoanBreakup = memo((): JSX.Element => {
   const loanAmount: string = useSelector(selectLoanAmount);
   const interestRate: string = useSelector(selectLoanInterestRate);
   const loanTenure: string = useSelector(selectLoanTenure);
-  // fns
-  const getLoanBreakupDetails = (): LoanBreakupType => {
-    const convertedLoanAmount: number = +loanAmount;
-    const convertedInterestRate: number = +interestRate;
-    const convertedLoanTenure: number = +loanTenure;
-
-    const monthlyEmi: number = calculateEMI(
-      convertedLoanAmount,
-      convertedInterestRate,
-      convertedLoanTenure
-    );
-    const totalAmount: number = monthlyEmi * (convertedLoanTenure * 12);
-    const interestAmount: number = totalAmount - convertedLoanAmount;
-    return {
-      principalAmount: convertedLoanAmount,
-      interestAmount: interestAmount,
-      totalAmount: totalAmount,
-      monthlyEmi: monthlyEmi,
-    };
-  };
+ 
 
   // compute
-  const {
-    principalAmount,
-    interestAmount,
-    totalAmount,
-    monthlyEmi,
-  }: LoanBreakupType = getLoanBreakupDetails();
+  const { monthlyEmi,totalAmount,interestAmount }: HomeLoanBreakupType = calculateEMI(
+    +loanAmount,
+    +interestRate,
+    +loanTenure
+  ); 
   // return fns
   return (
     <div className={styles["loan-result__container"]}>
@@ -72,25 +47,24 @@ const LoanBreakup = memo((): JSX.Element => {
       {+loanTenure > 0 && +loanTenure <= 30 ? (
         <div className={styles["loan-breakup__container"]}>
           <div className={styles["loan-breakup-data__container"]}>
-            <BreakupLabel label="Monthly EMI" value={monthlyEmi} />
-            <BreakupLabel label="Principal Amount" value={principalAmount} />
-            <BreakupLabel label="Total Interest" value={interestAmount} />
-            <BreakupLabel label="Total Amount" value={totalAmount} />
+            <BreakupLabel label="Monthly EMI" value={Math.round(monthlyEmi)} />
+            <BreakupLabel label="Principal Amount" value={+loanAmount} />
+            <BreakupLabel label="Total Interest" value={Math.round(interestAmount)} />
+            <BreakupLabel label="Total Amount" value={Math.round(totalAmount)} />
           </div>
           <PieChart
-             
             series={[
               {
                 data: [
                   {
                     id: 0,
-                    value: principalAmount,
+                    value: +loanAmount,
                     label: "Principal",
                     color: "#ebf9f5",
                   },
                   {
                     id: 1,
-                    value: interestAmount,
+                    value: Math.round(interestAmount),
                     label: "Interest",
                     color: "#00b386",
                   },

@@ -20,6 +20,7 @@ import { isFloatingNumeric, isNumeric } from "src/utils/string-utils";
 import styles from "./LoanInputForm.module.scss";
 // types
 import { AppDispatch } from "src/store/store";
+import { HomeLoanInputType } from "src/store/home-loan-reducer/home-loan-types";
 
 const LoanInputForm = memo((): JSX.Element => {
   // store
@@ -33,11 +34,14 @@ const LoanInputForm = memo((): JSX.Element => {
     return modifiedValue === "" || isFloatingNumeric(modifiedValue);
   };
 
-  const modifyLoanDetails = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const enteredId: string = e.target.id;
-    const enteredValue: string = e.target.value; 
-    
-    if (!isValidData(enteredValue)) return;  
+  const modifyLoanDetails = ({
+    enteredId,
+    enteredValue,
+  }: HomeLoanInputType): void => {
+    /*     const enteredId: string = e.target.id;
+    const enteredValue: string = e.target.value; */
+
+    if (!isValidData(enteredValue)) return;
     switch (enteredId) {
       case "loanAmount":
         dispatch(updateLoanAmount(enteredValue));
@@ -46,7 +50,7 @@ const LoanInputForm = memo((): JSX.Element => {
         dispatch(updateInterestRate(enteredValue));
         return;
       case "loanTenure":
-        if(isNumeric(enteredValue)){
+        if (isNumeric(enteredValue)) {
           dispatch(updateLoanTenure(enteredValue));
         }
         return;
@@ -61,6 +65,10 @@ const LoanInputForm = memo((): JSX.Element => {
         label="Loan Amount"
         icon="&#8377;"
         value={loanAmount}
+        defaultValue={10000}
+        minValue={1000}
+        maxValue={10000000}
+        disabledValue={0}
         onChange={modifyLoanDetails}
       />
       <LoanInputField
@@ -68,6 +76,11 @@ const LoanInputForm = memo((): JSX.Element => {
         label="Rate of interest (p.a)"
         icon="%"
         value={interestRate}
+        defaultValue={6.5}
+        step={0.1}
+        minValue={1}
+        maxValue={30}
+        disabledValue={0}
         onChange={modifyLoanDetails}
       />
       <LoanInputField
@@ -75,6 +88,10 @@ const LoanInputForm = memo((): JSX.Element => {
         label="Loan Tenure"
         icon="Yr"
         value={loanTenure}
+        defaultValue={10}
+        minValue={1}
+        maxValue={30}
+        disabledValue={0}
         onChange={modifyLoanDetails}
       />
     </div>
