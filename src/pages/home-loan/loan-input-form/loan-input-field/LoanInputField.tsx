@@ -51,7 +51,7 @@ const LoanInputField = memo(
     // render fns
     return (
       <div className={styles["loan-input-field__container"]}>
-        <div>
+        <div className={styles['input-field__box']}>
           <label className={styles["input-label"]}>{label}</label>
           <div className={`${className} ${styles["input-value__container"]}`}>
             <Input

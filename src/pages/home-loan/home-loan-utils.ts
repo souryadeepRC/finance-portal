@@ -1,7 +1,8 @@
 // type
 import {
-  HomeLoanAmortizationType,
   HomeLoanBreakupType,
+  HomeLoanMonthlyAmortizationType,
+  HomeLoanYearlyAmortizationType,
 } from "src/store/home-loan-reducer/home-loan-types";
 
 export const calculateEMI = (
@@ -18,24 +19,47 @@ export const calculateEMI = (
 
   let remainingBalance: number = loanAmount;
   let interestAmount: number = 0;
-  const amortizationDetails: HomeLoanAmortizationType[] = [];
-
-  for (; remainingBalance > 0; ) {
-    const interestPaid:number  = remainingBalance * monthlyRate;
-    const principalPaid:number  = monthlyEmi - interestPaid;
+  const monthlyAmortizationDetails: HomeLoanMonthlyAmortizationType[] = [];
+  const yearlyAmortizationDetails: HomeLoanYearlyAmortizationType[] = [];
+  let latestYear: number = new Date().getFullYear();
+  let yearlyPrincipalPaid: number = 0;
+  let yearlyInterestPaid: number = 0;
+  let totalPrincipalPaid: number = 0;
+  for (let month: number = 1; remainingBalance > 0; month++) {
+    const interestPaid: number = remainingBalance * monthlyRate;
+    const principalPaid: number = monthlyEmi - interestPaid;
     remainingBalance = remainingBalance - principalPaid;
-    amortizationDetails.push({
+    monthlyAmortizationDetails.push({
       principalPaid,
       interestPaid,
       remainingBalance,
+      month,
+      year: latestYear,
     });
+    yearlyPrincipalPaid += principalPaid;
+    yearlyInterestPaid += interestPaid;
+    if (month === 12) {
+      totalPrincipalPaid += yearlyPrincipalPaid;
+      yearlyAmortizationDetails.push({
+        principalPaid:yearlyPrincipalPaid,
+        interestPaid:yearlyInterestPaid,
+        year: latestYear,
+        totalPrincipalPaid,
+      });
+
+      month = 0;
+      latestYear++;
+      yearlyPrincipalPaid = 0;
+      yearlyInterestPaid = 0;
+    }
 
     interestAmount += interestPaid;
-  } 
+  }
 
   return {
     monthlyEmi,
-    amortizationDetails,
+    monthlyAmortizationDetails,
+    yearlyAmortizationDetails,
     interestAmount,
     totalAmount: loanAmount + interestAmount,
   };
