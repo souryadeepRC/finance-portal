@@ -14,7 +14,7 @@ const LoanAmountLabel = ({
     <span>
       <label className={styles["breakup-label"]}>{label} </label>
       <span>&#8377;</span>
-      {value.toLocaleString("en-IN")}
+      {Math.round(value).toLocaleString("en-IN")}
     </span>
   );
 };

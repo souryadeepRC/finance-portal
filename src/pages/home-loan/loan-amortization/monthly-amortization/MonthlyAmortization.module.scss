@@ -1,0 +1,65 @@
+@import "src/styles/variables.scss";
+
+@keyframes zoom-in-zoom-out {
+  0% {
+    transform: scale(0.15, 0.15);
+  }
+
+  100% {
+    transform: scale(1, 1);
+  }
+}
+.monthly-amortization__container {
+  &:global(.MuiBox-root) {
+    width: 70%;
+  }
+  .amortization-breakup__heading {
+    font-weight: $font-weight-700;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .amortization-breakup__container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    grid-gap: 10px;
+    overflow: auto;
+    max-height: 300px;
+    padding: 10px 0;
+    .amortization-breakup__element {
+      box-shadow: 5px 3px 6px 0px $app-secondary-color;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      grid-gap: 5px;
+      width: 25%;
+      padding: 10px;
+      animation: zoom-in-zoom-out 1s ease;
+      background: linear-gradient(
+        340deg,
+        $app-primary-color,
+        $app-secondary-color 50%
+      );
+      border: 0 solid $app-primary-color;
+      border-width: 0px 4px 2px 0px;
+      border-radius: 10px;
+      font-size: $font-size-14;
+      .amortization-breakup__month {
+        font-weight: $font-weight-700;
+        text-align: end;
+        text-transform: uppercase;
+      }
+    }
+  }
+}
+@media screen and (max-width: $mobile-max-width) {
+  .monthly-amortization__container {
+    .amortization-breakup__container {
+      .amortization-breakup__element {
+        width: 35%;
+        font-size: $font-size-12;
+      }
+    }
+  }
+}

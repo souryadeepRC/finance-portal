@@ -1,6 +1,5 @@
 /* ========== Font :: Family =============== */
-$primary-font-family: 'Tahoma';
-
+$primary-font-family: "Tahoma";
 
 /* ========== Font :: Size =============== */
 $font-size-12: 12px;
@@ -12,15 +11,18 @@ $font-size-20: 20px;
 $font-weight-500: 500;
 $font-weight-700: 700;
 
-
 /* ========== Color =============== */
+
+$app-primary-color: #057156;
+$app-secondary-color: #71ddbe;
+
 $color-black: #000000;
-$color-eerie-black : #1a1919;
+$color-eerie-black: #1a1919;
 $color-dark-coral: #d25a4b;
 $color-midnight-green: #075761;
-$color-white: #FFFFFF;
-$color-persian-green:#00b386;
-$color-anti-flash-white : #ebf9f5;
+$color-white: #ffffff;
+$color-persian-green: #00b386;
+$color-anti-flash-white: #ebf9f5;
 
 /* ========== Media Resolution =============== */
-$mobile-max-width : 767px; 
+$mobile-max-width: 767px;

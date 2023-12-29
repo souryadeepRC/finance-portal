@@ -31,17 +31,20 @@
       background-color: $color-anti-flash-white;
       font-size: $font-size-16;
       font-weight: $font-weight-700;
-      color: $color-persian-green;
+      color:$app-primary-color; 
       :global(.MuiInput-input) {
         padding: 0;
         font-size: $font-size-16;
         font-weight: $font-weight-700;
-        color: $color-persian-green;
+        color:$app-primary-color; 
         text-align: right;
         letter-spacing: 1px;
       }
     }
   }
+:global(.MuiSlider-root){
+color:$app-primary-color; 
+}
 }
 
 @media screen and (max-width: $mobile-max-width) {

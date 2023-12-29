@@ -23,17 +23,16 @@ export type HomeLoanYearlyAmortizationType = {
   interestPaid: number;
   year: number;
   totalPrincipalPaid: number;
+  monthlyBreakup: HomeLoanMonthlyAmortizationType[];
 };
 export type HomeLoanMonthlyAmortizationType = {
   principalPaid: number;
   interestPaid: number;
   remainingBalance: number;
   month: number;
-  year: number;
 };
 export type HomeLoanBreakupType = {
   monthlyEmi: number;
-  monthlyAmortizationDetails: HomeLoanMonthlyAmortizationType[];
   yearlyAmortizationDetails: HomeLoanYearlyAmortizationType[];
   interestAmount: number;
   totalAmount: number;

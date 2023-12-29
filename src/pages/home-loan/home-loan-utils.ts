@@ -19,7 +19,7 @@ export const calculateEMI = (
 
   let remainingBalance: number = loanAmount;
   let interestAmount: number = 0;
-  const monthlyAmortizationDetails: HomeLoanMonthlyAmortizationType[] = [];
+  let monthlyBreakup: HomeLoanMonthlyAmortizationType[] = [];
   const yearlyAmortizationDetails: HomeLoanYearlyAmortizationType[] = [];
   let latestYear: number = new Date().getFullYear();
   let yearlyPrincipalPaid: number = 0;
@@ -29,12 +29,11 @@ export const calculateEMI = (
     const interestPaid: number = remainingBalance * monthlyRate;
     const principalPaid: number = monthlyEmi - interestPaid;
     remainingBalance = remainingBalance - principalPaid;
-    monthlyAmortizationDetails.push({
+    monthlyBreakup.push({
       principalPaid,
       interestPaid,
       remainingBalance,
       month,
-      year: latestYear,
     });
     yearlyPrincipalPaid += principalPaid;
     yearlyInterestPaid += interestPaid;
@@ -45,12 +44,14 @@ export const calculateEMI = (
         interestPaid:yearlyInterestPaid,
         year: latestYear,
         totalPrincipalPaid,
+        monthlyBreakup
       });
 
       month = 0;
       latestYear++;
       yearlyPrincipalPaid = 0;
       yearlyInterestPaid = 0;
+      monthlyBreakup=[];
     }
 
     interestAmount += interestPaid;
@@ -58,7 +59,6 @@ export const calculateEMI = (
 
   return {
     monthlyEmi,
-    monthlyAmortizationDetails,
     yearlyAmortizationDetails,
     interestAmount,
     totalAmount: loanAmount + interestAmount,
@@ -102,11 +102,6 @@ export const calculateLoanAmortization = (
       total: beforeEmiInterest + afterEmiInterest,
     });
     RemainingPrincipal += afterEmiInterest;
-
-    console.log(` Month ${calMonth} \nINT : ${
-      beforeEmiInterest + afterEmiInterest
-    }
-        \n Balance : ${RemainingPrincipal}`);
     prevPPI = {
       beforeEmiInterest,
       afterEmiInterest,
@@ -141,10 +136,6 @@ export const calculateLoanAmortization = (
       total: beforeEmiInterest + afterEmiInterest,
     });
     RemainingPrincipal += beforeEmiInterest + afterEmiInterest - monthlyEmi;
-    console.log(` Month ${calMonth} \nINT : ${
-      beforeEmiInterest + afterEmiInterest
-    }
-        \n Balance : ${RemainingPrincipal}`);
     emiPaid.push({
       calMonth,
       intPaid: beforeEmiInterest,
@@ -183,12 +174,6 @@ export const calculateLoanAmortization = (
       total: beforeEmiInterest + afterEmiInterest,
     });
     RemainingPrincipal += beforeEmiInterest + afterEmiInterest - monthlyEmi;
-
-    console.log(` Month ${calMonth} \nINT : ${
-      beforeEmiInterest + afterEmiInterest
-    }
-        \n EMI : ${monthlyEmi} 
-        \n Balance : ${RemainingPrincipal}`);
     const intPaid = prevPPI.afterEmiInterest + beforeEmiInterest;
     emiPaid.push({
       calMonth,
@@ -203,5 +188,4 @@ export const calculateLoanAmortization = (
       total: beforeEmiInterest + afterEmiInterest,
     };
   }
-  console.log(emiPaid);
 };

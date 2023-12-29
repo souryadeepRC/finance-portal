@@ -5,24 +5,27 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+// common components
+import { SkeletonHomeLoan } from "src/components/common/skeleton/HomeLoanSkeleton";
 // components
 import { YearlyAmortization } from "./yearly-amortization/YearlyAmortization";
 // selectors
-import {
-  selectYearlyAmortizationDetails,
-} from "src/store/home-loan-reducer/home-loan-selectors";
+import { selectYearlyAmortizationDetails } from "src/store/home-loan-reducer/home-loan-selectors";
 // styles
-import styles from './LoanAmortization.module.scss';
+import styles from "./LoanAmortization.module.scss";
 // types
 import {
+  HomeLoanMonthlyAmortizationType,
   HomeLoanYearlyAmortizationType,
 } from "src/store/home-loan-reducer/home-loan-types";
+import { MonthlyBreakup } from "./monthly-amortization/MonthlyBreakup";
 
 type AmortizationDetails = {
   totalPrincipalPaid: number;
   principalPaid: number;
   interestPaid: number;
   tenureYear: number;
+  monthlyBreakup: HomeLoanMonthlyAmortizationType[];
 };
 
 const getAmortizationDetails = (
@@ -38,6 +41,7 @@ const getAmortizationDetails = (
     totalPrincipalPaid,
     principalPaid,
     interestPaid,
+    monthlyBreakup,
   }: HomeLoanYearlyAmortizationType = amortizationDetail;
 
   return {
@@ -45,6 +49,7 @@ const getAmortizationDetails = (
     principalPaid,
     interestPaid,
     tenureYear,
+    monthlyBreakup,
   };
 };
 const LoanAmortization = (): JSX.Element => {
@@ -58,8 +63,9 @@ const LoanAmortization = (): JSX.Element => {
       principalPaid: 0,
       interestPaid: 0,
       tenureYear: 0,
+      monthlyBreakup: [],
     });
-
+  // fns
   const onTenureYearChange = (selectedDate: dayjs.Dayjs | null): void => {
     const tenureYear: number | undefined = selectedDate?.year();
     if (!tenureYear) return;
@@ -102,16 +108,18 @@ const LoanAmortization = (): JSX.Element => {
     interestPaid,
     tenureYear,
     totalPrincipalPaid,
+    monthlyBreakup,
   }: AmortizationDetails = amortizationDetails;
 
   // render fns
-  if (yearlyAmortizationDetails?.length <= 0) {
-    return <div>Loading...</div>;
+  if (tenureYear === 0) {
+    return <SkeletonHomeLoan />;
   }
   return (
-    <div className={styles['amortization-details_container']}>  
+    <div className={styles["amortization-details_container"]}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
+          className={styles["amortization-details_date-picker"]}
           label={"Amortization Tenure Year"}
           maxDate={dayjs(new Date(maxYear, 0))}
           minDate={dayjs(new Date(minYear, 0))}
@@ -125,8 +133,9 @@ const LoanAmortization = (): JSX.Element => {
         interestPaid={interestPaid}
         totalPrincipalPaid={totalPrincipalPaid}
       />
+      <MonthlyBreakup monthlyBreakup={monthlyBreakup} tenureYear={tenureYear} />
     </div>
   );
 };
-
+LoanAmortization.displayName = "LoanAmortization";
 export { LoanAmortization };

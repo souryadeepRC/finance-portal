@@ -19,5 +19,8 @@
     align-items: center;
     gap: 15px;
     grid-gap: 15px;
+    :global(.MuiCircularProgress-root){
+      color: $app-primary-color;
+    }
   }
 }

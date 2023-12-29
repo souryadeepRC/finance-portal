@@ -8,7 +8,6 @@ import {
 } from "./home-loan-constants";
 //types
 import {
-  HomeLoanMonthlyAmortizationType,
   HomeLoanReducerActionType,
   HomeLoanYearlyAmortizationType,
 } from "./home-loan-types";
@@ -45,7 +44,6 @@ export const resetLoanDetails = (): HomeLoanReducerActionType => {
 
 export const updateMonthlyEmi = (payload: {
   monthlyEmi: number;
-  monthlyAmortizationDetails: HomeLoanMonthlyAmortizationType[];
   yearlyAmortizationDetails: HomeLoanYearlyAmortizationType[];
 }): HomeLoanReducerActionType => {
   return {

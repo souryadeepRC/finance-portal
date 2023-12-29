@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useSelector } from "react-redux";
 // library
 import {
@@ -25,6 +26,7 @@ const CircularProgressWithLabel = (
           left: 0,
           bottom: 0,
           right: 0,
+          padding: 2,
           position: "absolute",
           display: "flex",
           alignItems: "center",
@@ -45,34 +47,30 @@ type YearlyAmortizationProps = {
   interestPaid: number;
   totalPrincipalPaid: number;
 };
-const YearlyAmortization = ({
-  principalPaid,
-  interestPaid,
-  totalPrincipalPaid,
-}: YearlyAmortizationProps): JSX.Element => {
-  const loanAmount: string = useSelector(selectLoanAmount);
-  const percentage: number = (totalPrincipalPaid / +loanAmount) * 100;
+const YearlyAmortization = memo(
+  ({
+    principalPaid,
+    interestPaid,
+    totalPrincipalPaid,
+  }: YearlyAmortizationProps): JSX.Element => {
 
-  return (
-    <div className={styles["amortization-amount__container"]}>
-      <div className={styles["paid-amount__container"]}>
-        <LoanAmountLabel
-          label="Principal Paid"
-          value={Math.round(principalPaid)}
-        />
-        <LoanAmountLabel
-          label="Interest Paid"
-          value={Math.round(interestPaid)}
-        />
+    const loanAmount: string = useSelector(selectLoanAmount);
+    const loanRepaidPercentage: number =
+      (totalPrincipalPaid / +loanAmount) * 100;
+
+    return (
+      <div className={styles["amortization-amount__container"]}>
+        <div className={styles["paid-amount__container"]}>
+          <LoanAmountLabel label="Principal Paid" value={principalPaid} />
+          <LoanAmountLabel label="Interest Paid" value={interestPaid} />
+        </div>
+        <div className={styles["recovered-amount__container"]}>
+          <LoanAmountLabel label="Loan Recovered" value={totalPrincipalPaid} />
+          <CircularProgressWithLabel value={loanRepaidPercentage} />
+        </div>
       </div>
-      <div className={styles["recovered-amount__container"]}>
-        <LoanAmountLabel
-          label="Loan Recovered"
-          value={Math.round(totalPrincipalPaid)}
-        />
-        <CircularProgressWithLabel value={percentage} />
-      </div>
-    </div>
-  );
-};
+    );
+  }
+);
+YearlyAmortization.displayName = "YearlyAmortization";
 export { YearlyAmortization };
