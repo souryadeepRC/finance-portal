@@ -1,0 +1,9 @@
+@import "src/styles/variables.scss";
+
+.app-button {
+  background-color: $app-primary-color;
+  text-transform: unset;
+  &:hover{
+    background-color: $app-primary-color;
+  }
+}

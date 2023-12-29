@@ -26,7 +26,7 @@ export const LayoutRoute = ({
 };
 const AppRoutes = (): JSX.Element => {
   return (
-    <Suspense fallback={<Loader loading={true}/>}>
+    <Suspense fallback={<Loader />}>
       <Routes>
         <Route path="/" element={<Navigate to="/home-loan" replace />} />
         <Route path="/home-loan" element={<HomeLoan />} />

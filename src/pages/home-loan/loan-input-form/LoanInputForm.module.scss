@@ -1,0 +1,32 @@
+@import "src/styles/variables.scss";
+
+.loan-details__container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0 0 0 30px;
+
+  gap: 5px;
+  grid-gap: 5px; 
+  flex: 1;
+  .loan-amount-field {
+    flex-direction: row-reverse;
+    width: 150px;
+    :global(.MuiInputBase-root.MuiInput-root .MuiInput-input) {
+      text-align: left;
+    }
+  }
+}
+
+@media screen and (max-width: $mobile-max-width) {
+  .loan-details__container {
+    gap: 10px;
+    grid-gap: 10px;
+    padding: 0 10px 0 10px;
+    .loan-amount-field {
+      width: 55%;
+    }
+  }
+}

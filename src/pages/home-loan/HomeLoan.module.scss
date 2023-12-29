@@ -1,0 +1,17 @@
+@import "src/styles/variables.scss";
+
+.home-loan__container {
+    display: flex;
+    align-items: center;
+    padding: 20px 0 0 0;
+ 
+}
+
+@media screen and (max-width: $mobile-max-width) {
+  .home-loan__container {
+    flex-direction: column; 
+    gap: 25px;
+    grid-gap: 25px;
+ 
+  }
+}
