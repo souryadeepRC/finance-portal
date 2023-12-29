@@ -38,9 +38,6 @@ const LoanInputForm = memo((): JSX.Element => {
     enteredId,
     enteredValue,
   }: HomeLoanInputType): void => {
-    /*     const enteredId: string = e.target.id;
-    const enteredValue: string = e.target.value; */
-
     if (!isValidData(enteredValue)) return;
     switch (enteredId) {
       case "loanAmount":
