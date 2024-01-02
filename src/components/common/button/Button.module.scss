@@ -7,5 +7,9 @@
     &:hover {
       background-color: $app-primary-color;
     }
+    &:global(.Mui-disabled) {
+      color: $app-primary-color;
+      background-color: $app-secondary-color;
+    }
   }
 }

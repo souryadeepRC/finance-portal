@@ -5,20 +5,35 @@ import {
   UPDATE_LOAN_AMOUNT,
   UPDATE_LOAN_START_PERIOD,
   UPDATE_LOAN_TENURE,
-  UPDATE_MONTHLY_EMI,
+  UPDATE_LOAN_PAYMENT_DETAILS,
+  UPDATE_LOAN_PAYMENT_YEAR,
 } from "./home-loan-constants";
 // types
 import { HomeLoanReducerType } from "src/store/reducer-types";
 import { HomeLoanReducerActionType } from "./home-loan-types";
 
+const latestDate: Date = new Date();
+
 const initialState: HomeLoanReducerType = {
   loanAmount: "3783000",
   interestRate: "8.5",
   loanTenure: "30",
-  monthlyEmi: "",
-  loanStartPeriod: { month: new Date().getMonth(), year: new Date().getFullYear() },
+  monthlyEmi: 0,
+  loanStartPeriod: {
+    month: latestDate.getMonth(),
+    year: latestDate.getFullYear(),
+  },
   monthlyAmortizationDetails: [],
   yearlyAmortizationDetails: [],
+  loanPaymentYear: latestDate.getFullYear(),
+  paymentYearDetails: {
+    paymentYearList: [],
+    maxYear: 0,
+    minYear: 0,
+  },
+  interestAmount: 0,
+  totalPaidAmount: 0,
+  completionPeriod: "",
 };
 const HomeLoanReducer = (
   state = initialState,
@@ -58,17 +73,30 @@ const HomeLoanReducer = (
         loanTenure,
       };
     }
-    case UPDATE_MONTHLY_EMI: {
+    case UPDATE_LOAN_PAYMENT_DETAILS: {
       const {
         monthlyEmi,
-        monthlyAmortizationDetails,
         yearlyAmortizationDetails,
+        interestAmount,
+        totalPaidAmount,
+        completionPeriod,
+        paymentYearDetails,
       } = payload;
       return {
         ...state,
         monthlyEmi,
-        monthlyAmortizationDetails,
         yearlyAmortizationDetails,
+        interestAmount,
+        totalPaidAmount,
+        completionPeriod,
+        paymentYearDetails,
+        loanPaymentYear: state.loanStartPeriod.year
+      };
+    }
+    case UPDATE_LOAN_PAYMENT_YEAR: {
+      return {
+        ...state,
+        loanPaymentYear: payload,
       };
     }
     default:

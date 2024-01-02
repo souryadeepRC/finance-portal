@@ -6,12 +6,13 @@ import {
   UPDATE_LOAN_TENURE,
   UPDATE_LOAN_START_PERIOD,
   RESET_LOAN_DETAILS,
-  UPDATE_MONTHLY_EMI,
+  UPDATE_LOAN_PAYMENT_DETAILS,
+  UPDATE_LOAN_PAYMENT_YEAR
 } from "./home-loan-constants";
 //types
 import {
-  HomeLoanReducerActionType,
-  HomeLoanYearlyAmortizationType,
+  HomeLoanBreakupType,
+  HomeLoanReducerActionType, 
 } from "./home-loan-types";
 
 export const updateLoanAmount = (
@@ -52,12 +53,15 @@ export const resetLoanDetails = (): HomeLoanReducerActionType => {
   };
 };
 
-export const updateMonthlyEmi = (payload: {
-  monthlyEmi: number;
-  yearlyAmortizationDetails: HomeLoanYearlyAmortizationType[];
-}): HomeLoanReducerActionType => {
+export const updateLoanPaymentDetails = (payload: HomeLoanBreakupType): HomeLoanReducerActionType => {
   return {
-    type: UPDATE_MONTHLY_EMI,
+    type: UPDATE_LOAN_PAYMENT_DETAILS,
+    payload,
+  };
+};
+export const updateLoanPaymentYear = (payload: number): HomeLoanReducerActionType => {
+  return {
+    type: UPDATE_LOAN_PAYMENT_YEAR,
     payload,
   };
 };
