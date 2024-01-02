@@ -1,6 +1,13 @@
 @import "src/styles/variables.scss";
  
 .date-picker__container {
+  :global(.MuiInputLabel-root){
+    color: $app-primary-color;
+    font-weight: $font-weight-700;
+  }
+  :global(.MuiOutlinedInput-input){ 
+    font-weight: $font-weight-700;
+  }
   :global(.MuiSvgIcon-root) {
     color: $app-primary-color;
   }
