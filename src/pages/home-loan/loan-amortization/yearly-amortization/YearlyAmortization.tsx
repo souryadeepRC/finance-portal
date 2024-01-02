@@ -21,7 +21,7 @@ const YearlyAmortization = memo(
     outstandingBalance,
     remainingYearCount,
   }: YearlyAmortizationProps): JSX.Element => {
-    const loanAmount: string = useSelector(selectLoanAmount);
+    const loanAmount: number = useSelector(selectLoanAmount);
 
     return (
       <>
@@ -37,7 +37,7 @@ const YearlyAmortization = memo(
             />
             <LoanAmountLabel
               label="Loan Recovered"
-              value={+loanAmount - outstandingBalance}
+              value={loanAmount - outstandingBalance}
             />
           </div>
         </div>

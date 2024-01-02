@@ -24,9 +24,9 @@ import { HomeLoanInputType } from "src/store/home-loan-reducer/home-loan-types";
 import { LoanStartPeriodType } from "src/store/reducer-types";
 
 type LoanInputFormProps = {
-  loanAmount: string;
-  interestRate: string;
-  loanTenure: string;
+  loanAmount: number;
+  interestRate: number;
+  loanTenure: number;
   loanStartPeriod: LoanStartPeriodType;
 };
 const LoanInputForm = memo(
@@ -62,14 +62,14 @@ const LoanInputForm = memo(
       if (!isValidData(enteredValue)) return;
       switch (enteredId) {
         case "loanAmount":
-          dispatch(updateLoanAmount(enteredValue));
+          dispatch(updateLoanAmount(+enteredValue));
           return;
         case "interestRate":
-          dispatch(updateInterestRate(enteredValue));
+          dispatch(updateInterestRate(+enteredValue));
           return;
         case "loanTenure":
           if (isNumeric(enteredValue)) {
-            dispatch(updateLoanTenure(enteredValue));
+            dispatch(updateLoanTenure(+enteredValue));
           }
           return;
       }

@@ -6,11 +6,11 @@ import {
   PaymentYearDetailsType,
 } from "./home-loan-types";
 
-export const selectLoanAmount = (store: AppStoreType): string =>
+export const selectLoanAmount = (store: AppStoreType): number =>
   store?.homeLoan?.loanAmount;
-export const selectLoanInterestRate = (store: AppStoreType): string =>
+export const selectLoanInterestRate = (store: AppStoreType): number =>
   store?.homeLoan?.interestRate;
-export const selectLoanTenure = (store: AppStoreType): string =>
+export const selectLoanTenure = (store: AppStoreType): number =>
   store?.homeLoan?.loanTenure;
 export const selectMonthlyEmi = (store: AppStoreType): number =>
   store?.homeLoan?.monthlyEmi;

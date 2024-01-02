@@ -24,7 +24,7 @@ import styles from "./LoanBreakup.module.scss";
 const LoanBreakup = memo((): JSX.Element => {
   // store
 
-  const loanAmount: string = useSelector(selectLoanAmount);
+  const loanAmount: number = useSelector(selectLoanAmount);
   const monthlyEmi: number = useSelector(selectMonthlyEmi);
   const interestAmount: number = useSelector(selectInterestAmount);
 
@@ -37,7 +37,7 @@ const LoanBreakup = memo((): JSX.Element => {
       <div className={styles["loan-breakup__container"]}>
         <div className={styles["loan-breakup-data__container"]}>
           <LoanAmountLabel label="Monthly EMI" value={monthlyEmi} />
-          <LoanAmountLabel label="Principal Amount" value={+loanAmount} />
+          <LoanAmountLabel label="Principal Amount" value={loanAmount} />
           <LoanAmountLabel label="Total Interest" value={interestAmount} />
           <LoanAmountLabel label="Total Amount" value={totalPaidAmount} />
           <DisplayLabel label="Loan Completion" value={completionPeriod} />

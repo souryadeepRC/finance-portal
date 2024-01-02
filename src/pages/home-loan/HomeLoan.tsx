@@ -1,4 +1,4 @@
-import { memo, useEffect } from "react";
+import { memo, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 // components
 import { LoanInputForm } from "src/pages/home-loan/loan-input-form/LoanInputForm";
@@ -25,25 +25,30 @@ import styles from "./HomeLoan.module.scss";
 const HomeLoan = memo((): JSX.Element => {
   // store
   const dispatch: AppDispatch = useDispatch();
-  const loanAmount: string = useSelector(selectLoanAmount);
-  const interestRate: string = useSelector(selectLoanInterestRate);
-  const loanTenure: string = useSelector(selectLoanTenure);
+  const loanAmount: number = useSelector(selectLoanAmount);
+  const interestRate: number = useSelector(selectLoanInterestRate);
+  const loanTenure: number = useSelector(selectLoanTenure);
   const loanStartPeriod: LoanStartPeriodType = useSelector(
     selectLoanStartPeriod
   );
-
+  const [isValidForm, setIsValidForm] = useState<boolean>(true);
   // effects
   useEffect(() => {
-    const homeLoanBreakupDetails: HomeLoanBreakupType = calculateLoanBreakup(
-      +loanAmount,
-      +interestRate,
-      +loanTenure,
-      loanStartPeriod
-    );
-    
-    dispatch(updateLoanPaymentDetails(homeLoanBreakupDetails));
+    if (loanAmount > 0 && interestRate > 0 && loanTenure > 0) {
+      const homeLoanBreakupDetails: HomeLoanBreakupType = calculateLoanBreakup(
+        loanAmount,
+        interestRate,
+        loanTenure,
+        loanStartPeriod
+      );
+      dispatch(updateLoanPaymentDetails(homeLoanBreakupDetails));
+      setIsValidForm(true);
+    } else {
+      setIsValidForm(false);
+    }
   }, [dispatch, loanAmount, interestRate, loanTenure, loanStartPeriod]);
-  // render fns
+
+  // render fns 
   return (
     <>
       <div className={styles["home-loan__container"]}>
@@ -53,9 +58,9 @@ const HomeLoan = memo((): JSX.Element => {
           loanTenure={loanTenure}
           loanStartPeriod={loanStartPeriod}
         />
-        <LoanBreakup />
+        {isValidForm && <LoanBreakup />}
       </div>
-      <LoanAmortization />
+      {isValidForm && <LoanAmortization />}
     </>
   );
 });

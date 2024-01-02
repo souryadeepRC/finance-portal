@@ -16,7 +16,7 @@ import {
 } from "./home-loan-types";
 
 export const updateLoanAmount = (
-  payload: string
+  payload: number
 ): HomeLoanReducerActionType => {
   return {
     type: UPDATE_LOAN_AMOUNT,
@@ -24,7 +24,7 @@ export const updateLoanAmount = (
   };
 };
 export const updateInterestRate = (
-  payload: string
+  payload: number
 ): HomeLoanReducerActionType => {
   return {
     type: UPDATE_INTEREST_RATE,
@@ -32,7 +32,7 @@ export const updateInterestRate = (
   };
 };
 export const updateLoanTenure = (
-  payload: string
+  payload: number
 ): HomeLoanReducerActionType => {
   return {
     type: UPDATE_LOAN_TENURE,

@@ -15,9 +15,9 @@ import { HomeLoanReducerActionType } from "./home-loan-types";
 const latestDate: Date = new Date();
 
 const initialState: HomeLoanReducerType = {
-  loanAmount: "3783000",
-  interestRate: "8.5",
-  loanTenure: "30",
+  loanAmount: 3783000,
+  interestRate: 8.5,
+  loanTenure: 30,
   monthlyEmi: 0,
   loanStartPeriod: {
     month: latestDate.getMonth(),
@@ -43,19 +43,19 @@ const HomeLoanReducer = (
     case UPDATE_LOAN_AMOUNT: {
       return {
         ...state,
-        loanAmount: payload || "",
+        loanAmount: payload || 0,
       };
     }
     case UPDATE_INTEREST_RATE: {
       return {
         ...state,
-        interestRate: payload || "",
+        interestRate: payload || 0,
       };
     }
     case UPDATE_LOAN_TENURE: {
       return {
         ...state,
-        loanTenure: payload || "",
+        loanTenure: payload || 0,
       };
     }
     case UPDATE_LOAN_START_PERIOD: {
@@ -90,7 +90,7 @@ const HomeLoanReducer = (
         totalPaidAmount,
         completionPeriod,
         paymentYearDetails,
-        loanPaymentYear: state.loanStartPeriod.year
+        loanPaymentYear: state.loanStartPeriod.year,
       };
     }
     case UPDATE_LOAN_PAYMENT_YEAR: {
