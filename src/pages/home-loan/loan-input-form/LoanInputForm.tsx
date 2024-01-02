@@ -1,11 +1,18 @@
 import { memo } from "react";
 import { useSelector, useDispatch } from "react-redux";
+// library
+import dayjs from "dayjs";
+// common components
+import { DatePicker } from "src/components/common/date-picker/DatePicker";
 // components
 import { LoanInputField } from "./loan-input-field/LoanInputField";
+// store
+import { AppDispatch } from "src/store/store";
 // actions
 import {
   updateInterestRate,
   updateLoanAmount,
+  updateLoanStartPeriod,
   updateLoanTenure,
 } from "src/store/home-loan-reducer/home-loan-actions";
 // selectors
@@ -13,14 +20,15 @@ import {
   selectLoanAmount,
   selectLoanInterestRate,
   selectLoanTenure,
+  selectLoanStartPeriod,
 } from "src/store/home-loan-reducer/home-loan-selectors";
 // utils
 import { isFloatingNumeric, isNumeric } from "src/utils/string-utils";
 // styles
 import styles from "./LoanInputForm.module.scss";
 // types
-import { AppDispatch } from "src/store/store";
 import { HomeLoanInputType } from "src/store/home-loan-reducer/home-loan-types";
+import { LoanStartPeriodType } from "src/store/reducer-types";
 
 const LoanInputForm = memo((): JSX.Element => {
   // store
@@ -28,12 +36,21 @@ const LoanInputForm = memo((): JSX.Element => {
   const loanAmount: string = useSelector(selectLoanAmount);
   const interestRate: string = useSelector(selectLoanInterestRate);
   const loanTenure: string = useSelector(selectLoanTenure);
+  const { month: loanStartMonth, year: loanStartYear }: LoanStartPeriodType =
+    useSelector(selectLoanStartPeriod);
 
   // fns
   const isValidData = (modifiedValue: string): boolean => {
     return modifiedValue === "" || isFloatingNumeric(modifiedValue);
   };
-
+  const onLoanStartPeriodChange = (selectedDate: dayjs.Dayjs | null): void => {
+    dispatch(
+      updateLoanStartPeriod({
+        month: selectedDate?.month() || new Date().getMonth(),
+        year: selectedDate?.year() || new Date().getFullYear(),
+      })
+    );
+  };
   const modifyLoanDetails = ({
     enteredId,
     enteredValue,
@@ -90,6 +107,12 @@ const LoanInputForm = memo((): JSX.Element => {
         maxValue={30}
         disabledValue={0}
         onChange={modifyLoanDetails}
+      />
+      <DatePicker 
+        label="Loan Start Period"
+        views={["year", "month"]}
+        value={dayjs(new Date(loanStartYear, loanStartMonth))}
+        onChange={onLoanStartPeriodChange}
       />
     </div>
   );

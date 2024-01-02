@@ -1,11 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 // library
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 // common components
+import { DatePicker } from "src/components/common/date-picker/DatePicker";
 import { SkeletonHomeLoan } from "src/components/common/skeleton/HomeLoanSkeleton";
 // components
 import { YearlyAmortization } from "./yearly-amortization/YearlyAmortization";
@@ -117,17 +115,14 @@ const LoanAmortization = (): JSX.Element => {
   }
   return (
     <div className={styles["amortization-details_container"]}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker
-          className={styles["amortization-details_date-picker"]}
-          label={"Amortization Tenure Year"}
-          maxDate={dayjs(new Date(maxYear, 0))}
-          minDate={dayjs(new Date(minYear, 0))}
-          views={["year"]}
-          value={dayjs(new Date(tenureYear, 0))}
-          onChange={onTenureYearChange}
-        />
-      </LocalizationProvider>
+      <DatePicker 
+        label="Amortization Tenure Year"
+        maxDate={dayjs(new Date(maxYear, 0))}
+        minDate={dayjs(new Date(minYear, 0))}
+        views={["year"]}
+        value={dayjs(new Date(tenureYear, 0))}
+        onChange={onTenureYearChange}
+      />
       <YearlyAmortization
         principalPaid={principalPaid}
         interestPaid={interestPaid}

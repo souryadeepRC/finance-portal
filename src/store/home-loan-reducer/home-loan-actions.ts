@@ -1,8 +1,10 @@
 // constants
+import { LoanStartPeriodType } from "../reducer-types";
 import {
   UPDATE_INTEREST_RATE,
   UPDATE_LOAN_AMOUNT,
   UPDATE_LOAN_TENURE,
+  UPDATE_LOAN_START_PERIOD,
   RESET_LOAN_DETAILS,
   UPDATE_MONTHLY_EMI,
 } from "./home-loan-constants";
@@ -33,6 +35,14 @@ export const updateLoanTenure = (
 ): HomeLoanReducerActionType => {
   return {
     type: UPDATE_LOAN_TENURE,
+    payload,
+  };
+};
+export const updateLoanStartPeriod = (
+  payload: LoanStartPeriodType
+): HomeLoanReducerActionType => {
+  return {
+    type: UPDATE_LOAN_START_PERIOD,
     payload,
   };
 };

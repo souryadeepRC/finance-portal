@@ -9,9 +9,4 @@
   grid-gap: 25px;
   padding: 25px 0;
   font-size: $font-size-14;
-  .amortization-details_date-picker {
-    :global(.MuiSvgIcon-root) {
-      color: $app-primary-color;
-    }
-  }
 }

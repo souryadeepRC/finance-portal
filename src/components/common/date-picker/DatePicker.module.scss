@@ -1,0 +1,7 @@
+@import "src/styles/variables.scss";
+ 
+.date-picker__container {
+  :global(.MuiSvgIcon-root) {
+    color: $app-primary-color;
+  }
+}
