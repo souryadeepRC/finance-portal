@@ -1,0 +1,9 @@
+@import "src/styles/variables.scss";
+
+.loan-details__container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  grid-gap: 5px;
+  font-size: $font-size-13;
+}

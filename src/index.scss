@@ -30,4 +30,6 @@ code {
   border-radius: 10px;
 }
 
- 
+a.active {
+  color: $app-secondary-color;
+}

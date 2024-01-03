@@ -1,11 +1,18 @@
 import { Suspense, lazy } from "react";
-import { Navigate, Route, Routes } from "react-router-dom"; 
+import { Navigate, Route, Routes } from "react-router-dom";
 import { Loader } from "src/components/common/loader/Loader";
 // Lazy loaded pages
 const HomeLoan = lazy(() =>
   import("./pages/home-loan/HomeLoan").then(({ HomeLoan }) => ({
     default: HomeLoan,
   }))
+);
+const PrePaymentView = lazy(() =>
+  import("./pages/home-loan/pre-payment-view/PrePaymentView").then(
+    ({ PrePaymentView }) => ({
+      default: PrePaymentView,
+    })
+  )
 );
 const AboutPortal = lazy(() =>
   import("./pages/about-portal/AboutPortal").then(({ AboutPortal }) => ({
@@ -28,10 +35,13 @@ const AppRoutes = (): JSX.Element => {
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
-        <Route path="/" element={<Navigate to="/home-loan" replace />} />
-        <Route path="/home-loan" element={<HomeLoan />} />
-        <Route path="/about" element={<AboutPortal />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="" element={<Navigate to="homeLoan" />} />
+        <Route path="homeLoan">
+          <Route index element={<HomeLoan />} />
+          <Route path="prePayment" element={<PrePaymentView />}></Route>
+        </Route>
+        <Route path="about" element={<AboutPortal />} />
+        <Route path="*" element={<Navigate to="" />} />
       </Routes>
     </Suspense>
   );

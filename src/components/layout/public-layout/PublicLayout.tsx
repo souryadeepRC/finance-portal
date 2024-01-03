@@ -1,6 +1,6 @@
 import { memo } from "react";
 // components
-import { Header } from "src/components/common/header/Header";
+import { AppNavigationBar } from "src/components/app-navigation-bar/AppNavigationBar";
 
 type PublicLayoutProps = {
   children: JSX.Element;
@@ -9,7 +9,7 @@ const PublicLayout = memo(({ children }: PublicLayoutProps) => {
   // render fns
   return (
     <>
-      <Header />
+      <AppNavigationBar />
       {children}
     </>
   );

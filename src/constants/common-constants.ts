@@ -1,5 +1,5 @@
 export const DEFAULT_CONSTANT_TEXT: string = "";
-
+export const APP_DISPLAY_NAME:string = 'My Gullak';
 export const MONTH_ARRAY: string[] = [
   "Jan",
   "Feb",
