@@ -33,7 +33,6 @@ export type HomeLoanMonthlyAmortizationType = {
   year: number;
 };
 export type PaymentYearDetailsType = {
-  paymentYearList : number[],
   maxYear : number,
   minYear : number
 }

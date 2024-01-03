@@ -40,3 +40,10 @@ export const selectCompletionPeriod = (store: AppStoreType): string =>
 
 export const selectInterestAmount = (store: AppStoreType): number =>
   store?.homeLoan?.interestAmount;
+
+  
+export const selectPaymentYearMonthlyBreakup = (store: AppStoreType): HomeLoanMonthlyAmortizationType[] =>
+store?.homeLoan?.paymentYearAmortization?.monthlyBreakup;
+
+export const selectPaymentYearAmortization = (store: AppStoreType): HomeLoanYearlyAmortizationType =>
+store?.homeLoan?.paymentYearAmortization;

@@ -17,6 +17,7 @@ export type HomeLoanReducerType = {
   interestAmount: number;
   totalPaidAmount: number;
   completionPeriod: string;
+  paymentYearAmortization: HomeLoanYearlyAmortizationType;
 };
 export type AppStoreType = {
   homeLoan: HomeLoanReducerType;

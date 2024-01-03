@@ -1,3 +1,5 @@
+// mappers
+import { mapPaymentYearAmortization } from "src/store/home-loan-reducer/home-loan-mapper";
 // constants
 import {
   RESET_LOAN_DETAILS,
@@ -27,13 +29,20 @@ const initialState: HomeLoanReducerType = {
   yearlyAmortizationDetails: [],
   loanPaymentYear: latestDate.getFullYear(),
   paymentYearDetails: {
-    paymentYearList: [],
     maxYear: 0,
     minYear: 0,
   },
   interestAmount: 0,
   totalPaidAmount: 0,
   completionPeriod: "",
+  paymentYearAmortization: {
+    principalPaid: 0,
+    interestPaid: 0,
+    paymentYear: 0,
+    remainingYearCount: 0,
+    outstandingBalance: 0,
+    monthlyBreakup: [],
+  },
 };
 const HomeLoanReducer = (
   state = initialState,
@@ -82,6 +91,7 @@ const HomeLoanReducer = (
         completionPeriod,
         paymentYearDetails,
       } = payload;
+      const loanPaymentYear: number = state.loanStartPeriod.year;
       return {
         ...state,
         monthlyEmi,
@@ -90,13 +100,23 @@ const HomeLoanReducer = (
         totalPaidAmount,
         completionPeriod,
         paymentYearDetails,
-        loanPaymentYear: state.loanStartPeriod.year,
+        loanPaymentYear: loanPaymentYear,
+        ...mapPaymentYearAmortization(
+          yearlyAmortizationDetails,
+          loanPaymentYear
+        ),
       };
     }
     case UPDATE_LOAN_PAYMENT_YEAR: {
+      const { yearlyAmortizationDetails } = state;
+      const loanPaymentYear: number = payload;
       return {
         ...state,
-        loanPaymentYear: payload,
+        loanPaymentYear,
+        ...mapPaymentYearAmortization(
+          yearlyAmortizationDetails,
+          loanPaymentYear
+        ),
       };
     }
     default:

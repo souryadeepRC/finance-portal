@@ -30,32 +30,23 @@ const getTotalPaidAmount = (
     0
   );
 };
-export const calculateLoanBreakup = (
+const fetchLoanMonthlyBreakup = (
   loanAmount: number,
   interestRate: number,
-  loanTenure: number,
-  loanStartPeriod: LoanStartPeriodType
-): HomeLoanBreakupType => {
-  const monthlyEmi: number = calculateMonthlyEmi(
-    loanAmount,
-    interestRate,
-    loanTenure
-  );
-
-  let remainingBalance: number = loanAmount;
-  let interestAmount: number = 0;
-  let monthlyBreakup: HomeLoanMonthlyAmortizationType[] = [];
-  const yearlyAmortizationDetails: HomeLoanYearlyAmortizationType[] = [];
-
-  let { month, year }: LoanStartPeriodType = loanStartPeriod;
+  loanStartPeriod: LoanStartPeriodType,
+  monthlyEmi: number
+): HomeLoanMonthlyAmortizationType[] => {
   const MONTH_LIMIT: number = MONTH_ARRAY.length - 1;
   const monthlyRate: number = interestRate / (12 * 100);
-  const paymentYearSet: Set<number> = new Set();
+
+  let monthlyBreakup: HomeLoanMonthlyAmortizationType[] = [];
+  let { month, year }: LoanStartPeriodType = loanStartPeriod;
+  let remainingBalance: number = loanAmount;
+
   while (remainingBalance > 0) {
     const interestPaid: number = remainingBalance * monthlyRate;
     const principalPaid: number = monthlyEmi - interestPaid;
     remainingBalance = remainingBalance - principalPaid;
-    interestAmount = interestAmount + interestPaid;
     monthlyBreakup.push({
       principalPaid,
       interestPaid,
@@ -68,15 +59,49 @@ export const calculateLoanBreakup = (
     } else {
       month = month + 1;
     }
-    paymentYearSet.add(year);
   }
+  return monthlyBreakup;
+};
+const fetchLoanCompletionPeriod = (
+  monthlyBreakup: HomeLoanMonthlyAmortizationType[]
+): string => {
+  if (monthlyBreakup?.length <= 0) return "";
 
-  const completionPeriod: string = `${MONTH_ARRAY[month]} - ${year}`;
-  const paymentYearList: number[] = Array.from(paymentYearSet).sort(
-    (a: number, b: number) => a - b
+  const {
+    month: lastPaymentMonth,
+    year: lastPaymentYear,
+  }: HomeLoanMonthlyAmortizationType =
+    monthlyBreakup[monthlyBreakup?.length - 1];
+  return `${MONTH_ARRAY[lastPaymentMonth]} - ${lastPaymentYear}`;
+};
+export const calculateLoanBreakup = (
+  loanAmount: number,
+  interestRate: number,
+  loanTenure: number,
+  loanStartPeriod: LoanStartPeriodType
+): HomeLoanBreakupType => {
+  // calculate EMI
+  const monthlyEmi: number = calculateMonthlyEmi(
+    loanAmount,
+    interestRate,
+    loanTenure
   );
+ // Find Monthly Payment Breakup
+  const monthlyBreakup: HomeLoanMonthlyAmortizationType[] =
+    fetchLoanMonthlyBreakup(
+      loanAmount,
+      interestRate,
+      loanStartPeriod,
+      monthlyEmi
+    );
+  
+  const paymentYearList: number[] = Array.from(
+    new Set(monthlyBreakup.map((monthlyData) => monthlyData.year))
+  ).sort((a: number, b: number) => a - b);
 
   let outstandingBalance: number = loanAmount;
+  const yearlyAmortizationDetails: HomeLoanYearlyAmortizationType[] = [];
+
   paymentYearList.forEach((paymentYear: number, index: number) => {
     const monthlyPaymentDetails: HomeLoanMonthlyAmortizationType[] =
       monthlyBreakup?.filter(
@@ -96,20 +121,20 @@ export const calculateLoanBreakup = (
       principalPaid,
       interestPaid,
       paymentYear,
-      remainingYearCount: paymentYearList.length - 1 - index,
-      outstandingBalance,
+      remainingYearCount: paymentYearList?.length - index - 1,
+      outstandingBalance: outstandingBalance < 0 ? 0 : outstandingBalance,
       monthlyBreakup: monthlyPaymentDetails,
     });
-  });
+  }); 
 
+  const interestAmount: number = getTotalPaidAmount(monthlyBreakup, "interestPaid");
   return {
     monthlyEmi,
     yearlyAmortizationDetails,
-    interestAmount,
+    interestAmount: getTotalPaidAmount(monthlyBreakup, "interestPaid"),
     totalPaidAmount: loanAmount + interestAmount,
-    completionPeriod,
+    completionPeriod: fetchLoanCompletionPeriod(monthlyBreakup),
     paymentYearDetails: {
-      paymentYearList,
       maxYear: paymentYearList?.[paymentYearList?.length - 1],
       minYear: paymentYearList?.[0],
     },
