@@ -44,7 +44,7 @@ const MonthlyAmortization = memo(
                   className={styles["amortization-breakup__element"]}
                 >
                   <span className={styles["amortization-breakup__month"]}>
-                    {MONTH_ARRAY[month - 1]}
+                    {MONTH_ARRAY[month]}
                   </span>
                   <LoanAmountLabel label="Principal" value={principalPaid} />
                   <LoanAmountLabel label="Interest" value={interestPaid} />

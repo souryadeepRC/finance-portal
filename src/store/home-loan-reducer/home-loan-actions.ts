@@ -1,19 +1,22 @@
 // constants
+import { LoanStartPeriodType } from "../reducer-types";
 import {
   UPDATE_INTEREST_RATE,
   UPDATE_LOAN_AMOUNT,
   UPDATE_LOAN_TENURE,
+  UPDATE_LOAN_START_PERIOD,
   RESET_LOAN_DETAILS,
-  UPDATE_MONTHLY_EMI,
+  UPDATE_LOAN_PAYMENT_DETAILS,
+  UPDATE_LOAN_PAYMENT_YEAR,
 } from "./home-loan-constants";
 //types
 import {
+  HomeLoanBreakupType,
   HomeLoanReducerActionType,
-  HomeLoanYearlyAmortizationType,
 } from "./home-loan-types";
 
 export const updateLoanAmount = (
-  payload: string
+  payload: number
 ): HomeLoanReducerActionType => {
   return {
     type: UPDATE_LOAN_AMOUNT,
@@ -21,7 +24,7 @@ export const updateLoanAmount = (
   };
 };
 export const updateInterestRate = (
-  payload: string
+  payload: number
 ): HomeLoanReducerActionType => {
   return {
     type: UPDATE_INTEREST_RATE,
@@ -29,10 +32,18 @@ export const updateInterestRate = (
   };
 };
 export const updateLoanTenure = (
-  payload: string
+  payload: number
 ): HomeLoanReducerActionType => {
   return {
     type: UPDATE_LOAN_TENURE,
+    payload,
+  };
+};
+export const updateLoanStartPeriod = (
+  payload: LoanStartPeriodType
+): HomeLoanReducerActionType => {
+  return {
+    type: UPDATE_LOAN_START_PERIOD,
     payload,
   };
 };
@@ -42,12 +53,19 @@ export const resetLoanDetails = (): HomeLoanReducerActionType => {
   };
 };
 
-export const updateMonthlyEmi = (payload: {
-  monthlyEmi: number;
-  yearlyAmortizationDetails: HomeLoanYearlyAmortizationType[];
-}): HomeLoanReducerActionType => {
+export const updateLoanPaymentDetails = (
+  payload: HomeLoanBreakupType
+): HomeLoanReducerActionType => {
   return {
-    type: UPDATE_MONTHLY_EMI,
+    type: UPDATE_LOAN_PAYMENT_DETAILS,
+    payload,
+  };
+};
+export const updateLoanPaymentYear = (
+  payload: number
+): HomeLoanReducerActionType => {
+  return {
+    type: UPDATE_LOAN_PAYMENT_YEAR,
     payload,
   };
 };

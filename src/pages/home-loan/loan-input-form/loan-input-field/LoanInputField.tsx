@@ -11,7 +11,7 @@ type LoanInputFieldProps = {
   id: string;
   label: string;
   icon: string;
-  value: string;
+  value: number;
   step?: number;
   defaultValue: number;
   minValue: number;
@@ -48,30 +48,40 @@ const LoanInputField = memo(
         enteredValue,
       });
     };
+
+    const isInvalidField: boolean = value === disabledValue;
+
     // render fns
     return (
       <div className={styles["loan-input-field__container"]}>
-        <div className={styles['input-field__box']}>
+        <div className={styles["input-field__box"]}>
           <label className={styles["input-label"]}>{label}</label>
+          {isInvalidField && <span className={styles["input-label-error-msg"]}>
+            Provide positive non-zero number
+          </span>}
           <div className={`${className} ${styles["input-value__container"]}`}>
             <Input
+              className={isInvalidField ? `${styles["error"]}` : ""}
               disableUnderline={true}
               id={id}
               value={value}
               onChange={onInputChange}
             />
-            <span>{icon}</span>
+            <span className={isInvalidField ? `${styles["error"]}` : ""}>
+              {icon}
+            </span>
           </div>
         </div>
         <Slider
+        className={isInvalidField ? `${styles["error"]}` : ""}
           defaultValue={defaultValue}
           step={step}
           aria-label={label}
           valueLabelDisplay="auto"
-          value={parseFloat(value)}
+          value={value}
           min={minValue}
           max={maxValue}
-          disabled={parseFloat(value) === disabledValue}
+          /* disabled={value === disabledValue} */
           onChange={onSliderChange}
         />
       </div>

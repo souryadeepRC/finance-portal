@@ -5,13 +5,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 25px;
-  grid-gap: 25px;
+  gap: 15px;
+  grid-gap: 15px;
   padding: 25px 0;
   font-size: $font-size-14;
-  .amortization-details_date-picker {
-    :global(.MuiSvgIcon-root) {
-      color: $app-primary-color;
-    }
-  }
 }

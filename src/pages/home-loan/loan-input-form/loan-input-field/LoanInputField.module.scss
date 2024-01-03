@@ -1,12 +1,10 @@
 @import "src/styles/variables.scss";
-
+ 
 .loan-input-field__container {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 15px;
-  grid-gap: 15px;
   width: 85%;
   max-width: 500px;
   .input-field__box {
@@ -20,6 +18,10 @@
       font-size: $font-size-14;
       font-weight: $font-weight-700;
     }
+    .input-label-error-msg {
+      font-size: $font-size-10;
+      color: $app-error-color;
+    }
     .input-value__container {
       display: flex;
       justify-content: space-around;
@@ -31,20 +33,33 @@
       background-color: $color-anti-flash-white;
       font-size: $font-size-16;
       font-weight: $font-weight-700;
-      color:$app-primary-color; 
+      color: $app-primary-color;
       :global(.MuiInput-input) {
         padding: 0;
         font-size: $font-size-16;
         font-weight: $font-weight-700;
-        color:$app-primary-color; 
+        color: $app-primary-color;
         text-align: right;
         letter-spacing: 1px;
       }
+      .error {
+        color: $app-error-color;
+        :global(.MuiInput-input) {
+          color: $app-error-color;
+        }
+      }
     }
   }
-:global(.MuiSlider-root){
-color:$app-primary-color; 
-}
+  
+  :global(.MuiSlider-root) {
+    color: $app-primary-color;
+  }
+  .error {
+    color: $app-error-color;
+    :global(.MuiSlider-root) {
+      color: $app-error-color;
+    }
+  }
 }
 
 @media screen and (max-width: $mobile-max-width) {
@@ -66,7 +81,7 @@ color:$app-primary-color;
         }
       }
     }
-    :global(.MuiSlider-root){
+    :global(.MuiSlider-root) {
       width: 90%;
     }
   }

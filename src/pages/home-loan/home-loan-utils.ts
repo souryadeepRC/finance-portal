@@ -1,15 +1,17 @@
 // type
+import { MONTH_ARRAY } from "src/constants/common-constants";
 import {
   HomeLoanBreakupType,
   HomeLoanMonthlyAmortizationType,
   HomeLoanYearlyAmortizationType,
 } from "src/store/home-loan-reducer/home-loan-types";
+import { LoanStartPeriodType } from "src/store/reducer-types";
 
-export const calculateEMI = (
+const calculateMonthlyEmi = (
   loanAmount: number,
   interestRate: number,
   loanTenure: number
-): HomeLoanBreakupType => {
+): number => {
   const tenureInMonth: number = loanTenure * 12;
   const monthlyRate: number = interestRate / (12 * 100);
 
@@ -17,51 +19,125 @@ export const calculateEMI = (
     (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, tenureInMonth)) /
     (Math.pow(1 + monthlyRate, tenureInMonth) - 1);
 
-  let remainingBalance: number = loanAmount;
-  let interestAmount: number = 0;
+  return monthlyEmi;
+};
+const getTotalPaidAmount = (
+  monthlyPaymentDetails: HomeLoanMonthlyAmortizationType[],
+  type: string
+) => {
+  return monthlyPaymentDetails.reduce(
+    (total: number, paymentInfo: any) => total + paymentInfo?.[type],
+    0
+  );
+};
+const fetchLoanMonthlyBreakup = (
+  loanAmount: number,
+  interestRate: number,
+  loanStartPeriod: LoanStartPeriodType,
+  monthlyEmi: number
+): HomeLoanMonthlyAmortizationType[] => {
+  const MONTH_LIMIT: number = MONTH_ARRAY.length - 1;
+  const monthlyRate: number = interestRate / (12 * 100);
+
   let monthlyBreakup: HomeLoanMonthlyAmortizationType[] = [];
-  const yearlyAmortizationDetails: HomeLoanYearlyAmortizationType[] = [];
-  let latestYear: number = new Date().getFullYear();
-  let yearlyPrincipalPaid: number = 0;
-  let yearlyInterestPaid: number = 0;
-  let totalPrincipalPaid: number = 0;
-  for (let month: number = 1; remainingBalance > 0; month++) {
+  let { month, year }: LoanStartPeriodType = loanStartPeriod;
+  let remainingBalance: number = loanAmount;
+
+  while (remainingBalance > 0) {
     const interestPaid: number = remainingBalance * monthlyRate;
     const principalPaid: number = monthlyEmi - interestPaid;
     remainingBalance = remainingBalance - principalPaid;
     monthlyBreakup.push({
       principalPaid,
       interestPaid,
-      remainingBalance,
       month,
+      year,
     });
-    yearlyPrincipalPaid += principalPaid;
-    yearlyInterestPaid += interestPaid;
-    if (month === 12) {
-      totalPrincipalPaid += yearlyPrincipalPaid;
-      yearlyAmortizationDetails.push({
-        principalPaid:yearlyPrincipalPaid,
-        interestPaid:yearlyInterestPaid,
-        year: latestYear,
-        totalPrincipalPaid,
-        monthlyBreakup
-      });
-
+    if (month === MONTH_LIMIT) {
       month = 0;
-      latestYear++;
-      yearlyPrincipalPaid = 0;
-      yearlyInterestPaid = 0;
-      monthlyBreakup=[];
+      year = year + 1;
+    } else {
+      month = month + 1;
     }
-
-    interestAmount += interestPaid;
   }
+  return monthlyBreakup;
+};
+const fetchLoanCompletionPeriod = (
+  monthlyBreakup: HomeLoanMonthlyAmortizationType[]
+): string => {
+  if (monthlyBreakup?.length <= 0) return "";
 
+  const {
+    month: lastPaymentMonth,
+    year: lastPaymentYear,
+  }: HomeLoanMonthlyAmortizationType =
+    monthlyBreakup[monthlyBreakup?.length - 1];
+  return `${MONTH_ARRAY[lastPaymentMonth]} - ${lastPaymentYear}`;
+};
+export const calculateLoanBreakup = (
+  loanAmount: number,
+  interestRate: number,
+  loanTenure: number,
+  loanStartPeriod: LoanStartPeriodType
+): HomeLoanBreakupType => {
+  // calculate EMI
+  const monthlyEmi: number = calculateMonthlyEmi(
+    loanAmount,
+    interestRate,
+    loanTenure
+  );
+ // Find Monthly Payment Breakup
+  const monthlyBreakup: HomeLoanMonthlyAmortizationType[] =
+    fetchLoanMonthlyBreakup(
+      loanAmount,
+      interestRate,
+      loanStartPeriod,
+      monthlyEmi
+    );
+  
+  const paymentYearList: number[] = Array.from(
+    new Set(monthlyBreakup.map((monthlyData) => monthlyData.year))
+  ).sort((a: number, b: number) => a - b);
+
+  let outstandingBalance: number = loanAmount;
+  const yearlyAmortizationDetails: HomeLoanYearlyAmortizationType[] = [];
+
+  paymentYearList.forEach((paymentYear: number, index: number) => {
+    const monthlyPaymentDetails: HomeLoanMonthlyAmortizationType[] =
+      monthlyBreakup?.filter(
+        (paymentInfo: any) => paymentInfo.year === paymentYear
+      );
+    const principalPaid: number = getTotalPaidAmount(
+      monthlyPaymentDetails,
+      "principalPaid"
+    );
+    const interestPaid: number = getTotalPaidAmount(
+      monthlyPaymentDetails,
+      "interestPaid"
+    );
+    outstandingBalance = outstandingBalance - principalPaid;
+
+    yearlyAmortizationDetails.push({
+      principalPaid,
+      interestPaid,
+      paymentYear,
+      remainingYearCount: paymentYearList?.length - index - 1,
+      outstandingBalance: outstandingBalance < 0 ? 0 : outstandingBalance,
+      monthlyBreakup: monthlyPaymentDetails,
+    });
+  }); 
+
+  const interestAmount: number = getTotalPaidAmount(monthlyBreakup, "interestPaid");
   return {
     monthlyEmi,
     yearlyAmortizationDetails,
-    interestAmount,
-    totalAmount: loanAmount + interestAmount,
+    interestAmount: getTotalPaidAmount(monthlyBreakup, "interestPaid"),
+    totalPaidAmount: loanAmount + interestAmount,
+    completionPeriod: fetchLoanCompletionPeriod(monthlyBreakup),
+    paymentYearDetails: {
+      maxYear: paymentYearList?.[paymentYearList?.length - 1],
+      minYear: paymentYearList?.[0],
+    },
   };
 };
 

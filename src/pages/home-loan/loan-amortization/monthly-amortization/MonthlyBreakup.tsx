@@ -1,4 +1,5 @@
 import { memo, useState } from "react";
+import { useSelector } from "react-redux";
 // library
 import GridViewIcon from "@mui/icons-material/GridView";
 // common components
@@ -6,14 +7,20 @@ import { Button } from "src/components/common/button/Button";
 import { Modal } from "src/components/common/modal/Modal";
 // components
 import { MonthlyAmortization } from "./MonthlyAmortization";
+// selectors
+import {
+  selectLoanPaymentYear,
+  selectPaymentYearMonthlyBreakup,
+} from "src/store/home-loan-reducer/home-loan-selectors";
 // types
 import { HomeLoanMonthlyAmortizationType } from "src/store/home-loan-reducer/home-loan-types";
-type MonthlyBreakupProps = {
-    monthlyBreakup: HomeLoanMonthlyAmortizationType[];
-    tenureYear: number;
-}
-const MonthlyBreakup = memo(({monthlyBreakup,tenureYear}:MonthlyBreakupProps): JSX.Element => {
-    
+
+const MonthlyBreakup = memo((): JSX.Element => {
+  // store
+  const loanPaymentYear: number = useSelector(selectLoanPaymentYear);
+  const monthlyBreakup: HomeLoanMonthlyAmortizationType[] = useSelector(
+    selectPaymentYearMonthlyBreakup
+  );
   //state
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   // fns
@@ -24,15 +31,13 @@ const MonthlyBreakup = memo(({monthlyBreakup,tenureYear}:MonthlyBreakupProps): J
       <Modal isOpen={isModalOpen} onClose={handleClose}>
         <MonthlyAmortization
           monthlyBreakup={monthlyBreakup}
-          tenureYear={tenureYear}
+          tenureYear={loanPaymentYear}
         />
       </Modal>
       <Button
         variant="contained"
         startIcon={<GridViewIcon />}
-        onClick={() => {
-          handleOpen();
-        }}
+        onClick={handleOpen}
       >
         Monthly Breakup
       </Button>

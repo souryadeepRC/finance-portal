@@ -21,19 +21,26 @@ export type HomeLoanInputType = {
 export type HomeLoanYearlyAmortizationType = {
   principalPaid: number;
   interestPaid: number;
-  year: number;
-  totalPrincipalPaid: number;
+  paymentYear: number;
+  remainingYearCount: number;
+  outstandingBalance: number;
   monthlyBreakup: HomeLoanMonthlyAmortizationType[];
 };
 export type HomeLoanMonthlyAmortizationType = {
   principalPaid: number;
   interestPaid: number;
-  remainingBalance: number;
   month: number;
+  year: number;
 };
+export type PaymentYearDetailsType = {
+  maxYear : number,
+  minYear : number
+}
 export type HomeLoanBreakupType = {
   monthlyEmi: number;
   yearlyAmortizationDetails: HomeLoanYearlyAmortizationType[];
   interestAmount: number;
-  totalAmount: number;
+  totalPaidAmount: number;
+  completionPeriod: string;
+  paymentYearDetails:PaymentYearDetailsType;
 };

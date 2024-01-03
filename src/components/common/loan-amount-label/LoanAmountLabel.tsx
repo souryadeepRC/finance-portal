@@ -1,11 +1,10 @@
-
 // styles
 import styles from "./LoanAmountLabel.module.scss";
 // types
 type LoanAmountLabelProps = {
-    label: string;
-    value: number;
-  };
+  label: string;
+  value: number;
+};
 const LoanAmountLabel = ({
   label,
   value,
