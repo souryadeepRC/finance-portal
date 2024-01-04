@@ -43,55 +43,53 @@ const LoanBreakup = memo((): JSX.Element => {
   // return fns
   return (
     <div className={styles["loan-result__container"]}>
-      <div className={styles["loan-breakup__container"]}>
-        <div className={styles["loan-breakup-data__container"]}>
-          <LoanAmountLabel label="Monthly EMI" value={monthlyEmi} />
-          <DisplayLabel label="Loan Completion" value={completionPeriod} />
-          <Popover label="View Breakup Details">
-            <Box
-              sx={{
-                padding: 2,
-                display: "flex",
-                flexDirection: "column",
-                gap: "10px",
-              }}
-            >
-              <LoanAmountLabel label="Principal Amount" value={loanAmount} />
-              <LoanAmountLabel label="Total Interest" value={interestAmount} />
-              <LoanAmountLabel label="Total Amount" value={totalPaidAmount} />
-            </Box>
-          </Popover>
-        </div>
-        <PieChart
-          series={[
-            {
-              data: [
-                {
-                  id: 0,
-                  value: +loanAmount,
-                  label: "Principal",
-                  color: APP_PRIMARY_COLOR,
-                },
-                {
-                  id: 1,
-                  value: Math.round(interestAmount),
-                  label: "Interest",
-                  color: APP_SECONDARY_COLOR,
-                },
-              ],
-            },
-          ]}
-          width={200}
-          height={200}
-        />
+      <div className={styles["loan-breakup-data__container"]}>
+        <LoanAmountLabel label="Monthly EMI" value={monthlyEmi} />
+        <DisplayLabel label="Loan Completion" value={completionPeriod} />
+        <Popover label="View Breakup Details">
+          <Box
+            sx={{
+              padding: 2,
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+            }}
+          >
+            <LoanAmountLabel label="Principal Amount" value={loanAmount} />
+            <LoanAmountLabel label="Total Interest" value={interestAmount} />
+            <LoanAmountLabel label="Total Amount" value={totalPaidAmount} />
+          </Box>
+        </Popover>
+        <Button
+          variant="contained"
+          startIcon={<TuneIcon />}
+          onClick={onPrePaymentClick}
+        >
+          Pre Payment Comparison
+        </Button>
       </div>
-      <Button
-        variant="contained"
-        startIcon={<TuneIcon />}
-        onClick={onPrePaymentClick}
-      >
-        Pre Payment Comparison
-      </Button>
+      <PieChart
+        series={[
+          {
+            data: [
+              {
+                id: 0,
+                value: loanAmount,
+                label: "Principal",
+                color: APP_PRIMARY_COLOR,
+              },
+              {
+                id: 1,
+                value: Math.round(interestAmount),
+                label: "Interest",
+                color: APP_SECONDARY_COLOR,
+              },
+            ],
+          },
+        ]}
+        width={200}
+        height={200}
+      />
     </div>
   );
 });

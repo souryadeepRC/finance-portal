@@ -2,13 +2,17 @@
 
 .home-loan__container {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: center;
   padding: 20px 0 0 0;
+  flex-flow: row wrap;
 }
 
 @media screen and (max-width: $mobile-max-width) {
   .home-loan__container {
     flex-direction: column;
+    align-items: center;
     gap: 25px;
     grid-gap: 25px;
   }

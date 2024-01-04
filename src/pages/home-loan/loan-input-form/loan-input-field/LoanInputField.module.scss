@@ -64,8 +64,8 @@
 
 @media screen and (max-width: $mobile-max-width) {
   .loan-input-field__container {
-    gap: 10px;
-    grid-gap: 10px;
+    gap: 5px;
+    grid-gap: 5px;
     padding: 0;
     width: 100%;
     .input-field__box {
@@ -83,6 +83,12 @@
     }
     :global(.MuiSlider-root) {
       width: 90%;
+      padding: 5px 0;
+      :global(.MuiSlider-thumb){
+        
+    width: 15px;
+    height: 15px;
+      }
     }
   }
 }
