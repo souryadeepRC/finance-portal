@@ -33,14 +33,40 @@ export type HomeLoanMonthlyAmortizationType = {
   year: number;
 };
 export type PaymentYearDetailsType = {
-  maxYear : number,
-  minYear : number
-}
+  maxYear: number;
+  minYear: number;
+};
 export type HomeLoanBreakupType = {
   monthlyEmi: number;
   yearlyAmortizationDetails: HomeLoanYearlyAmortizationType[];
   interestAmount: number;
   totalPaidAmount: number;
   completionPeriod: string;
-  paymentYearDetails:PaymentYearDetailsType;
+  paymentYearDetails: PaymentYearDetailsType;
+};
+export type LoanStartPeriodType = { month: number; year: number };
+
+export type prePaymentByEmiType = {
+  updatedEmi: number;
+};
+export type prePaymentByPrincipalType = {
+  addedPrincipalAmount: number;
+};
+export type prePaymentLoanDetailsType = {
+  principalPaid: number;
+  interestPaid: number;
+  totalAmountPaid: number;
+  completionPeriod: string;
+};
+export type prePaymentOptionsType = {
+  prePaymentType: string;
+  details: prePaymentByEmiType | prePaymentByPrincipalType;
+  modifiedLoanDetails: prePaymentLoanDetailsType;
+}; 
+export type prePaymentOptionsPayloadType = {
+  prePaymentType: string;
+  prePaymentInfo: {
+    addedPrincipalAmount?: number;
+    updatedEmi?: number;
+  } ;
 };

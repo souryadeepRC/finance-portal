@@ -1,5 +1,8 @@
 // mappers
-import { mapPaymentYearAmortization } from "src/store/home-loan-reducer/home-loan-mapper";
+import {
+  mapPaymentYearAmortization,
+  mapLoanPrePaymentOptions,
+} from "src/store/home-loan-reducer/home-loan-mapper";
 // constants
 import {
   RESET_LOAN_DETAILS,
@@ -9,6 +12,7 @@ import {
   UPDATE_LOAN_TENURE,
   UPDATE_LOAN_PAYMENT_DETAILS,
   UPDATE_LOAN_PAYMENT_YEAR,
+  UPDATE_LOAN_PRE_PAYMENT_OPTIONS,
 } from "./home-loan-constants";
 // types
 import { HomeLoanReducerType } from "src/store/reducer-types";
@@ -43,6 +47,7 @@ const initialState: HomeLoanReducerType = {
     outstandingBalance: 0,
     monthlyBreakup: [],
   },
+  prePaymentOptions: [],
 };
 const HomeLoanReducer = (
   state = initialState,
@@ -116,6 +121,27 @@ const HomeLoanReducer = (
         ...mapPaymentYearAmortization(
           yearlyAmortizationDetails,
           loanPaymentYear
+        ),
+      };
+    }
+    case UPDATE_LOAN_PRE_PAYMENT_OPTIONS: {
+      const {
+        loanAmount,
+        interestRate,
+        monthlyEmi,
+        loanStartPeriod,
+        prePaymentOptions,
+      } = state;
+
+      return {
+        ...state,
+        prePaymentOptions: mapLoanPrePaymentOptions(
+          payload,
+          loanAmount,
+          interestRate,
+          loanStartPeriod,
+          monthlyEmi,
+          prePaymentOptions
         ),
       };
     }

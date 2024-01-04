@@ -1,11 +1,13 @@
-// type
+// constants
 import { MONTH_ARRAY } from "src/constants/common-constants";
+// types
 import {
   HomeLoanBreakupType,
   HomeLoanMonthlyAmortizationType,
   HomeLoanYearlyAmortizationType,
+  prePaymentLoanDetailsType,
 } from "src/store/home-loan-reducer/home-loan-types";
-import { LoanStartPeriodType } from "src/store/reducer-types";
+import { LoanStartPeriodType } from "src/store/home-loan-reducer/home-loan-types";
 
 const calculateMonthlyEmi = (
   loanAmount: number,
@@ -21,15 +23,21 @@ const calculateMonthlyEmi = (
 
   return monthlyEmi;
 };
-const getTotalPaidAmount = (
-  monthlyPaymentDetails: HomeLoanMonthlyAmortizationType[],
-  type: string
+
+const fetchTotalPaidAmount = (
+  monthlyPaymentDetails: HomeLoanMonthlyAmortizationType[]
 ) => {
   return monthlyPaymentDetails.reduce(
-    (total: number, paymentInfo: any) => total + paymentInfo?.[type],
-    0
+    (total: any, paymentInfo: any) => {
+      return {
+        principalPaid: total.principalPaid + paymentInfo?.principalPaid,
+        interestPaid: total.interestPaid + paymentInfo?.interestPaid,
+      };
+    },
+    { principalPaid: 0, interestPaid: 0 }
   );
 };
+ 
 const fetchLoanMonthlyBreakup = (
   loanAmount: number,
   interestRate: number,
@@ -38,7 +46,7 @@ const fetchLoanMonthlyBreakup = (
 ): HomeLoanMonthlyAmortizationType[] => {
   const MONTH_LIMIT: number = MONTH_ARRAY.length - 1;
   const monthlyRate: number = interestRate / (12 * 100);
-
+ 
   let monthlyBreakup: HomeLoanMonthlyAmortizationType[] = [];
   let { month, year }: LoanStartPeriodType = loanStartPeriod;
   let remainingBalance: number = loanAmount;
@@ -47,6 +55,7 @@ const fetchLoanMonthlyBreakup = (
     const interestPaid: number = remainingBalance * monthlyRate;
     const principalPaid: number = monthlyEmi - interestPaid;
     remainingBalance = remainingBalance - principalPaid;
+ 
     monthlyBreakup.push({
       principalPaid,
       interestPaid,
@@ -60,8 +69,10 @@ const fetchLoanMonthlyBreakup = (
       month = month + 1;
     }
   }
+
   return monthlyBreakup;
 };
+
 const fetchLoanCompletionPeriod = (
   monthlyBreakup: HomeLoanMonthlyAmortizationType[]
 ): string => {
@@ -74,6 +85,7 @@ const fetchLoanCompletionPeriod = (
     monthlyBreakup[monthlyBreakup?.length - 1];
   return `${MONTH_ARRAY[lastPaymentMonth]} - ${lastPaymentYear}`;
 };
+
 export const calculateLoanBreakup = (
   loanAmount: number,
   interestRate: number,
@@ -86,7 +98,7 @@ export const calculateLoanBreakup = (
     interestRate,
     loanTenure
   );
- // Find Monthly Payment Breakup
+  // Find Monthly Payment Breakup
   const monthlyBreakup: HomeLoanMonthlyAmortizationType[] =
     fetchLoanMonthlyBreakup(
       loanAmount,
@@ -94,7 +106,7 @@ export const calculateLoanBreakup = (
       loanStartPeriod,
       monthlyEmi
     );
-  
+
   const paymentYearList: number[] = Array.from(
     new Set(monthlyBreakup.map((monthlyData) => monthlyData.year))
   ).sort((a: number, b: number) => a - b);
@@ -107,13 +119,9 @@ export const calculateLoanBreakup = (
       monthlyBreakup?.filter(
         (paymentInfo: any) => paymentInfo.year === paymentYear
       );
-    const principalPaid: number = getTotalPaidAmount(
-      monthlyPaymentDetails,
-      "principalPaid"
-    );
-    const interestPaid: number = getTotalPaidAmount(
-      monthlyPaymentDetails,
-      "interestPaid"
+
+    const { principalPaid, interestPaid } = fetchTotalPaidAmount(
+      monthlyPaymentDetails
     );
     outstandingBalance = outstandingBalance - principalPaid;
 
@@ -125,14 +133,14 @@ export const calculateLoanBreakup = (
       outstandingBalance: outstandingBalance < 0 ? 0 : outstandingBalance,
       monthlyBreakup: monthlyPaymentDetails,
     });
-  }); 
+  });
 
-  const interestAmount: number = getTotalPaidAmount(monthlyBreakup, "interestPaid");
+  const { interestPaid } = fetchTotalPaidAmount(monthlyBreakup);
   return {
     monthlyEmi,
     yearlyAmortizationDetails,
-    interestAmount: getTotalPaidAmount(monthlyBreakup, "interestPaid"),
-    totalPaidAmount: loanAmount + interestAmount,
+    interestAmount: interestPaid,
+    totalPaidAmount: loanAmount + interestPaid,
     completionPeriod: fetchLoanCompletionPeriod(monthlyBreakup),
     paymentYearDetails: {
       maxYear: paymentYearList?.[paymentYearList?.length - 1],
@@ -141,127 +149,27 @@ export const calculateLoanBreakup = (
   };
 };
 
-export const calculateLoanAmortization = (
+export const fetchLoanPrePaymentDetails = (
   loanAmount: number,
   interestRate: number,
-  loanTenure: number,
-  monthlyEmi: number,
-  loanCreditDate: any,
-  loanEmiDate: any
-): any => {
-  const emiDay = 31;
-  let RemainingPrincipal = loanAmount;
-  let calMonth = 1;
-  let calYear = 2023;
-  let loanCreditDay = 1;
-  let loanCreditMonth = 1;
-  let loanCreditYear = 2023;
-  let partPeriodTotalInterestInMonth = [];
-  let emiPaid = [];
-  let prevPPI: any = {};
-  if (loanCreditDay > emiDay) {
-    const interestCalDay = new Date(
-      loanCreditYear,
-      loanCreditMonth,
-      0
-    ).getDate();
+  loanStartPeriod: LoanStartPeriodType,
+  monthlyEmi: number
+): prePaymentLoanDetailsType => { 
 
-    const beforeEmiInterest = 0;
-    const afterEmiDay = interestCalDay - loanCreditDay + 1; // 22;
-    const afterEmiInterest = Math.round(
-      RemainingPrincipal * (interestRate / 365) * (1 / 100) * afterEmiDay
+  const monthlyBreakup: HomeLoanMonthlyAmortizationType[] =
+    fetchLoanMonthlyBreakup(
+      loanAmount,
+      interestRate,
+      loanStartPeriod,
+      monthlyEmi
     );
 
-    partPeriodTotalInterestInMonth.push({
-      beforeEmiInterest,
-      afterEmiInterest,
-      total: beforeEmiInterest + afterEmiInterest,
-    });
-    RemainingPrincipal += afterEmiInterest;
-    prevPPI = {
-      beforeEmiInterest,
-      afterEmiInterest,
-      total: beforeEmiInterest + afterEmiInterest,
-    };
-  } else {
-    const interestCalDay = new Date(
-      loanCreditYear,
-      loanCreditMonth,
-      0
-    ).getDate();
+  const { principalPaid, interestPaid } = fetchTotalPaidAmount(monthlyBreakup);
 
-    const beforeEmiDay = emiDay - loanCreditDay; //9;
-    const afterEmiDay = interestCalDay - beforeEmiDay; // 22;
-    const beforeEmiAmount = RemainingPrincipal;
-
-    const beforeEmiInterest = Math.round(
-      beforeEmiAmount * (interestRate / 365) * (1 / 100) * beforeEmiDay
-    );
-
-    const afterEmiAmount = beforeEmiAmount - monthlyEmi;
-    const afterEmiInterest =
-      afterEmiAmount > 0
-        ? Math.round(
-            afterEmiAmount * (interestRate / 365) * (1 / 100) * afterEmiDay
-          )
-        : 0;
-
-    partPeriodTotalInterestInMonth.push({
-      beforeEmiInterest,
-      afterEmiInterest,
-      total: beforeEmiInterest + afterEmiInterest,
-    });
-    RemainingPrincipal += beforeEmiInterest + afterEmiInterest - monthlyEmi;
-    emiPaid.push({
-      calMonth,
-      intPaid: beforeEmiInterest,
-      principalPaid: monthlyEmi - beforeEmiInterest,
-    });
-    prevPPI = {
-      beforeEmiInterest,
-      afterEmiInterest,
-      total: beforeEmiInterest + afterEmiInterest,
-    };
-  }
-  calYear = calMonth === 12 ? calYear + 1 : calYear;
-  calMonth = calMonth === 12 ? 1 : calMonth + 1;
-
-  for (let i = 0; RemainingPrincipal > 0; i++) {
-    const interestCalDay = new Date(calYear, calMonth, 0).getDate();
-
-    const beforeEmiDay = emiDay - 1; //9;
-    const afterEmiDay = interestCalDay - beforeEmiDay; // 22;
-    const beforeEmiAmount = RemainingPrincipal;
-
-    const beforeEmiInterest = Math.round(
-      beforeEmiAmount * (interestRate / 365) * (1 / 100) * beforeEmiDay
-    );
-    const afterEmiAmount = beforeEmiAmount - monthlyEmi;
-    const afterEmiInterest =
-      afterEmiAmount > 0
-        ? Math.round(
-            afterEmiAmount * (interestRate / 365) * (1 / 100) * afterEmiDay
-          )
-        : 0;
-
-    partPeriodTotalInterestInMonth.push({
-      beforeEmiInterest,
-      afterEmiInterest,
-      total: beforeEmiInterest + afterEmiInterest,
-    });
-    RemainingPrincipal += beforeEmiInterest + afterEmiInterest - monthlyEmi;
-    const intPaid = prevPPI.afterEmiInterest + beforeEmiInterest;
-    emiPaid.push({
-      calMonth,
-      intPaid,
-      principalPaid: monthlyEmi - intPaid,
-    });
-    calYear = calMonth === 12 ? calYear + 1 : calYear;
-    calMonth = calMonth === 12 ? 1 : calMonth + 1;
-    prevPPI = {
-      beforeEmiInterest,
-      afterEmiInterest,
-      total: beforeEmiInterest + afterEmiInterest,
-    };
-  }
+  return {
+    principalPaid,
+    interestPaid,
+    totalAmountPaid: principalPaid + interestPaid,
+    completionPeriod: fetchLoanCompletionPeriod(monthlyBreakup),
+  };
 };

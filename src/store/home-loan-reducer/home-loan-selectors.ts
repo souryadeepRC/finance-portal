@@ -1,8 +1,9 @@
 // types
-import { AppStoreType, LoanStartPeriodType } from "src/store/reducer-types";
+import { AppStoreType } from "src/store/reducer-types";
 import {
   HomeLoanMonthlyAmortizationType,
   HomeLoanYearlyAmortizationType,
+  LoanStartPeriodType,
   PaymentYearDetailsType,
 } from "./home-loan-types";
 

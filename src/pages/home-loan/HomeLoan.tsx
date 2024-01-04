@@ -16,8 +16,7 @@ import {
 // utils
 import { calculateLoanBreakup } from "./home-loan-utils";
 // types
-import { HomeLoanBreakupType } from "src/store/home-loan-reducer/home-loan-types";
-import { LoanStartPeriodType } from "src/store/reducer-types";
+import { HomeLoanBreakupType,LoanStartPeriodType } from "src/store/home-loan-reducer/home-loan-types";
 import { AppDispatch } from "src/store/store";
 // styles
 import styles from "./HomeLoan.module.scss";

@@ -1,4 +1,11 @@
-import { HomeLoanYearlyAmortizationType } from "./home-loan-types";
+import { fetchLoanPrePaymentDetails } from "src/pages/home-loan/home-loan-utils";
+import { PRE_PAYMENT_TYPES } from "./home-loan-constants";
+import {
+  HomeLoanYearlyAmortizationType,
+  prePaymentOptionsType, 
+  LoanStartPeriodType,
+  prePaymentOptionsPayloadType, 
+} from "./home-loan-types";
 
 export const mapPaymentYearAmortization = (
   yearlyAmortizationDetails: HomeLoanYearlyAmortizationType[],
@@ -13,4 +20,31 @@ export const mapPaymentYearAmortization = (
   return {
     paymentYearAmortization,
   };
+};
+export const mapLoanPrePaymentOptions = (
+  { prePaymentType, prePaymentInfo }: prePaymentOptionsPayloadType,
+  loanAmount: number,
+  interestRate: number,
+  loanStartPeriod: LoanStartPeriodType,monthlyEmi:any,
+  prePaymentOptions: prePaymentOptionsType[]
+): prePaymentOptionsType[] => { 
+
+  if (prePaymentType === PRE_PAYMENT_TYPES.INCREASE_MONTHLY_EMI) {
+    const updatedEmi= prePaymentInfo.updatedEmi || 0;
+     
+    return [
+      ...prePaymentOptions,
+      {
+        prePaymentType,
+        details: { updatedEmi },
+        modifiedLoanDetails: fetchLoanPrePaymentDetails(
+          loanAmount,
+          interestRate,
+          loanStartPeriod, 
+          updatedEmi
+        ),
+      },
+    ];
+  }
+  return [];
 };

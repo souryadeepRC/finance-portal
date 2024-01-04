@@ -30,7 +30,7 @@ const LoanDetails = memo((): JSX.Element => {
   const navigate = useNavigate();
   // fns
   const onBackBtnClick = () => {
-    navigate("/homeLoan/prePayment");
+    navigate("/homeLoan");
   };
   // store
   const loanAmount: number = useSelector(selectLoanAmount);
