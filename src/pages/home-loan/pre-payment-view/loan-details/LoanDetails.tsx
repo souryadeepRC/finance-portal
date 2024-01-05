@@ -11,12 +11,14 @@ import { Button } from "src/components/common/button/Button";
 import { LoanAmountInfo } from "src/pages/home-loan/pre-payment-view/loan-amount-info/LoanAmountInfo";
 // selectors
 import {
-  selectCompletionPeriod,
+  selectLoanCompletionPeriod,
   selectInterestAmount,
   selectLoanAmount,
   selectMonthlyEmi,
   selectTotalPaidAmount,
 } from "src/store/home-loan-reducer/home-loan-selectors";
+// types
+import { LoanCompletionPeriod } from "src/store/home-loan-reducer/home-loan-types";
 
 const LoanDetails = memo((): JSX.Element => {
   // hooks
@@ -30,7 +32,7 @@ const LoanDetails = memo((): JSX.Element => {
   const monthlyEmi: number = useSelector(selectMonthlyEmi);
   const interestPaid: number = useSelector(selectInterestAmount);
   const totalAmountPaid: number = useSelector(selectTotalPaidAmount);
-  const completionPeriod: string = useSelector(selectCompletionPeriod);
+  const loanCompletionPeriod: LoanCompletionPeriod = useSelector(selectLoanCompletionPeriod);
 
   return (
     <Box>
@@ -47,7 +49,7 @@ const LoanDetails = memo((): JSX.Element => {
           interestPaid,
           monthlyEmi,
           totalAmountPaid,
-          completionPeriod,
+          loanCompletionPeriod,
         }}
       />
     </Box>

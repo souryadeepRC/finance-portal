@@ -7,13 +7,14 @@ import styles from "./DisplayLabel.module.scss";
 type DisplayLabelProps = {
   label?: string;
   value: string;
+  className?: string;
 };
 const DisplayLabel = memo(
-  ({ label, value }: DisplayLabelProps): JSX.Element => {
+  ({ label, value, className = "" }: DisplayLabelProps): JSX.Element => {
     return (
-      <Box className={styles["display-label__container"]}>
+      <Box className={`${className} ${styles["display-label__container"]}`}>
         {label && <label className={styles["label__heading"]}>{label} </label>}
-        <span className={styles["label__value"]}>{value}</span>
+        <span>{value}</span>
       </Box>
     );
   }

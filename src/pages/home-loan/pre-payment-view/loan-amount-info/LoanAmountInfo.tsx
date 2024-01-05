@@ -24,7 +24,7 @@ const LoanAmountInfo = memo(
       interestPaid,
       monthlyEmi,
       totalAmountPaid,
-      completionPeriod,
+      loanCompletionPeriod,
     }: prePaymentLoanDetailsType = loanAmountInfo;
 
     return (
@@ -36,7 +36,10 @@ const LoanAmountInfo = memo(
         <LoanAmountLabel label="Principal Amount" value={principalPaid} />
         <LoanAmountLabel label="Total Interest" value={interestPaid} />
         <LoanAmountLabel label="Total Amount" value={totalAmountPaid} />
-        <DisplayLabel label="Loan Completion" value={completionPeriod} />
+        <DisplayLabel
+          label="Loan Completion"
+          value={loanCompletionPeriod.displayText}
+        />
         <PieChart
           series={[
             {

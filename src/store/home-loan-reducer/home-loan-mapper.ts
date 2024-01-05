@@ -1,10 +1,14 @@
-import { fetchLoanPrePaymentDetails } from "src/pages/home-loan/home-loan-utils";
+import {
+  fetchLoanPrePaymentDetails,
+  fetchLoanPrePaymentPredictions,
+} from "src/pages/home-loan/home-loan-utils";
 import { PRE_PAYMENT_TYPES } from "./home-loan-constants";
 import {
   HomeLoanYearlyAmortizationType,
   prePaymentOptionsType,
   LoanStartPeriodType,
   prePaymentOptionsPayloadType,
+  LoanCompletionPeriod,
 } from "./home-loan-types";
 
 export const mapPaymentYearAmortization = (
@@ -27,23 +31,36 @@ export const mapLoanPrePaymentOptions = (
   interestRate: number,
   loanStartPeriod: LoanStartPeriodType,
   monthlyEmi: any,
-  prePaymentOptions: prePaymentOptionsType[]
+  prePaymentOptions: prePaymentOptionsType[],
+  interestAmount: number,
+  completionPeriod: LoanCompletionPeriod
 ): prePaymentOptionsType[] => {
   if (prePaymentType === PRE_PAYMENT_TYPES.INCREASE_MONTHLY_EMI) {
     const updatedEmi = prePaymentInfo.updatedEmi || 0;
     const prePaymentOptionId: number = prePaymentOptions?.length;
+    const modifiedLoanDetails = fetchLoanPrePaymentDetails(
+      loanAmount,
+      interestRate,
+      loanStartPeriod,
+      updatedEmi
+    );
+
+    const predictions = fetchLoanPrePaymentPredictions(
+      modifiedLoanDetails,
+      interestAmount,
+      completionPeriod
+    );
+    console.log(predictions);
+    
     return [
       {
         prePaymentOptionId,
         prePaymentType,
         details: { updatedEmi },
-        modifiedLoanDetails: fetchLoanPrePaymentDetails(
-          loanAmount,
-          interestRate,
-          loanStartPeriod,
-          updatedEmi
-        ),
-      },...prePaymentOptions,
+        predictions,
+        modifiedLoanDetails,
+      },
+      ...prePaymentOptions,
     ];
   }
   return [];

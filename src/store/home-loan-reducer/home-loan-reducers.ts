@@ -14,11 +14,48 @@ import {
   UPDATE_LOAN_PAYMENT_DETAILS,
   UPDATE_LOAN_PAYMENT_YEAR,
   UPDATE_LOAN_PRE_PAYMENT_OPTIONS,
-  REMOVE_PRE_PAYMENT_OPTION,
+  REMOVE_PRE_PAYMENT_OPTION, 
 } from "./home-loan-constants";
 // types
 import { HomeLoanReducerType } from "src/store/reducer-types";
 import { HomeLoanReducerActionType } from "./home-loan-types";
+
+/* const fetchPrePaymentOptionsTestData = () => {
+  const data = [];
+  for (let index = 1; index < 11; index++) {
+    data.push({
+      prePaymentOptionId: index,
+      prePaymentType: "INCREASE_MONTHLY_EMI",
+      details: {
+        updatedEmi: index * 1000,
+      },
+      predictions: {
+        interestAmountDiff: {
+          amount: 15000,
+          percentage: 10,
+          type: PRE_PAYMENT_INTEREST_DIFF_TYPES.LESSER,
+        },
+        completionPeriodDiff: {
+          displayText: "Feb - 2031",
+          month: 1,
+          year: 2021,
+        },
+      },
+      modifiedLoanDetails: {
+        principalPaid: 3806417.116091229,
+        interestPaid: 1275150.8839087717,
+        monthlyEmi: 59088,
+        totalAmountPaid: 5081568.000000001,
+        loanCompletionPeriod: {
+          displayText: "Feb - 2031",
+          month: 1,
+          year: 2021,
+        },
+      },
+    });
+  }
+  return data;
+}; */
 
 const latestDate: Date = new Date();
 
@@ -40,7 +77,7 @@ const initialState: HomeLoanReducerType = {
   },
   interestAmount: 0,
   totalPaidAmount: 0,
-  completionPeriod: "",
+  loanCompletionPeriod: { displayText: "", month: 0, year: 0 },
   paymentYearAmortization: {
     principalPaid: 0,
     interestPaid: 0,
@@ -49,7 +86,7 @@ const initialState: HomeLoanReducerType = {
     outstandingBalance: 0,
     monthlyBreakup: [],
   },
-  prePaymentOptions: [],
+  prePaymentOptions: [] // fetchPrePaymentOptionsTestData(),
 };
 const HomeLoanReducer = (
   state = initialState,
@@ -95,7 +132,7 @@ const HomeLoanReducer = (
         yearlyAmortizationDetails,
         interestAmount,
         totalPaidAmount,
-        completionPeriod,
+        loanCompletionPeriod,
         paymentYearDetails,
       } = payload;
       const loanPaymentYear: number = state.loanStartPeriod.year;
@@ -105,7 +142,7 @@ const HomeLoanReducer = (
         yearlyAmortizationDetails,
         interestAmount,
         totalPaidAmount,
-        completionPeriod,
+        loanCompletionPeriod,
         paymentYearDetails,
         loanPaymentYear: loanPaymentYear,
         ...mapPaymentYearAmortization(
@@ -133,6 +170,8 @@ const HomeLoanReducer = (
         monthlyEmi,
         loanStartPeriod,
         prePaymentOptions,
+        interestAmount,
+        loanCompletionPeriod,
       } = state;
 
       return {
@@ -143,7 +182,9 @@ const HomeLoanReducer = (
           interestRate,
           loanStartPeriod,
           monthlyEmi,
-          prePaymentOptions
+          prePaymentOptions,
+          interestAmount,
+          loanCompletionPeriod
         ),
       };
     }

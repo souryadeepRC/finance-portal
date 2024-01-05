@@ -28,9 +28,9 @@ const PrePaymentView = memo((): JSX.Element => {
       <Modal isOpen={isModalOpen} onClose={handleClose}>
         <AddPrePaymentOption onSave={handleClose}/>
       </Modal>
-      <Box sx={{ padding: 2, display: "flex",flexWrap:'wrap',justifyContent:'center' }}>
+      <Box sx={{ padding: 2 , display: "flex" ,  justifyContent:'flex-start' }}>
         <LoanDetails />
-        <Box>
+        <Box sx={{width:'80%'}}>
           <Button
             variant="contained"
             onClick={handleOpen}

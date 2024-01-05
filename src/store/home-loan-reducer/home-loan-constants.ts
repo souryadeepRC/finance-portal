@@ -12,3 +12,14 @@ export const PRE_PAYMENT_TYPES = {
   PAY_PRINCIPAL_AMOUNT: "PAY_PRINCIPAL_AMOUNT",
   INCREASE_MONTHLY_EMI: "INCREASE_MONTHLY_EMI",
 };
+export const PRE_PAYMENT_INTEREST_DIFF_TYPES = {
+  LESSER: "Lesser",
+  GREATER: "Greater",
+  NO_PROFIT: "No Profit",
+};export const PRE_PAYMENT_COMPLETION_PERIOD_DIFF_TYPES = {
+  EARLIER: "Earlier",
+  LATER: "Later",
+  SAME_PERIOD: "Same Time Period",
+};
+
+

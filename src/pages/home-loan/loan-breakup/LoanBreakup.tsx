@@ -13,7 +13,7 @@ import { Button } from "src/components/common/button/Button";
 import { Popover } from "src/components/common/popover/Popover";
 // selectors
 import {
-  selectCompletionPeriod,
+  selectLoanCompletionPeriodText,
   selectInterestAmount,
   selectLoanAmount,
   selectMonthlyEmi,
@@ -33,7 +33,7 @@ const LoanBreakup = memo((): JSX.Element => {
   const monthlyEmi: number = useSelector(selectMonthlyEmi);
   const interestAmount: number = useSelector(selectInterestAmount);
   const totalPaidAmount: number = useSelector(selectTotalPaidAmount);
-  const completionPeriod: string = useSelector(selectCompletionPeriod);
+  const completionPeriod: string = useSelector(selectLoanCompletionPeriodText);
   // hooks
   const navigate: NavigateFunction = useNavigate();
   // fns

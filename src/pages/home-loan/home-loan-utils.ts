@@ -1,13 +1,21 @@
 // constants
 import { MONTH_ARRAY } from "src/constants/common-constants";
+import {
+  PRE_PAYMENT_COMPLETION_PERIOD_DIFF_TYPES,
+  PRE_PAYMENT_INTEREST_DIFF_TYPES,
+} from "src/store/home-loan-reducer/home-loan-constants";
 // types
 import {
   HomeLoanBreakupType,
   HomeLoanMonthlyAmortizationType,
   HomeLoanYearlyAmortizationType,
+  LoanCompletionPeriod, 
+  PrePaymentPrediction,
   prePaymentLoanDetailsType,
 } from "src/store/home-loan-reducer/home-loan-types";
 import { LoanStartPeriodType } from "src/store/home-loan-reducer/home-loan-types";
+// utils
+import { getMonthDifference } from "src/utils/date-utils"; 
 
 const calculateMonthlyEmi = (
   loanAmount: number,
@@ -75,15 +83,24 @@ const fetchLoanMonthlyBreakup = (
 
 const fetchLoanCompletionPeriod = (
   monthlyBreakup: HomeLoanMonthlyAmortizationType[]
-): string => {
-  if (monthlyBreakup?.length <= 0) return "";
+): LoanCompletionPeriod => {
+  if (monthlyBreakup?.length <= 0)
+    return {
+      displayText: ``,
+      month: 0,
+      year: 0,
+    };
 
   const {
     month: lastPaymentMonth,
     year: lastPaymentYear,
   }: HomeLoanMonthlyAmortizationType =
     monthlyBreakup[monthlyBreakup?.length - 1];
-  return `${MONTH_ARRAY[lastPaymentMonth]} - ${lastPaymentYear}`;
+  return {
+    displayText: `${MONTH_ARRAY[lastPaymentMonth]} - ${lastPaymentYear}`,
+    month: lastPaymentMonth,
+    year: lastPaymentYear,
+  };
 };
 
 export const calculateLoanBreakup = (
@@ -141,7 +158,7 @@ export const calculateLoanBreakup = (
     yearlyAmortizationDetails,
     interestAmount: interestPaid,
     totalPaidAmount: loanAmount + interestPaid,
-    completionPeriod: fetchLoanCompletionPeriod(monthlyBreakup),
+    loanCompletionPeriod: fetchLoanCompletionPeriod(monthlyBreakup),
     paymentYearDetails: {
       maxYear: paymentYearList?.[paymentYearList?.length - 1],
       minYear: paymentYearList?.[0],
@@ -170,6 +187,41 @@ export const fetchLoanPrePaymentDetails = (
     interestPaid,
     monthlyEmi,
     totalAmountPaid: principalPaid + interestPaid,
-    completionPeriod: fetchLoanCompletionPeriod(monthlyBreakup),
+    loanCompletionPeriod: fetchLoanCompletionPeriod(monthlyBreakup),
+  };
+};
+
+export const fetchLoanPrePaymentPredictions = (
+  { interestPaid, loanCompletionPeriod }: prePaymentLoanDetailsType,
+  interestAmount: number,
+  completionPeriod: LoanCompletionPeriod
+): PrePaymentPrediction => {
+  const interestDiff: number = interestAmount - interestPaid;
+  const modifiedInterestDiff: number = Math.abs(interestDiff);
+  const interestDiffPercentage: number =
+    (modifiedInterestDiff / interestAmount) * 100;
+
+  const monthDifference: number = getMonthDifference(
+    new Date(loanCompletionPeriod.year, loanCompletionPeriod.month),
+    new Date(completionPeriod.year, completionPeriod.month)
+  );
+
+  return {
+    interestAmountDiff: {
+      amount: Math.round(Math.abs(interestDiff)),
+      percentage: Math.round(interestDiffPercentage),
+      type:
+        interestDiff > 0
+          ? PRE_PAYMENT_INTEREST_DIFF_TYPES.LESSER
+          : PRE_PAYMENT_INTEREST_DIFF_TYPES.GREATER,
+    },
+    completionPeriodDiff: {
+      month: monthDifference % 12,
+      year: Math.round(monthDifference / 12),
+      type:
+        monthDifference > 0
+          ? PRE_PAYMENT_COMPLETION_PERIOD_DIFF_TYPES.EARLIER
+          : PRE_PAYMENT_COMPLETION_PERIOD_DIFF_TYPES.LATER,
+    },
   };
 };
