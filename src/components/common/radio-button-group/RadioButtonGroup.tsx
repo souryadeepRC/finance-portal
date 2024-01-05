@@ -7,6 +7,9 @@ import {
   FormControl,
   FormLabel,
 } from "@mui/material";
+// styles
+import styles from './RadioButtonGroup.module.scss';
+
 // types
 type RadioButtonGroupData = {
   value: string;
@@ -21,7 +24,7 @@ type RadioButtonGroupProps = {
 const RadioButtonGroup = memo(
   ({ label, value, dataset, onChange }: RadioButtonGroupProps): JSX.Element => {
     return (
-      <FormControl>
+      <FormControl className={styles['radio-button-group__container']}>
         <FormLabel id="demo-controlled-radio-buttons-group">{label}</FormLabel>
         <RadioGroup
           aria-labelledby="demo-controlled-radio-buttons-group"

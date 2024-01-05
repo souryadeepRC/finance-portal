@@ -5,14 +5,17 @@ import { Box } from "@mui/material";
 // common components
 import { DisplayLabel } from "src/components/common/display-label/DisplayLabel";
 import { LoanAmountLabel } from "src/components/common/loan-amount-label/LoanAmountLabel";
+// hooks
+import { useMedia } from "src/hooks/useMedia";
 import {
   APP_PRIMARY_COLOR,
   APP_SECONDARY_COLOR,
 } from "src/constants/common-constants";
-// styles
-import styles from "./LoanAmountInfo.module.scss";
 // types
 import { prePaymentLoanDetailsType } from "src/store/home-loan-reducer/home-loan-types";
+// styles
+import styles from "./LoanAmountInfo.module.scss";
+
 type LoanAmountInfoProps = {
   loanAmountInfo: prePaymentLoanDetailsType;
 };
@@ -26,6 +29,9 @@ const LoanAmountInfo = memo(
       totalAmountPaid,
       loanCompletionPeriod,
     }: prePaymentLoanDetailsType = loanAmountInfo;
+
+    // hooks
+    const isMobile: boolean = useMedia();
 
     return (
       <Box
@@ -59,8 +65,8 @@ const LoanAmountInfo = memo(
               ],
             },
           ]}
-          width={200}
-          height={100}
+          width={isMobile ? 200 : 200}
+          height={isMobile ? 100 : 80}
         />
       </Box>
     );

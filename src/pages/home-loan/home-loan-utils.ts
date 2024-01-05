@@ -9,13 +9,13 @@ import {
   HomeLoanBreakupType,
   HomeLoanMonthlyAmortizationType,
   HomeLoanYearlyAmortizationType,
-  LoanCompletionPeriod, 
+  LoanCompletionPeriod,
   PrePaymentPrediction,
   prePaymentLoanDetailsType,
 } from "src/store/home-loan-reducer/home-loan-types";
 import { LoanStartPeriodType } from "src/store/home-loan-reducer/home-loan-types";
 // utils
-import { getMonthDifference } from "src/utils/date-utils"; 
+import { getMonthDifference } from "src/utils/date-utils";
 
 const calculateMonthlyEmi = (
   loanAmount: number,
@@ -60,8 +60,12 @@ const fetchLoanMonthlyBreakup = (
   let remainingBalance: number = loanAmount;
 
   while (remainingBalance > 0) {
+
     const interestPaid: number = remainingBalance * monthlyRate;
-    const principalPaid: number = monthlyEmi - interestPaid;
+    const principalPortion: number = monthlyEmi - interestPaid;
+
+    const principalPaid: number =
+      remainingBalance > principalPortion ? principalPortion : remainingBalance;
     remainingBalance = remainingBalance - principalPaid;
 
     monthlyBreakup.push({
@@ -209,7 +213,7 @@ export const fetchLoanPrePaymentPredictions = (
   return {
     interestAmountDiff: {
       amount: Math.round(Math.abs(interestDiff)),
-      percentage: Math.round(interestDiffPercentage),
+      percentage: +Number(interestDiffPercentage).toFixed(2),
       type:
         interestDiff > 0
           ? PRE_PAYMENT_INTEREST_DIFF_TYPES.LESSER

@@ -1,12 +1,15 @@
 import { Box } from "@mui/material";
 import { memo } from "react";
-import { useSelector } from "react-redux"; 
-// components 
+import { useSelector } from "react-redux";
+// components
+import { PrePaymentOption } from "./PrePaymentOption";
 // selectors
 import { selectPrePaymentOptions } from "src/store/home-loan-reducer/home-loan-selectors";
 // types
 import { prePaymentOptionsType } from "src/store/home-loan-reducer/home-loan-types";
-import { PrePaymentOption } from "./pre-payment-option/PrePaymentOption";
+// styles
+import styles from "./PrePaymentOptions.module.scss";
+
 const PrePaymentOptions = memo((): JSX.Element => {
   // store
   const prePaymentOptions: prePaymentOptionsType[] = useSelector(
@@ -14,7 +17,7 @@ const PrePaymentOptions = memo((): JSX.Element => {
   );
 
   return (
-    <Box sx={{ display: "flex", overflowX: "auto", maxWidth: "70vw" }}>
+    <Box className={styles["payment-options__container"]}>
       {prePaymentOptions?.map(
         (prePaymentOption: prePaymentOptionsType, index: number) => {
           return (

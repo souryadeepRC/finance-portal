@@ -12,30 +12,32 @@ import { AddPrePaymentOption } from "./add-pre-payment-option/AddPrePaymentOptio
 import { LoanDetails } from "./loan-details/LoanDetails";
 import { PrePaymentOptions } from "./pre-payment-options/PrePaymentOptions";
 // selectors
-import {   selectMonthlyEmi } from "src/store/home-loan-reducer/home-loan-selectors";
+import { selectMonthlyEmi } from "src/store/home-loan-reducer/home-loan-selectors";
+// styles
+import styles from "./PrePaymentView.module.scss";
 
 const PrePaymentView = memo((): JSX.Element => {
   // store
-  const monthlyEmi:number = useSelector(selectMonthlyEmi);
+  const monthlyEmi: number = useSelector(selectMonthlyEmi);
   //state
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   // fns
   const handleOpen = () => setIsModalOpen(true);
   const handleClose = () => setIsModalOpen(false);
-  // fns 
+  // fns
   return (
     <>
       <Modal isOpen={isModalOpen} onClose={handleClose}>
-        <AddPrePaymentOption onSave={handleClose}/>
+        <AddPrePaymentOption onSave={handleClose} />
       </Modal>
-      <Box sx={{ padding: 2 , display: "flex" ,  justifyContent:'flex-start' }}>
+      <Box className={styles["pre-payment-view__container"]}>
         <LoanDetails />
-        <Box sx={{width:'80%'}}>
+        <Box >
           <Button
             variant="contained"
             onClick={handleOpen}
             startIcon={<PlaylistAddIcon />}
-            disabled={monthlyEmi===0}
+            disabled={monthlyEmi === 0}
           >
             Add Pre payment Option
           </Button>

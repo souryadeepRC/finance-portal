@@ -15,7 +15,7 @@ import { removePrePaymentOption } from "src/store/home-loan-reducer/home-loan-ac
 import { prePaymentOptionsType } from "src/store/home-loan-reducer/home-loan-types";
 import { AppDispatch } from "src/store/store";
 // styles
-import styles from "./PrePaymentOption.module.scss";
+import styles from "./PrePaymentOptions.module.scss";
 // types
 type PrePaymentOptionProps = {
   prePaymentOption: prePaymentOptionsType;

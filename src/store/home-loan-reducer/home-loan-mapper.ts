@@ -49,9 +49,7 @@ export const mapLoanPrePaymentOptions = (
       modifiedLoanDetails,
       interestAmount,
       completionPeriod
-    );
-    console.log(predictions);
-    
+    ); 
     return [
       {
         prePaymentOptionId,

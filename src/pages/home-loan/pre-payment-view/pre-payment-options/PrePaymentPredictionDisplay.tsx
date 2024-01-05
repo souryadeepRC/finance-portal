@@ -17,7 +17,7 @@ import {
   PrePaymentPrediction,
 } from "src/store/home-loan-reducer/home-loan-types";
 // styles
-import styles from "./PrePaymentOption.module.scss";
+import styles from "./PrePaymentOptions.module.scss";
 
 type PrePaymentPredictionDisplayProps = {
   predictions: PrePaymentPrediction;
@@ -38,13 +38,12 @@ const getInterestPredictionText = ({
   amount,
   percentage,
 }: PrePaymentInterestDiff): string => {
-  console.log({ amount, percentage });
-  if (percentage === 0 || amount === 0)
+  if (amount === 0)
     return PRE_PAYMENT_INTEREST_DIFF_TYPES.NO_PROFIT;
 
-  const percentageDiff: string = `${percentage}%`;
+  const percentageDiff: string = percentage > 0 ? `(${percentage}%)` : '';
   const amountDiff: string = `${amount.toLocaleString("en-IN")}`;
-  return `Save ${percentageDiff} (Rs. ${amountDiff})`;
+  return `Save Rs. ${amountDiff} ${percentageDiff}`;
 };
 const PrePaymentPredictionDisplay = memo(
   ({ predictions }: PrePaymentPredictionDisplayProps): JSX.Element => {

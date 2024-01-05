@@ -9,3 +9,11 @@
     font-weight: $font-weight-500;
   }
 }
+@media screen and (max-width: $mobile-max-width) {
+  .display-label__container {
+    font-size: $font-size-14;
+    .label__heading {
+      font-size: $font-size-12;
+    }
+  }
+}
