@@ -49,7 +49,6 @@ const PayByEmi = memo(({ onSave }: PayByEmiProps): JSX.Element => {
       <LoanAmountLabel label="Previous Monthly EMI" value={monthlyEmi} />
       <Box sx={{ width: "50%" }}>
         <LoanInputField
-          className={styles["updated-emi__input"]}
           id="monthlyEmi"
           label="Updated Monthly EMI"
           icon="&#8377;"

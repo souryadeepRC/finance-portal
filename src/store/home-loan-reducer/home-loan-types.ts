@@ -98,3 +98,10 @@ export type LoanCompletionPeriod = {
   month: number;
   year: number;
 };
+
+// -- Pre Paid Principal 
+export type PrePaidPrincipalType = {
+  amount: number;
+  incrementFactor?: number;
+  month?: number;
+}

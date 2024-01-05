@@ -50,7 +50,12 @@ const fetchLoanMonthlyBreakup = (
   loanAmount: number,
   interestRate: number,
   loanStartPeriod: LoanStartPeriodType,
-  monthlyEmi: number
+  monthlyEmi: number,
+  prePaidPrincipal?: {
+    amount: number;
+    incrementFactor?: number;
+    month?: number;
+  },
 ): HomeLoanMonthlyAmortizationType[] => {
   const MONTH_LIMIT: number = MONTH_ARRAY.length - 1;
   const monthlyRate: number = interestRate / (12 * 100);
@@ -58,8 +63,17 @@ const fetchLoanMonthlyBreakup = (
   let monthlyBreakup: HomeLoanMonthlyAmortizationType[] = [];
   let { month, year }: LoanStartPeriodType = loanStartPeriod;
   let remainingBalance: number = loanAmount;
-
+  let prePaidPrincipalAmount: number = prePaidPrincipal?.amount || 0;
   while (remainingBalance > 0) {
+    if (prePaidPrincipal) {
+      if (month === prePaidPrincipal?.month) {
+        remainingBalance = remainingBalance - prePaidPrincipalAmount;
+        const incrementalFactor: number =
+          prePaidPrincipal?.incrementFactor || 0;
+        prePaidPrincipalAmount =
+          prePaidPrincipalAmount * (1 + incrementalFactor);
+      }
+    }
 
     const interestPaid: number = remainingBalance * monthlyRate;
     const principalPortion: number = monthlyEmi - interestPaid;

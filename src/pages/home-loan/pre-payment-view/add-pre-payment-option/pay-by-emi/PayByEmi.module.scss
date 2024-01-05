@@ -7,16 +7,17 @@
   gap: 10px;
   grid-gap: 15px;
   padding: 20px;
-  .updated-emi__input {
-    flex-direction: row-reverse;
-    width: 150px;
-    :global(.MuiInputBase-root.MuiInput-root .MuiInput-input) {
-      text-align: left;
+  :global(.loan-input-field__container) {
+    width: 100%;
+    :global(.input-value__container) {
+      flex-direction: row-reverse;
     }
   }
 }
 @media screen and (max-width: $mobile-max-width) {
-  .updated-emi__input {
-    width: 55%;
+  .pay-by-emi__container {
+    :global(.loan-input-field__container) {
+      width: 55%;
+    }
   }
 }

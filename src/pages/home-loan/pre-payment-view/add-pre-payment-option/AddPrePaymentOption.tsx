@@ -2,6 +2,7 @@ import { memo, useState } from "react";
 // common components
 import { RadioButtonGroup } from "src/components/common/radio-button-group/RadioButtonGroup";
 import { PayByEmi } from "./pay-by-emi/PayByEmi";
+import { PayByPrincipal } from "./pay-by-principal/PayByPrincipal";
 
 const PrePaymentOption = [
   { value: "payPrincipal", label: "Pay Principal Amount" },
@@ -27,7 +28,7 @@ const AddPrePaymentOption = memo(
     const renderPaymentOption = (paymentOption: string): JSX.Element => {
       switch (paymentOption) {
         case "payPrincipal":
-          return <></>;
+          return <PayByPrincipal onSave={onSave} />;
         case "increaseEmi":
           return <PayByEmi onSave={onSave} />;
         default:
