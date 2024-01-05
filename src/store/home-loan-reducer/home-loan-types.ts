@@ -18,6 +18,11 @@ export type HomeLoanInputType = {
   enteredId: string;
   enteredValue: string;
 };
+export type HomeLoanAmountBreakup = {
+  monthlyBreakup: HomeLoanMonthlyAmortizationType[];
+  totalPrincipalPaid: number;
+  totalInterestPaid: number;
+};
 export type HomeLoanYearlyAmortizationType = {
   principalPaid: number;
   interestPaid: number;
@@ -49,9 +54,6 @@ export type LoanStartPeriodType = { month: number; year: number };
 export type prePaymentByEmiType = {
   updatedEmi: number;
 };
-export type prePaymentByPrincipalType = {
-  addedPrincipalAmount: number;
-};
 export type prePaymentLoanDetailsType = {
   principalPaid: number;
   interestPaid: number;
@@ -62,33 +64,31 @@ export type prePaymentLoanDetailsType = {
 
 // ------- Pre Payment Predictions
 export type PrePaymentInterestDiff = {
-  amount : number;
-  percentage : number;
-  type : string;
+  amount: number;
+  percentage: number;
+  type: string;
 };
 export type PrePaymentCompletionPeriodDiff = {
-  month : number;
-  year : number;
-  type : string;
+  month: number;
+  year: number;
+  type: string;
 };
 export type PrePaymentPrediction = {
-  interestAmountDiff : PrePaymentInterestDiff
-  completionPeriodDiff : PrePaymentCompletionPeriodDiff
+  interestAmountDiff: PrePaymentInterestDiff;
+  completionPeriodDiff: PrePaymentCompletionPeriodDiff;
 };
 export type prePaymentOptionsType = {
   prePaymentOptionId: number;
   prePaymentType: string;
-  predictions : PrePaymentPrediction;
-  details: prePaymentByEmiType | prePaymentByPrincipalType;
+  predictions: PrePaymentPrediction;
+  details: prePaymentByEmiType | PrePaidPrincipalType;
   modifiedLoanDetails: prePaymentLoanDetailsType;
 };
-
-
 
 export type prePaymentOptionsPayloadType = {
   prePaymentType: string;
   prePaymentInfo: {
-    addedPrincipalAmount?: number;
+    prePaidPrincipal?: PrePaidPrincipalType;
     updatedEmi?: number;
   };
 };
@@ -99,9 +99,10 @@ export type LoanCompletionPeriod = {
   year: number;
 };
 
-// -- Pre Paid Principal 
+// -- Pre Paid Principal
 export type PrePaidPrincipalType = {
   amount: number;
   incrementFactor?: number;
-  month?: number;
-}
+  month: number;
+  year: number;
+};

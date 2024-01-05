@@ -25,7 +25,7 @@ const PrePaymentOption = memo(
   ({ prePaymentOption }: PrePaymentOptionProps): JSX.Element => {
     // store
     const dispatch: AppDispatch = useDispatch();
-    const { prePaymentOptionId, predictions, modifiedLoanDetails } =
+    const { prePaymentType,details,prePaymentOptionId, predictions, modifiedLoanDetails } =
       prePaymentOption;
 
     // fns
@@ -35,7 +35,7 @@ const PrePaymentOption = memo(
 
     return (
       <Box className={styles["payment-option__container"]}>
-        <PrePaymentPredictionDisplay predictions={predictions} />
+        <PrePaymentPredictionDisplay predictions={predictions} prePaymentType={prePaymentType} details={details} />
         <LoanAmountInfo loanAmountInfo={modifiedLoanDetails} />
         <Button
           variant="contained"

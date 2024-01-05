@@ -11,6 +11,9 @@
     width: 100%;
     :global(.input-value__container) {
       flex-direction: row-reverse;
+      :global(.MuiInput-input){
+        text-align: left;
+      }
     }
   }
 }
