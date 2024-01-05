@@ -7,11 +7,10 @@
   gap: 10px;
   grid-gap: 15px;
   padding: 20px;
-  :global(.loan-input-field__container){
-    width: 100%;
+  :global(.loan-input-field__container) {
+    width: 75%;
     .updated-principal__input {
       flex-direction: row-reverse;
-      width: 150px;
       :global(.MuiInputBase-root.MuiInput-root .MuiInput-input) {
         text-align: left;
       }
@@ -19,7 +18,7 @@
   }
 
   .pay-by-principal-increase__checkbox {
-    :global(.MuiCheckbox-root.Mui-checked){
+    :global(.MuiCheckbox-root.Mui-checked) {
       color: $app-primary-color;
     }
     :global(.MuiTypography-root) {
@@ -29,7 +28,12 @@
   }
 }
 @media screen and (max-width: $mobile-max-width) {
-  .updated-principal__input {
-    width: 55%;
+  .pay-by-principal__container {
+    :global(.loan-input-field__container) {
+      width: 100%;
+      :global(.input-field__box) {
+        justify-content: center;
+      }
+    }
   }
 }

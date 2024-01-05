@@ -19,44 +19,7 @@ import {
 // types
 import { HomeLoanReducerType } from "src/store/reducer-types";
 import { HomeLoanReducerActionType } from "./home-loan-types";
-
-/* const fetchPrePaymentOptionsTestData = () => {
-  const data = [];
-  for (let index = 1; index < 11; index++) {
-    data.push({
-      prePaymentOptionId: index,
-      prePaymentType: "INCREASE_MONTHLY_EMI",
-      details: {
-        updatedEmi: index * 1000,
-      },
-      predictions: {
-        interestAmountDiff: {
-          amount: 15000,
-          percentage: 10,
-          type: PRE_PAYMENT_INTEREST_DIFF_TYPES.LESSER,
-        },
-        completionPeriodDiff: {
-          displayText: "Feb - 2031",
-          month: 1,
-          year: 2021,
-        },
-      },
-      modifiedLoanDetails: {
-        principalPaid: 3806417.116091229,
-        interestPaid: 1275150.8839087717,
-        monthlyEmi: 59088,
-        totalAmountPaid: 5081568.000000001,
-        loanCompletionPeriod: {
-          displayText: "Feb - 2031",
-          month: 1,
-          year: 2021,
-        },
-      },
-    });
-  }
-  return data;
-}; */
-
+ 
 const latestDate: Date = new Date();
 
 const initialState: HomeLoanReducerType = {
