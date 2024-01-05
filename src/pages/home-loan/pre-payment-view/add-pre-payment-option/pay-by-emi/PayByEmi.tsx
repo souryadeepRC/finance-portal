@@ -20,8 +20,10 @@ import { isValidData } from "src/utils/string-utils";
 import { PRE_PAYMENT_TYPES } from "src/store/home-loan-reducer/home-loan-constants";
 // styles
 import styles from "./PayByEmi.module.scss";
-
-const PayByEmi = memo((): JSX.Element => {
+type PayByEmiProps = {
+  onSave: () => void;
+};
+const PayByEmi = memo(({ onSave }: PayByEmiProps): JSX.Element => {
   // store
   const dispatch: AppDispatch = useDispatch();
   const monthlyEmi: number = useSelector(selectMonthlyEmi);
@@ -39,6 +41,7 @@ const PayByEmi = memo((): JSX.Element => {
         prePaymentInfo: { updatedEmi },
       })
     );
+    onSave();
   };
   // render fns
   return (

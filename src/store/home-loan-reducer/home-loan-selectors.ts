@@ -5,6 +5,7 @@ import {
   HomeLoanYearlyAmortizationType,
   LoanStartPeriodType,
   PaymentYearDetailsType,
+  prePaymentOptionsType
 } from "./home-loan-types";
 
 export const selectLoanAmount = (store: AppStoreType): number =>
@@ -48,3 +49,5 @@ store?.homeLoan?.paymentYearAmortization?.monthlyBreakup;
 
 export const selectPaymentYearAmortization = (store: AppStoreType): HomeLoanYearlyAmortizationType =>
 store?.homeLoan?.paymentYearAmortization;
+export const selectPrePaymentOptions = (store: AppStoreType): prePaymentOptionsType[] =>
+store?.homeLoan?.prePaymentOptions;

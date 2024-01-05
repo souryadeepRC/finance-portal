@@ -11,7 +11,7 @@ export type UpdateLoanInfoType = {
 } */
 export type HomeLoanReducerActionType = {
   type: string;
-  payload?: string | any;
+  payload?: any;
 };
 
 export type HomeLoanInputType = {
@@ -55,18 +55,20 @@ export type prePaymentByPrincipalType = {
 export type prePaymentLoanDetailsType = {
   principalPaid: number;
   interestPaid: number;
+  monthlyEmi: number;
   totalAmountPaid: number;
   completionPeriod: string;
 };
 export type prePaymentOptionsType = {
+  prePaymentOptionId: number;
   prePaymentType: string;
   details: prePaymentByEmiType | prePaymentByPrincipalType;
   modifiedLoanDetails: prePaymentLoanDetailsType;
-}; 
+};
 export type prePaymentOptionsPayloadType = {
   prePaymentType: string;
   prePaymentInfo: {
     addedPrincipalAmount?: number;
     updatedEmi?: number;
-  } ;
+  };
 };

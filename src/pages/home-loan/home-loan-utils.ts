@@ -37,7 +37,7 @@ const fetchTotalPaidAmount = (
     { principalPaid: 0, interestPaid: 0 }
   );
 };
- 
+
 const fetchLoanMonthlyBreakup = (
   loanAmount: number,
   interestRate: number,
@@ -46,7 +46,7 @@ const fetchLoanMonthlyBreakup = (
 ): HomeLoanMonthlyAmortizationType[] => {
   const MONTH_LIMIT: number = MONTH_ARRAY.length - 1;
   const monthlyRate: number = interestRate / (12 * 100);
- 
+
   let monthlyBreakup: HomeLoanMonthlyAmortizationType[] = [];
   let { month, year }: LoanStartPeriodType = loanStartPeriod;
   let remainingBalance: number = loanAmount;
@@ -55,7 +55,7 @@ const fetchLoanMonthlyBreakup = (
     const interestPaid: number = remainingBalance * monthlyRate;
     const principalPaid: number = monthlyEmi - interestPaid;
     remainingBalance = remainingBalance - principalPaid;
- 
+
     monthlyBreakup.push({
       principalPaid,
       interestPaid,
@@ -154,8 +154,7 @@ export const fetchLoanPrePaymentDetails = (
   interestRate: number,
   loanStartPeriod: LoanStartPeriodType,
   monthlyEmi: number
-): prePaymentLoanDetailsType => { 
-
+): prePaymentLoanDetailsType => {
   const monthlyBreakup: HomeLoanMonthlyAmortizationType[] =
     fetchLoanMonthlyBreakup(
       loanAmount,
@@ -169,6 +168,7 @@ export const fetchLoanPrePaymentDetails = (
   return {
     principalPaid,
     interestPaid,
+    monthlyEmi,
     totalAmountPaid: principalPaid + interestPaid,
     completionPeriod: fetchLoanCompletionPeriod(monthlyBreakup),
   };

@@ -12,6 +12,7 @@ import {
   UPDATE_LOAN_PAYMENT_DETAILS,
   UPDATE_LOAN_PAYMENT_YEAR,
   UPDATE_LOAN_PRE_PAYMENT_OPTIONS,
+  REMOVE_PRE_PAYMENT_OPTION
 } from "./home-loan-constants";
 //types
 import {
@@ -81,3 +82,10 @@ export const updatePrePaymentOptions = (
     payload,
   };
 };
+
+export const removePrePaymentOption = (payload:number):HomeLoanReducerActionType => { 
+  return {
+    type: REMOVE_PRE_PAYMENT_OPTION,
+    payload
+  }
+}

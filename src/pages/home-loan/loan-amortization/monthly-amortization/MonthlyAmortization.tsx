@@ -1,6 +1,6 @@
 import { memo } from "react";
 // library
-import { Typography } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 // common components
 import { Loader } from "src/components/common/loader/Loader";
 import { LoanAmountLabel } from "src/components/common/loan-amount-label/LoanAmountLabel";
@@ -18,7 +18,6 @@ type MonthlyAmortizationProps = {
 
 const MonthlyAmortization = memo(
   ({ monthlyBreakup, tenureYear }: MonthlyAmortizationProps): JSX.Element => {
-
     if (monthlyBreakup?.length <= 0) return <Loader isSkeleton={true} />;
 
     return (
@@ -46,8 +45,16 @@ const MonthlyAmortization = memo(
                   <span className={styles["amortization-breakup__month"]}>
                     {MONTH_ARRAY[month]}
                   </span>
-                  <LoanAmountLabel label="Principal" value={principalPaid} />
-                  <LoanAmountLabel label="Interest" value={interestPaid} />
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <LoanAmountLabel label="Principal" value={principalPaid} />
+                    <LoanAmountLabel label="Interest" value={interestPaid} />
+                  </Box>
                 </div>
               );
             }
