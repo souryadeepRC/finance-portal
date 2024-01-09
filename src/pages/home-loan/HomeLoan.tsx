@@ -6,7 +6,6 @@ import { LoanAmountBreakup } from "src/pages/home-loan/loan-amount-breakup/LoanA
 import styles from "./HomeLoan.module.scss";
 
 const HomeLoan = memo((): JSX.Element => {
-  // store 
   // render fns
   return (
     <>

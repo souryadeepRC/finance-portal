@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 // library
 import { Input } from "@mui/material";
 import Slider from "@mui/material/Slider";
@@ -12,7 +12,7 @@ type LoanInputFieldProps = {
   label: string;
   icon: string;
   value: number;
-  step?: number; 
+  step?: number;
   minValue: number;
   maxValue: number;
   disabledValue?: number;
@@ -24,20 +24,29 @@ const LoanInputField = memo(
     id,
     label,
     icon,
-    value, 
+    value,
     step = 1,
     minValue,
     maxValue,
-    disabledValue=0,
+    disabledValue = 0,
     onChange,
   }: LoanInputFieldProps): JSX.Element => {
-     
+    const [displayMessage, setDisplayMessage] = useState(value);
+
+    useEffect(() => {
+      const timeOutId = setTimeout(
+        () =>
+          onChange({
+            enteredId: id,
+            enteredValue: `${displayMessage}`,
+          }),
+        300
+      );
+      return () => clearTimeout(timeOutId);
+    }, [id, onChange, displayMessage]);
     // fns
     const onSliderChange = (e: Event, newValue: number | number[]): void => {
-      onChange({
-        enteredId: id,
-        enteredValue: `${newValue}`,
-      });
+      setDisplayMessage(+newValue);
     };
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
       const enteredId: string = e.target.id;
@@ -68,19 +77,17 @@ const LoanInputField = memo(
               value={value}
               onChange={onInputChange}
             />
-            <span className={isInvalidField ? `${"error"}` : ""}>
-              {icon}
-            </span>
+            <span className={isInvalidField ? `${"error"}` : ""}>{icon}</span>
           </div>
         </div>
         <Slider
-          className={isInvalidField ? `${"error"}` : ""} 
+          className={isInvalidField ? `${"error"}` : ""}
           step={step}
           aria-label={label}
           valueLabelDisplay="auto"
-          value={value}
+          value={displayMessage}
           min={minValue}
-          max={maxValue} 
+          max={maxValue}
           onChange={onSliderChange}
         />
       </div>

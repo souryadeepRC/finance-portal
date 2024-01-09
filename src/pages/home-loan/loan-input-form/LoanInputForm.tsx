@@ -1,11 +1,8 @@
 import { memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// library
-import dayjs from "dayjs";
-// common components
-import { DatePicker } from "src/components/common/date-picker/DatePicker";
 // components
-import { LoanInputField } from "./loan-input-field/LoanInputField";
+import { LoanInput } from "src/components/common/loan-input/LoanInput";
+import { LoanStartPeriodForm } from "./LoanStartPeriodForm";
 // store
 import { AppDispatch } from "src/store/store";
 // actions
@@ -13,112 +10,74 @@ import { updateLoanDetails } from "src/store/home-loan-reducer/home-loan-actions
 // selectors
 import { selectLoanDetails } from "src/store/home-loan-reducer/home-loan-selectors";
 // types
-import {
-  HomeLoanInputType,
-  LoanDetailsType,
-  LoanStartPeriodType,
-} from "src/store/home-loan-reducer/home-loan-types";
+import { LoanDetailsType } from "src/store/home-loan-reducer/home-loan-types";
+import { LoanInputOnChangeType } from "src/components/common/loan-input/LoanInput";
 // utils
-import { isNumeric, isValidData } from "src/utils/string-utils";
+import { isNumeric } from "src/utils/string-utils";
 // styles
 import styles from "./LoanInputForm.module.scss";
 
+const INPUT_FORM_ID: { [index: string]: string } = {
+  AMOUNT: "amount",
+  INTEREST_RATE: "interestRate",
+  TENURE: "tenure",
+};
 const LoanInputForm = memo((): JSX.Element => {
   // store
   const dispatch: AppDispatch = useDispatch();
 
-  const { amount, interestRate, tenure, startPeriod }: LoanDetailsType =
+  const { amount, interestRate, tenure }: LoanDetailsType =
     useSelector(selectLoanDetails);
-  const { month: loanStartMonth, year: loanStartYear }: LoanStartPeriodType =
-    startPeriod;
 
   // fns
-  const onLoanStartPeriodChange = (selectedDate: dayjs.Dayjs | null): void => {
+  const onChangeLoanDetails = ({ id, value }: LoanInputOnChangeType): void => {
     dispatch(
       updateLoanDetails({
-        startPeriod: {
-          month: selectedDate?.month() || new Date().getMonth(),
-          year: selectedDate?.year() || new Date().getFullYear(),
-        },
-        isError: !selectedDate,
+        [id]: value,
+        isError: value <= 0,
       })
     );
   };
-  const modifyLoanDetails = ({
-    enteredId,
-    enteredValue,
-  }: HomeLoanInputType): void => {
-    if (!isValidData(enteredValue)) return;
-    const modifiedValue: number = +enteredValue;
-    switch (enteredId) {
-      case "loanAmount": {
-        dispatch(
-          updateLoanDetails({
-            amount: modifiedValue,
-            isError: modifiedValue <= 0,
-          })
-        );
-        return;
-      }
-      case "interestRate": {
-        dispatch(
-          updateLoanDetails({
-            interestRate: modifiedValue,
-            isError: modifiedValue <= 0,
-          })
-        );
-        return;
-      }
-      case "loanTenure":
-        if (isNumeric(enteredValue)) {
-          dispatch(
-            updateLoanDetails({
-              tenure: modifiedValue,
-              isError: modifiedValue <= 0,
-            })
-          );
-          return;
-        }
-    }
-  };
+
   // render fns
   return (
     <div className={styles["loan-details__container"]}>
-      <LoanInputField
-        className={styles["loan-amount-field"]} 
-        id="loanAmount"
+      <LoanInput
+        id={INPUT_FORM_ID.AMOUNT}
         label="Loan Amount"
         icon="&#8377;"
-        value={amount} 
+        value={amount}
         minValue={1000}
-        maxValue={10000000} 
-        onChange={modifyLoanDetails}
+        maxValue={10000000}
+        adornmentPosition="start"
+        adornmentIcon={<span>&#8377;</span>}
+        onChange={onChangeLoanDetails}
       />
-      <LoanInputField
-        id="interestRate"
-        label="Rate of interest (p.a)"
-        icon="%"
-        value={interestRate} 
-        step={0.1}
-        minValue={1}
-        maxValue={30} 
-        onChange={modifyLoanDetails}
-      />
-      <LoanInputField
-        id="loanTenure"
-        label="Loan Tenure"
-        icon="Yr"
-        value={tenure} 
-        minValue={1}
-        maxValue={30} 
-        onChange={modifyLoanDetails}
-      />
-      <DatePicker
-        label="Loan Start Period"
-        views={["year", "month"]}
-        value={dayjs(new Date(loanStartYear, loanStartMonth))}
-        onChange={onLoanStartPeriodChange}
-      />
+      <div className={styles["loan-rate-tenure__container"]}>
+        <LoanInput
+          id={INPUT_FORM_ID.INTEREST_RATE}
+          label="Rate of interest (p.a)"
+          icon="%"
+          value={interestRate}
+          step={0.1}
+          minValue={1}
+          maxValue={30}
+          adornmentIcon={<span>%</span>}
+          onChange={onChangeLoanDetails}
+        />
+        <LoanInput
+          id={INPUT_FORM_ID.TENURE}
+          label="Loan Tenure"
+          icon="Yr"
+          value={tenure}
+          minValue={1}
+          maxValue={30}
+          adornmentIcon={<span>Yr</span>}
+          validityFunc={isNumeric}
+          onChange={onChangeLoanDetails}
+        />
+      </div>
+      <LoanStartPeriodForm />
     </div>
   );
 });

@@ -23,9 +23,15 @@ const LoanAmountBreakup = memo(() => {
 
   // effects
   useEffect(() => {
+    let paymentDetailsTimer: ReturnType<typeof setTimeout>;
     if (!loanDetails?.isError) {
-      dispatch(updateLoanPaymentDetails(loanDetails));
+      paymentDetailsTimer = setTimeout(() => {
+        dispatch(updateLoanPaymentDetails(loanDetails));
+      }, 250);
     }
+    return () => {
+      paymentDetailsTimer && clearTimeout(paymentDetailsTimer);
+    };
   }, [dispatch, loanDetails]);
 
   if (loanDetails?.isError) {
