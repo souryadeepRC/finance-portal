@@ -3,34 +3,35 @@ import {
   mapPaymentYearAmortization,
   mapLoanPrePaymentOptions,
   mapRemovedPrePaymentOptions,
+  mapLoanPaymentDetails,
 } from "src/store/home-loan-reducer/home-loan-mapper";
 // constants
 import {
+  UPDATE_LOAN_DETAILS,
   RESET_LOAN_DETAILS,
-  UPDATE_INTEREST_RATE,
-  UPDATE_LOAN_AMOUNT,
-  UPDATE_LOAN_START_PERIOD,
-  UPDATE_LOAN_TENURE,
   UPDATE_LOAN_PAYMENT_DETAILS,
   UPDATE_LOAN_PAYMENT_YEAR,
   UPDATE_LOAN_PRE_PAYMENT_OPTIONS,
-  REMOVE_PRE_PAYMENT_OPTION, 
+  REMOVE_PRE_PAYMENT_OPTION,
 } from "./home-loan-constants";
 // types
 import { HomeLoanReducerType } from "src/store/reducer-types";
 import { HomeLoanReducerActionType } from "./home-loan-types";
- 
+
 const latestDate: Date = new Date();
 
 const initialState: HomeLoanReducerType = {
-  loanAmount: 3783000,
-  interestRate: 8.5,
-  loanTenure: 30,
-  monthlyEmi: 0,
-  loanStartPeriod: {
-    month: latestDate.getMonth(),
-    year: latestDate.getFullYear(),
+  loanDetails: {
+    amount: 3783000,
+    interestRate: 8.5,
+    tenure: 30,
+    startPeriod: {
+      month: latestDate.getMonth(),
+      year: latestDate.getFullYear(),
+    },
+    isError: false,
   },
+  monthlyEmi: 0,
   monthlyAmortizationDetails: [],
   yearlyAmortizationDetails: [],
   loanPaymentYear: latestDate.getFullYear(),
@@ -49,70 +50,35 @@ const initialState: HomeLoanReducerType = {
     outstandingBalance: 0,
     monthlyBreakup: [],
   },
-  prePaymentOptions: [] // fetchPrePaymentOptionsTestData(),
+  prePaymentOptions: [], // fetchPrePaymentOptionsTestData(),
 };
 const HomeLoanReducer = (
   state = initialState,
   { type, payload }: HomeLoanReducerActionType
 ): HomeLoanReducerType => {
   switch (type) {
-    case UPDATE_LOAN_AMOUNT: {
+    case UPDATE_LOAN_DETAILS: {
+      const { loanDetails } = state; 
       return {
         ...state,
-        loanAmount: payload || 0,
-      };
-    }
-    case UPDATE_INTEREST_RATE: {
-      return {
-        ...state,
-        interestRate: payload || 0,
-      };
-    }
-    case UPDATE_LOAN_TENURE: {
-      return {
-        ...state,
-        loanTenure: payload || 0,
-      };
-    }
-    case UPDATE_LOAN_START_PERIOD: {
-      return {
-        ...state,
-        loanStartPeriod: payload,
+        loanDetails : {
+          ...loanDetails,
+          ...payload,
+        }
       };
     }
     case RESET_LOAN_DETAILS: {
-      const { loanAmount, interestRate, loanTenure } = initialState;
+      const { loanDetails } = initialState;
       return {
         ...state,
-        loanAmount,
-        interestRate,
-        loanTenure,
+        loanDetails,
       };
     }
-    case UPDATE_LOAN_PAYMENT_DETAILS: {
-      const {
-        monthlyEmi,
-        yearlyAmortizationDetails,
-        interestAmount,
-        totalPaidAmount,
-        loanCompletionPeriod,
-        paymentYearDetails,
-      } = payload;
-      const loanPaymentYear: number = state.loanStartPeriod.year;
+    case UPDATE_LOAN_PAYMENT_DETAILS: { 
       return {
         ...state,
-        monthlyEmi,
-        yearlyAmortizationDetails,
-        interestAmount,
-        totalPaidAmount,
-        loanCompletionPeriod,
-        paymentYearDetails,
-        loanPaymentYear: loanPaymentYear,
-        ...mapPaymentYearAmortization(
-          yearlyAmortizationDetails,
-          loanPaymentYear
-        ),
-      };
+        ...mapLoanPaymentDetails(payload),
+      }
     }
     case UPDATE_LOAN_PAYMENT_YEAR: {
       const { yearlyAmortizationDetails } = state;
@@ -128,22 +94,20 @@ const HomeLoanReducer = (
     }
     case UPDATE_LOAN_PRE_PAYMENT_OPTIONS: {
       const {
-        loanAmount,
-        interestRate,
+        loanDetails,
         monthlyEmi,
-        loanStartPeriod,
         prePaymentOptions,
         interestAmount,
         loanCompletionPeriod,
       } = state;
-
+      const { amount, interestRate, startPeriod } = loanDetails;
       return {
         ...state,
         prePaymentOptions: mapLoanPrePaymentOptions(
           payload,
-          loanAmount,
+          amount,
           interestRate,
-          loanStartPeriod,
+          startPeriod,
           monthlyEmi,
           prePaymentOptions,
           interestAmount,

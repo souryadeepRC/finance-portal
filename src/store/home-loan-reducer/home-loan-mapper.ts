@@ -1,4 +1,5 @@
 import {
+  calculateLoanBreakup,
   fetchLoanPrePaymentDetails,
   fetchLoanPrePaymentPredictions,
 } from "src/pages/home-loan/home-loan-utils";
@@ -9,9 +10,34 @@ import {
   LoanStartPeriodType,
   prePaymentOptionsPayloadType,
   LoanCompletionPeriod,
-  PrePaidPrincipalType, 
+  PrePaidPrincipalType,
+  LoanDetailsType,
+  HomeLoanBreakupType,
 } from "./home-loan-types";
 
+export const mapLoanPaymentDetails = (loanDetails: LoanDetailsType) => {
+  const homeLoanBreakupDetails: HomeLoanBreakupType =
+    calculateLoanBreakup(loanDetails);
+  const {
+    monthlyEmi,
+    yearlyAmortizationDetails,
+    interestAmount,
+    totalPaidAmount,
+    loanCompletionPeriod,
+    paymentYearDetails,
+  } = homeLoanBreakupDetails;
+  const loanPaymentYear: number = loanDetails.startPeriod.year;
+  return {
+    monthlyEmi,
+    yearlyAmortizationDetails,
+    interestAmount,
+    totalPaidAmount,
+    loanCompletionPeriod,
+    paymentYearDetails,
+    loanPaymentYear,
+    ...mapPaymentYearAmortization(yearlyAmortizationDetails, loanPaymentYear),
+  };
+};
 export const mapPaymentYearAmortization = (
   yearlyAmortizationDetails: HomeLoanYearlyAmortizationType[],
   paymentYear: number
@@ -88,7 +114,6 @@ export const mapLoanPrePaymentOptions = (
   interestAmount: number,
   completionPeriod: LoanCompletionPeriod
 ): prePaymentOptionsType[] => {
-
   let prePaymentOption = undefined;
 
   if (prePaymentType === PRE_PAYMENT_TYPES.INCREASE_MONTHLY_EMI) {
@@ -107,8 +132,8 @@ export const mapLoanPrePaymentOptions = (
       monthlyEmi
     );
   }
-  if(!prePaymentOption) return prePaymentOptions;
-  
+  if (!prePaymentOption) return prePaymentOptions;
+
   return [
     {
       prePaymentOptionId: prePaymentOptions?.length || 0,
@@ -122,7 +147,6 @@ export const mapLoanPrePaymentOptions = (
     },
     ...prePaymentOptions,
   ];
-
 };
 
 export const mapRemovedPrePaymentOptions = (

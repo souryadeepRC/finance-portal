@@ -153,8 +153,7 @@ const PayByPrincipal = memo(({ onSave }: PayByEmiProps): JSX.Element => {
             id="amount"
             label="Pre-pay Principal every year"
             icon="&#8377;"
-            value={amount}
-            defaultValue={INITIAL_STATE.amount}
+            value={amount} 
             minValue={INITIAL_STATE.amount}
             maxValue={loanAmount}
             disabledValue={0}
@@ -208,8 +207,7 @@ const PayByPrincipal = memo(({ onSave }: PayByEmiProps): JSX.Element => {
                 id="incrementFactor"
                 label="Increase every year By"
                 icon="%"
-                value={incrementFactor}
-                defaultValue={INITIAL_STATE.incrementFactor}
+                value={incrementFactor} 
                 minValue={INITIAL_STATE.incrementFactor}
                 maxValue={100}
                 step={5}

@@ -53,7 +53,6 @@ const PayByEmi = memo(({ onSave }: PayByEmiProps): JSX.Element => {
           label="Updated Monthly EMI"
           icon="&#8377;"
           value={updatedEmi}
-          defaultValue={monthlyEmi}
           minValue={monthlyEmi}
           maxValue={10000000}
           disabledValue={0}

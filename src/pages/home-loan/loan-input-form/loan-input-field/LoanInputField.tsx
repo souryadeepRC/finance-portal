@@ -12,11 +12,10 @@ type LoanInputFieldProps = {
   label: string;
   icon: string;
   value: number;
-  step?: number;
-  defaultValue: number;
+  step?: number; 
   minValue: number;
   maxValue: number;
-  disabledValue: number;
+  disabledValue?: number;
   onChange: ({ enteredId, enteredValue }: HomeLoanInputType) => void;
 };
 const LoanInputField = memo(
@@ -25,14 +24,14 @@ const LoanInputField = memo(
     id,
     label,
     icon,
-    value,
-    defaultValue,
+    value, 
     step = 1,
     minValue,
     maxValue,
-    disabledValue,
+    disabledValue=0,
     onChange,
   }: LoanInputFieldProps): JSX.Element => {
+     
     // fns
     const onSliderChange = (e: Event, newValue: number | number[]): void => {
       onChange({
@@ -53,7 +52,7 @@ const LoanInputField = memo(
 
     // render fns
     return (
-      <div className={"loan-input-field__container"}>
+      <div className={`${className} ${"loan-input-field__container"}`}>
         <div className={"input-field__box"}>
           <label className={"input-label"}>{label}</label>
           {isInvalidField && (
@@ -61,7 +60,7 @@ const LoanInputField = memo(
               Provide positive non-zero number
             </span>
           )}
-          <div className={`${className} ${"input-value__container"}`}>
+          <div className="input-value__container">
             <Input
               className={isInvalidField ? `${"error"}` : ""}
               disableUnderline={true}
@@ -75,15 +74,13 @@ const LoanInputField = memo(
           </div>
         </div>
         <Slider
-          className={isInvalidField ? `${"error"}` : ""}
-          defaultValue={defaultValue}
+          className={isInvalidField ? `${"error"}` : ""} 
           step={step}
           aria-label={label}
           valueLabelDisplay="auto"
           value={value}
           min={minValue}
-          max={maxValue}
-          /* disabled={value === disabledValue} */
+          max={maxValue} 
           onChange={onSliderChange}
         />
       </div>

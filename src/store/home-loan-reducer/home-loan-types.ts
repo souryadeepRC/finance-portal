@@ -1,3 +1,24 @@
+// ====== Loan Parameter Details ====== 
+
+export type LoanStartPeriodType = { month: number; year: number };
+
+export type LoanDetailsPayloadType = {
+  amount?: number;
+  interestRate?: number;
+  tenure?: number;
+  startPeriod?: LoanStartPeriodType;
+  isError: boolean;
+}
+
+export type LoanDetailsType = {
+  amount: number;
+  interestRate: number;
+  tenure: number;
+  startPeriod: LoanStartPeriodType;
+  isError: boolean;
+}
+
+
 export type UpdateLoanInfoType = {
   field: string;
   value: string;
@@ -49,7 +70,6 @@ export type HomeLoanBreakupType = {
   loanCompletionPeriod: LoanCompletionPeriod;
   paymentYearDetails: PaymentYearDetailsType;
 };
-export type LoanStartPeriodType = { month: number; year: number };
 
 export type prePaymentByEmiType = {
   updatedEmi: number;
