@@ -1,14 +1,15 @@
 import { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // library
-import { Box, Checkbox, FormControlLabel } from "@mui/material";
+// icons
+import { Checkbox, FormControlLabel } from "@mui/material";
+import SaveIcon from "@mui/icons-material/Save";
 import dayjs from "dayjs";
 // common components
 import { Loader } from "src/components/common/loader/Loader";
 import { Button } from "src/components/common/button/Button";
 import { DatePicker } from "src/components/common/date-picker/DatePicker";
-// components
-import { LoanInputField } from "src/pages/home-loan/loan-input-form/loan-input-field/LoanInputField";
+import { LoanInput } from "src/components/common/loan-input/LoanInput";
 // actions
 import { updatePrePaymentOptions } from "src/store/home-loan-reducer/home-loan-actions";
 // selectors
@@ -20,13 +21,11 @@ import {
 // types
 import { AppDispatch } from "src/store/store";
 import {
-  HomeLoanInputType,
   LoanStartPeriodType,
   PaymentYearDetailsType,
   PrePaidPrincipalType,
 } from "src/store/home-loan-reducer/home-loan-types";
-// utils
-import { isValidData } from "src/utils/string-utils";
+import { LoanInputOnChangeType } from "src/components/common/loan-input/LoanInput";
 // constants
 import { PRE_PAYMENT_TYPES } from "src/store/home-loan-reducer/home-loan-constants";
 // styles
@@ -93,15 +92,13 @@ const PayByPrincipal = memo(({ onSave }: PayByEmiProps): JSX.Element => {
     });
   };
   const onPrePaidPrincipalChange = ({
-    enteredId,
-    enteredValue,
-  }: HomeLoanInputType): void => {
-    if (!isValidData(enteredValue)) return;
-
+    id,
+    value,
+  }: LoanInputOnChangeType): void => {
     setPrePaidPrincipal((prePaidPrincipal) => {
       return {
         ...prePaidPrincipal,
-        [enteredId]: +enteredValue,
+        [id]: value,
       };
     });
   };
@@ -125,103 +122,65 @@ const PayByPrincipal = memo(({ onSave }: PayByEmiProps): JSX.Element => {
   };
 
   const { amount, incrementFactor, month, year } = prePaidPrincipal;
-  if(year===0){
-    return <Loader />
+  if (year === 0) {
+    return <Loader />;
   }
   // render fns
   return (
-    <Box className={styles["pay-by-principal__container"]}>
-      <Box
-        sx={{
-          width: "85%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 2,
-            alignItems: "center",
-            width: "100%",
-          }}
-        >
-          <LoanInputField
-            className={styles["updated-principal__input"]}
-            id="amount"
-            label="Pre-pay Principal every year"
-            icon="&#8377;"
-            value={amount} 
-            minValue={INITIAL_STATE.amount}
-            maxValue={loanAmount}
-            disabledValue={0}
+    <div className={styles["pay-by-principal__container"]}>
+      <div className={styles["principal-month__container"]}>
+        <LoanInput
+          id="amount"
+          label="Pre-pay Principal every year"
+          value={amount}
+          minValue={INITIAL_STATE.amount}
+          maxValue={loanAmount}
+          adornmentPosition="start"
+          adornmentIcon={<span>&#8377;</span>}
+          onChange={onPrePaidPrincipalChange}
+        />
+        <DatePicker
+          label="After this month"
+          views={["year", "month"]}
+          maxDate={dayjs(new Date(maxYear, 0))}
+          minDate={dayjs(new Date(minYear, 0))}
+          value={dayjs(new Date(year, month))}
+          onChange={onPrePaidPrincipalMonthChange}
+        />
+      </div>
+      <FormControlLabel
+        className={styles["pay-by-principal-increase__checkbox"]}
+        control={
+          <Checkbox
+            checked={isIncrementChecked}
+            onChange={onIncrementCheck}
+            inputProps={{ "aria-label": "controlled" }}
+          />
+        }
+        label="Increase Pre Paid Principal Amount"
+      />
+      {isIncrementChecked && (
+        <div className={styles["increment-factor__container"]}>
+          <LoanInput
+            id="incrementFactor"
+            label="Increase every year By"
+            value={incrementFactor}
+            minValue={INITIAL_STATE.incrementFactor}
+            maxValue={100}
+            step={5}
+            adornmentIcon={<span>%</span>}
             onChange={onPrePaidPrincipalChange}
           />
-          <DatePicker
-            label="After this month"
-            views={["year", "month"]}
-            maxDate={dayjs(new Date(maxYear, 0))}
-            minDate={dayjs(new Date(minYear, 0))}
-            value={dayjs(new Date(year, month))}
-            onChange={onPrePaidPrincipalMonthChange}
-          />
-        </Box>
-        <Box
-          sx={{
-            width: "80%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "column",
-          }}
-        >
-          <Box
-            sx={{
-              width: "80%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-            }}
-          >
-            <FormControlLabel
-              className={styles["pay-by-principal-increase__checkbox"]}
-              control={
-                <Checkbox
-                  checked={isIncrementChecked}
-                  onChange={onIncrementCheck}
-                  inputProps={{ "aria-label": "controlled" }}
-                />
-              }
-              label="Increase Pre Paid Principal Amount"
-            />
-          </Box>
-
-          {isIncrementChecked && (
-            <Box sx={{ display: "flex", gap: 3,
-            width: "100%",
-            justifyContent: "center", }}>
-              <LoanInputField
-                id="incrementFactor"
-                label="Increase every year By"
-                icon="%"
-                value={incrementFactor} 
-                minValue={INITIAL_STATE.incrementFactor}
-                maxValue={100}
-                step={5}
-                disabledValue={0}
-                onChange={onPrePaidPrincipalChange}
-              />
-            </Box>
-          )}
-        </Box>
-      </Box>
-      <Button variant="contained" onClick={onSaveBtnClick}>
+        </div>
+      )}
+      <Button
+        variant="contained"
+        onClick={onSaveBtnClick}
+        startIcon={<SaveIcon />}
+      >
         Save
       </Button>
-    </Box>
+    </div>
   );
 });
 PayByPrincipal.displayName = "PayByPrincipal";

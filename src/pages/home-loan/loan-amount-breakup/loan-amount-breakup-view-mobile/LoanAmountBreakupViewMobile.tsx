@@ -8,8 +8,8 @@ import { LoanAmortization } from "src/pages/home-loan/loan-amortization/LoanAmor
 import styles from "./LoanAmountBreakupViewMobile.module.scss";
 // constants
 const LOAN_AMOUNT_BREAKUP_TYPES = {
-  AMOUNT_BREAKUP: { label: "Amount Breakup", value: 0 },
-  AMORTIZATION: { label: "Loan Amortization", value: 1 },
+  AMOUNT_BREAKUP: { label: "Breakup", value: 0 },
+  AMORTIZATION: { label: "Amortization", value: 1 },
 };
 
 const LoanAmountBreakupViewMobile = memo((): JSX.Element => {

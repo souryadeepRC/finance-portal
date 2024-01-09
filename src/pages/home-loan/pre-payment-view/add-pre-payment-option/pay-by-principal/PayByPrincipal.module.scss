@@ -6,13 +6,13 @@
   align-items: center;
   gap: 10px;
   padding: 20px;
-  :global(.loan-input-field__container) {
-    width: 75%;
-    .updated-principal__input {
-      flex-direction: row-reverse;
-      :global(.MuiInputBase-root.MuiInput-root .MuiInput-input) {
-        text-align: left;
-      }
+
+  .principal-month__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    :global(.loan-input__container) {
+      width: 50%;
     }
   }
 
@@ -25,13 +25,23 @@
       font-weight: $font-weight-700;
     }
   }
+  .increment-factor__container {
+    display: flex;
+    justify-content: center;
+  }
 }
 @media screen and (max-width: $mobile-max-width) {
   .pay-by-principal__container {
-    :global(.loan-input-field__container) {
-      width: 100%;
-      :global(.input-field__box) {
-        justify-content: center;
+    .principal-month__container {
+      flex-direction: column;
+      :global(.loan-input__container) {
+        width: 100%;
+      }
+    }
+
+    .pay-by-principal-increase__checkbox {
+      :global(.MuiTypography-root) {
+        font-size: $font-size-14;
       }
     }
   }

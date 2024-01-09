@@ -4,7 +4,7 @@ import { InputAdornment, Slider, TextField } from "@mui/material";
 // utils
 import { isValidData } from "src/utils/string-utils";
 // styles
-import './LoanInput.scss';
+import "./LoanInput.scss";
 
 export type LoanInputOnChangeType = {
   id: string;
@@ -14,7 +14,6 @@ type LoanInputProps = {
   className?: string;
   id: string;
   label: string;
-  icon: string;
   value: number;
   step?: number;
   minValue: number;
@@ -79,11 +78,12 @@ const LoanInput = memo(
         value: +modifiedValue,
       });
     };
+    const isInvalidField: boolean = value === disabledValue;
     // render fns
     return (
       <div className="loan-input__container">
         <TextField
-          className={value === disabledValue ? "input-error" : ""}
+          className={isInvalidField ? "input-error" : ""}
           id={id}
           value={value}
           onChange={onTextFieldChange}
@@ -91,8 +91,13 @@ const LoanInput = memo(
           variant="outlined"
           InputProps={getInputProps()}
         />
+        {isInvalidField && (
+          <span className={"input-error-msg"}>
+            Provide positive non-zero number
+          </span>
+        )}
         <Slider
-          className={value === disabledValue ? "input-error" : ""}
+          className={isInvalidField ? "input-error" : ""}
           step={step}
           aria-label={label}
           valueLabelDisplay="auto"

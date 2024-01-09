@@ -45,7 +45,6 @@ const LoanInputForm = memo((): JSX.Element => {
       <LoanInput
         id={INPUT_FORM_ID.AMOUNT}
         label="Loan Amount"
-        icon="&#8377;"
         value={amount}
         minValue={1000}
         maxValue={10000000}
@@ -57,7 +56,6 @@ const LoanInputForm = memo((): JSX.Element => {
         <LoanInput
           id={INPUT_FORM_ID.INTEREST_RATE}
           label="Rate of interest (p.a)"
-          icon="%"
           value={interestRate}
           step={0.1}
           minValue={1}
@@ -68,7 +66,6 @@ const LoanInputForm = memo((): JSX.Element => {
         <LoanInput
           id={INPUT_FORM_ID.TENURE}
           label="Loan Tenure"
-          icon="Yr"
           value={tenure}
           minValue={1}
           maxValue={30}

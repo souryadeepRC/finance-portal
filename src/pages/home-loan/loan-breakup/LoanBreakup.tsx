@@ -44,8 +44,7 @@ const LoanBreakup = memo((): JSX.Element => {
   return (
     <div className={styles["loan-result__container"]}>
       <div className={styles["loan-breakup-data__container"]}>
-        <LoanAmountLabel label="Monthly EMI" value={monthlyEmi} />
-        <DisplayLabel label="Loan Completion" value={completionPeriod} />
+        
         <Popover label="View Breakup Details">
           <Box
             sx={{
@@ -60,12 +59,16 @@ const LoanBreakup = memo((): JSX.Element => {
             <LoanAmountLabel label="Total Amount" value={totalPaidAmount} />
           </Box>
         </Popover>
+        <div style={{display:'flex',justifyContent:'space-around'}}>
+          <LoanAmountLabel label="Monthly EMI" value={monthlyEmi} />
+          <DisplayLabel label="Loan Completion" value={completionPeriod} />
+        </div>
         <Button
           variant="contained"
           startIcon={<TuneIcon />}
           onClick={onPrePaymentClick}
         >
-          Pre Payment Comparison
+          Compare Pre Payment
         </Button>
       </div>
       <PieChart
