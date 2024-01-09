@@ -1,5 +1,19 @@
 @import "src/styles/variables.scss";
-
-.display-label {
+.display-label__container {
+  display: flex;
+  flex-direction: column;
+  font-size: $font-size-18;
   font-weight: $font-weight-700;
+  .label__heading {
+    font-size: $font-size-12;
+    font-weight: $font-weight-500;
+  }
+}
+@media screen and (max-width: $mobile-max-width) {
+  .display-label__container {
+    font-size: $font-size-14;
+    .label__heading {
+      font-size: $font-size-12;
+    }
+  }
 }

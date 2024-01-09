@@ -10,11 +10,13 @@ const LoanAmountLabel = ({
   value,
 }: LoanAmountLabelProps): JSX.Element => {
   return (
-    <span>
-      <label className={styles["breakup-label"]}>{label} </label>
-      <span>&#8377;</span>
-      {Math.round(value).toLocaleString("en-IN")}
-    </span>
+    <div className={styles["loan-amount-label__container"]}>
+      <label className={styles["label__heading"]}>{label} </label>
+      <label className={styles["label__info"]}>
+        <span className={styles["label__icon"]}>&#8377;</span>
+        <span className={styles["label__value"]}>{Math.round(value).toLocaleString("en-IN")}</span>
+      </label>
+    </div>
   );
 };
 LoanAmountLabel.displayName = "LoanAmountLabel";

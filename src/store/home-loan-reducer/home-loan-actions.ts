@@ -1,5 +1,8 @@
 // constants
-import { LoanStartPeriodType } from "../reducer-types";
+import {
+  LoanStartPeriodType,
+  prePaymentOptionsPayloadType,
+} from "./home-loan-types";
 import {
   UPDATE_INTEREST_RATE,
   UPDATE_LOAN_AMOUNT,
@@ -8,6 +11,8 @@ import {
   RESET_LOAN_DETAILS,
   UPDATE_LOAN_PAYMENT_DETAILS,
   UPDATE_LOAN_PAYMENT_YEAR,
+  UPDATE_LOAN_PRE_PAYMENT_OPTIONS,
+  REMOVE_PRE_PAYMENT_OPTION
 } from "./home-loan-constants";
 //types
 import {
@@ -69,3 +74,18 @@ export const updateLoanPaymentYear = (
     payload,
   };
 };
+export const updatePrePaymentOptions = (
+  payload: prePaymentOptionsPayloadType
+): HomeLoanReducerActionType => {
+  return {
+    type: UPDATE_LOAN_PRE_PAYMENT_OPTIONS,
+    payload,
+  };
+};
+
+export const removePrePaymentOption = (payload:number):HomeLoanReducerActionType => { 
+  return {
+    type: REMOVE_PRE_PAYMENT_OPTION,
+    payload
+  }
+}

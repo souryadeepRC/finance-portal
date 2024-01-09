@@ -16,12 +16,11 @@ import {
   updateLoanTenure,
 } from "src/store/home-loan-reducer/home-loan-actions";
 // utils
-import { isFloatingNumeric, isNumeric } from "src/utils/string-utils";
+import {   isNumeric, isValidData } from "src/utils/string-utils";
 // styles
 import styles from "./LoanInputForm.module.scss";
 // types
-import { HomeLoanInputType } from "src/store/home-loan-reducer/home-loan-types";
-import { LoanStartPeriodType } from "src/store/reducer-types";
+import { HomeLoanInputType,LoanStartPeriodType } from "src/store/home-loan-reducer/home-loan-types";
 
 type LoanInputFormProps = {
   loanAmount: number;
@@ -42,9 +41,6 @@ const LoanInputForm = memo(
       loanStartPeriod;
 
     // fns
-    const isValidData = (modifiedValue: string): boolean => {
-      return modifiedValue === "" || isFloatingNumeric(modifiedValue);
-    };
     const onLoanStartPeriodChange = (
       selectedDate: dayjs.Dayjs | null
     ): void => {

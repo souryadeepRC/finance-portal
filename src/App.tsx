@@ -1,13 +1,13 @@
 
 import { BrowserRouter as Router } from "react-router-dom";
-// components
-import { Header } from "src/components/common/header/Header";
+// components 
 import { AppRoutes } from "src/routes";
+import { AppNavigationBar } from "src/components/app-navigation-bar/AppNavigationBar";
 
 const App = (): JSX.Element => {
   return (
       <Router>
-        <Header />
+        <AppNavigationBar />
         <AppRoutes />
       </Router>
   );

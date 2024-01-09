@@ -9,7 +9,7 @@ const AppSkeleton = (): JSX.Element => {
   // fns
   const renderPageSkeleton = (pathname: string): JSX.Element => {
     switch (pathname) {
-      case "/home-loan":
+      case "/homeLoan":
         return <SkeletonHomeLoan />;
       default:
         return <></>;

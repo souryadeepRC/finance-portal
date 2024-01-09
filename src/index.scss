@@ -17,6 +17,7 @@ code {
 /* width */
 ::-webkit-scrollbar {
   width: 5px;
+  height: 5px;
 }
 
 /* Track */
@@ -30,4 +31,9 @@ code {
   border-radius: 10px;
 }
 
- 
+a.active {
+  color: $app-secondary-color;
+}
+.MuiPickersPopper-paper .MuiPickersMonth-monthButton.Mui-selected{
+  background-color: $app-primary-color;
+}

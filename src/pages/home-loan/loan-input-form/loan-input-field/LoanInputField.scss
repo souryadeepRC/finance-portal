@@ -1,5 +1,5 @@
 @import "src/styles/variables.scss";
- 
+
 .loan-input-field__container {
   display: flex;
   flex-wrap: wrap;
@@ -34,7 +34,7 @@
       font-size: $font-size-16;
       font-weight: $font-weight-700;
       color: $app-primary-color;
-      :global(.MuiInput-input) {
+      .MuiInput-input {
         padding: 0;
         font-size: $font-size-16;
         font-weight: $font-weight-700;
@@ -44,19 +44,19 @@
       }
       .error {
         color: $app-error-color;
-        :global(.MuiInput-input) {
+        .MuiInput-input {
           color: $app-error-color;
         }
       }
     }
   }
-  
-  :global(.MuiSlider-root) {
+
+  .MuiSlider-root {
     color: $app-primary-color;
   }
   .error {
     color: $app-error-color;
-    :global(.MuiSlider-root) {
+    .MuiSlider-root {
       color: $app-error-color;
     }
   }
@@ -64,11 +64,13 @@
 
 @media screen and (max-width: $mobile-max-width) {
   .loan-input-field__container {
-    gap: 10px;
-    grid-gap: 10px;
+    gap: 5px;
+    grid-gap: 5px;
     padding: 0;
     width: 100%;
     .input-field__box {
+      gap: 5px;
+      grid-gap: 5px;
       .input-label {
         font-size: $font-size-12;
         font-weight: $font-weight-700;
@@ -76,13 +78,18 @@
       .input-value__container {
         width: 30%;
         font-size: $font-size-12;
-        :global(.MuiInput-input) {
+        .MuiInput-input {
           font-size: $font-size-12;
         }
       }
     }
-    :global(.MuiSlider-root) {
+    .MuiSlider-root {
       width: 90%;
+      padding: 5px 0;
+      .MuiSlider-thumb {
+        width: 15px;
+        height: 15px;
+      }
     }
   }
 }

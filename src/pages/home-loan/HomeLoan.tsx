@@ -2,8 +2,7 @@ import { memo, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 // components
 import { LoanInputForm } from "src/pages/home-loan/loan-input-form/LoanInputForm";
-import { LoanBreakup } from "src/pages/home-loan/loan-breakup/LoanBreakup";
-import { LoanAmortization } from "src/pages/home-loan/loan-amortization/LoanAmortization";
+import { LoanAmountBreakup } from "src/pages/home-loan/loan-amount-breakup/LoanAmountBreakup";
 // actions
 import { updateLoanPaymentDetails } from "src/store/home-loan-reducer/home-loan-actions";
 // selectors
@@ -16,11 +15,13 @@ import {
 // utils
 import { calculateLoanBreakup } from "./home-loan-utils";
 // types
-import { HomeLoanBreakupType } from "src/store/home-loan-reducer/home-loan-types";
-import { LoanStartPeriodType } from "src/store/reducer-types";
+import {
+  HomeLoanBreakupType,
+  LoanStartPeriodType,
+} from "src/store/home-loan-reducer/home-loan-types";
 import { AppDispatch } from "src/store/store";
 // styles
-import styles from "./HomeLoan.module.scss";
+import styles from "./HomeLoan.module.scss"; 
 
 const HomeLoan = memo((): JSX.Element => {
   // store
@@ -31,6 +32,7 @@ const HomeLoan = memo((): JSX.Element => {
   const loanStartPeriod: LoanStartPeriodType = useSelector(
     selectLoanStartPeriod
   );
+  // state
   const [isValidForm, setIsValidForm] = useState<boolean>(true);
   // effects
   useEffect(() => {
@@ -48,7 +50,7 @@ const HomeLoan = memo((): JSX.Element => {
     }
   }, [dispatch, loanAmount, interestRate, loanTenure, loanStartPeriod]);
 
-  // render fns 
+  // render fns
   return (
     <>
       <div className={styles["home-loan__container"]}>
@@ -58,9 +60,8 @@ const HomeLoan = memo((): JSX.Element => {
           loanTenure={loanTenure}
           loanStartPeriod={loanStartPeriod}
         />
-        {isValidForm && <LoanBreakup />}
+        {isValidForm && <LoanAmountBreakup />}
       </div>
-      {isValidForm && <LoanAmortization />}
     </>
   );
 });

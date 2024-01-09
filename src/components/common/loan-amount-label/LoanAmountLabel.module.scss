@@ -1,5 +1,29 @@
 @import "src/styles/variables.scss";
 
-.breakup-label {
-  font-weight: $font-weight-700;
+.loan-amount-label__container {
+  display: flex;
+  flex-direction: column;
+  .label__heading {
+    font-size: $font-size-12;
+  }
+  .label__info {
+    display: inline-flex;
+    .label__icon {
+      font-size: $font-size-16;
+    }
+    .label__value {
+      font-weight: $font-weight-700;
+      font-size: $font-size-20;
+    }
+  }
+}
+@media screen and (max-width: $mobile-max-width) {
+  .loan-amount-label__container .label__info {
+    .label__icon {
+      font-size: $font-size-12;
+    }
+    .label__value {
+      font-size: $font-size-16;
+    }
+  }
 }

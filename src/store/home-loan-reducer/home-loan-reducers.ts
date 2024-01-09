@@ -1,5 +1,9 @@
 // mappers
-import { mapPaymentYearAmortization } from "src/store/home-loan-reducer/home-loan-mapper";
+import {
+  mapPaymentYearAmortization,
+  mapLoanPrePaymentOptions,
+  mapRemovedPrePaymentOptions,
+} from "src/store/home-loan-reducer/home-loan-mapper";
 // constants
 import {
   RESET_LOAN_DETAILS,
@@ -9,11 +13,13 @@ import {
   UPDATE_LOAN_TENURE,
   UPDATE_LOAN_PAYMENT_DETAILS,
   UPDATE_LOAN_PAYMENT_YEAR,
+  UPDATE_LOAN_PRE_PAYMENT_OPTIONS,
+  REMOVE_PRE_PAYMENT_OPTION, 
 } from "./home-loan-constants";
 // types
 import { HomeLoanReducerType } from "src/store/reducer-types";
 import { HomeLoanReducerActionType } from "./home-loan-types";
-
+ 
 const latestDate: Date = new Date();
 
 const initialState: HomeLoanReducerType = {
@@ -34,7 +40,7 @@ const initialState: HomeLoanReducerType = {
   },
   interestAmount: 0,
   totalPaidAmount: 0,
-  completionPeriod: "",
+  loanCompletionPeriod: { displayText: "", month: 0, year: 0 },
   paymentYearAmortization: {
     principalPaid: 0,
     interestPaid: 0,
@@ -43,6 +49,7 @@ const initialState: HomeLoanReducerType = {
     outstandingBalance: 0,
     monthlyBreakup: [],
   },
+  prePaymentOptions: [] // fetchPrePaymentOptionsTestData(),
 };
 const HomeLoanReducer = (
   state = initialState,
@@ -88,7 +95,7 @@ const HomeLoanReducer = (
         yearlyAmortizationDetails,
         interestAmount,
         totalPaidAmount,
-        completionPeriod,
+        loanCompletionPeriod,
         paymentYearDetails,
       } = payload;
       const loanPaymentYear: number = state.loanStartPeriod.year;
@@ -98,7 +105,7 @@ const HomeLoanReducer = (
         yearlyAmortizationDetails,
         interestAmount,
         totalPaidAmount,
-        completionPeriod,
+        loanCompletionPeriod,
         paymentYearDetails,
         loanPaymentYear: loanPaymentYear,
         ...mapPaymentYearAmortization(
@@ -116,6 +123,41 @@ const HomeLoanReducer = (
         ...mapPaymentYearAmortization(
           yearlyAmortizationDetails,
           loanPaymentYear
+        ),
+      };
+    }
+    case UPDATE_LOAN_PRE_PAYMENT_OPTIONS: {
+      const {
+        loanAmount,
+        interestRate,
+        monthlyEmi,
+        loanStartPeriod,
+        prePaymentOptions,
+        interestAmount,
+        loanCompletionPeriod,
+      } = state;
+
+      return {
+        ...state,
+        prePaymentOptions: mapLoanPrePaymentOptions(
+          payload,
+          loanAmount,
+          interestRate,
+          loanStartPeriod,
+          monthlyEmi,
+          prePaymentOptions,
+          interestAmount,
+          loanCompletionPeriod
+        ),
+      };
+    }
+    case REMOVE_PRE_PAYMENT_OPTION: {
+      const { prePaymentOptions } = state;
+      return {
+        ...state,
+        prePaymentOptions: mapRemovedPrePaymentOptions(
+          payload,
+          prePaymentOptions
         ),
       };
     }

@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-const useMedia = (): boolean => {
+const useMedia = (): boolean => {  
   // state
-  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth<=767);
 
   const mediaQuery: string = "(max-width: 767px)";
   const mediaQueryList: MediaQueryList = window.matchMedia(mediaQuery);

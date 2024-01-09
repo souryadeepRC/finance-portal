@@ -3,7 +3,7 @@ import { memo } from "react";
 import { Input } from "@mui/material";
 import Slider from "@mui/material/Slider";
 // styles
-import styles from "./LoanInputField.module.scss";
+import "./LoanInputField.scss";
 import { HomeLoanInputType } from "src/store/home-loan-reducer/home-loan-types";
 // type
 type LoanInputFieldProps = {
@@ -53,27 +53,29 @@ const LoanInputField = memo(
 
     // render fns
     return (
-      <div className={styles["loan-input-field__container"]}>
-        <div className={styles["input-field__box"]}>
-          <label className={styles["input-label"]}>{label}</label>
-          {isInvalidField && <span className={styles["input-label-error-msg"]}>
-            Provide positive non-zero number
-          </span>}
-          <div className={`${className} ${styles["input-value__container"]}`}>
+      <div className={"loan-input-field__container"}>
+        <div className={"input-field__box"}>
+          <label className={"input-label"}>{label}</label>
+          {isInvalidField && (
+            <span className={"input-label-error-msg"}>
+              Provide positive non-zero number
+            </span>
+          )}
+          <div className={`${className} ${"input-value__container"}`}>
             <Input
-              className={isInvalidField ? `${styles["error"]}` : ""}
+              className={isInvalidField ? `${"error"}` : ""}
               disableUnderline={true}
               id={id}
               value={value}
               onChange={onInputChange}
             />
-            <span className={isInvalidField ? `${styles["error"]}` : ""}>
+            <span className={isInvalidField ? `${"error"}` : ""}>
               {icon}
             </span>
           </div>
         </div>
         <Slider
-        className={isInvalidField ? `${styles["error"]}` : ""}
+          className={isInvalidField ? `${"error"}` : ""}
           defaultValue={defaultValue}
           step={step}
           aria-label={label}

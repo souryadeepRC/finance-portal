@@ -1,9 +1,12 @@
 // types
-import { AppStoreType, LoanStartPeriodType } from "src/store/reducer-types";
+import { AppStoreType } from "src/store/reducer-types";
 import {
   HomeLoanMonthlyAmortizationType,
   HomeLoanYearlyAmortizationType,
+  LoanCompletionPeriod,
+  LoanStartPeriodType,
   PaymentYearDetailsType,
+  prePaymentOptionsType
 } from "./home-loan-types";
 
 export const selectLoanAmount = (store: AppStoreType): number =>
@@ -35,8 +38,11 @@ export const selectTotalPaidAmount = (
   store: AppStoreType
 ): number => store?.homeLoan?.totalPaidAmount;
 
-export const selectCompletionPeriod = (store: AppStoreType): string =>
-  store?.homeLoan?.completionPeriod;
+export const selectLoanCompletionPeriod = (store: AppStoreType): LoanCompletionPeriod =>
+  store?.homeLoan?.loanCompletionPeriod;
+  
+export const selectLoanCompletionPeriodText = (store: AppStoreType): string =>
+  store?.homeLoan?.loanCompletionPeriod?.displayText;
 
 export const selectInterestAmount = (store: AppStoreType): number =>
   store?.homeLoan?.interestAmount;
@@ -47,3 +53,5 @@ store?.homeLoan?.paymentYearAmortization?.monthlyBreakup;
 
 export const selectPaymentYearAmortization = (store: AppStoreType): HomeLoanYearlyAmortizationType =>
 store?.homeLoan?.paymentYearAmortization;
+export const selectPrePaymentOptions = (store: AppStoreType): prePaymentOptionsType[] =>
+store?.homeLoan?.prePaymentOptions;

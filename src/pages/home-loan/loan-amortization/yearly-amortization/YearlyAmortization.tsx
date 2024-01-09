@@ -45,8 +45,7 @@ const YearlyAmortization = memo((): JSX.Element => {
         <DisplayLabel label="Congratulations! " value="Loan paid completely" />
       ) : (
         <DisplayLabel
-          label={`${remainingYearCount} `}
-          value={`Year${remainingYearCount > 1 ? "s" : ""} Left`}
+          value={`${remainingYearCount} Year${remainingYearCount > 1 ? "s" : ""} Left`}
         />
       )}
     </>
