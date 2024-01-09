@@ -11,6 +11,7 @@ import {
   HomeLoanMonthlyAmortizationType,
   HomeLoanYearlyAmortizationType,
   LoanCompletionPeriod,
+  LoanDetailsType,
   PrePaidPrincipalType,
   PrePaymentPrediction,
   prePaymentLoanDetailsType,
@@ -20,15 +21,15 @@ import { LoanStartPeriodType } from "src/store/home-loan-reducer/home-loan-types
 import { getMonthDifference } from "src/utils/date-utils";
 
 const calculateMonthlyEmi = (
-  loanAmount: number,
+  amount: number,
   interestRate: number,
-  loanTenure: number
+  tenure: number
 ): number => {
-  const tenureInMonth: number = loanTenure * 12;
+  const tenureInMonth: number = tenure * 12;
   const monthlyRate: number = interestRate / (12 * 100);
 
   const monthlyEmi: number =
-    (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, tenureInMonth)) /
+    (amount * monthlyRate * Math.pow(1 + monthlyRate, tenureInMonth)) /
     (Math.pow(1 + monthlyRate, tenureInMonth) - 1);
 
   return monthlyEmi;
@@ -66,7 +67,7 @@ const fetchLoanMonthlyBreakup = (
     totalInterestPaid: number = 0;
 
   let prePaidPrincipalAmount: number = prePaidPrincipal?.amount || 0;
-  
+
   while (remainingBalance > 0) {
     // Pre pay Principal amount
 
@@ -127,27 +128,23 @@ const fetchLoanCompletionPeriod = (
   };
 };
 
-export const calculateLoanBreakup = (
-  loanAmount: number,
-  interestRate: number,
-  loanTenure: number,
-  loanStartPeriod: LoanStartPeriodType
-): HomeLoanBreakupType => {
+export const calculateLoanBreakup = ({
+  amount,
+  interestRate,
+  tenure,
+  startPeriod,
+}: LoanDetailsType): HomeLoanBreakupType => {
   // calculate EMI
-  const monthlyEmi: number = calculateMonthlyEmi(
-    loanAmount,
-    interestRate,
-    loanTenure
-  );
+  const monthlyEmi: number = calculateMonthlyEmi(amount, interestRate, tenure);
   // Find Monthly Payment Breakup
   const {
     monthlyBreakup,
     totalPrincipalPaid,
     totalInterestPaid,
   }: HomeLoanAmountBreakup = fetchLoanMonthlyBreakup(
-    loanAmount,
+    amount,
     interestRate,
-    loanStartPeriod,
+    startPeriod,
     monthlyEmi
   );
 
@@ -155,7 +152,7 @@ export const calculateLoanBreakup = (
     new Set(monthlyBreakup.map((monthlyData) => monthlyData.year))
   ).sort((a: number, b: number) => a - b);
 
-  let outstandingBalance: number = loanAmount;
+  let outstandingBalance: number = amount;
   const yearlyAmortizationDetails: HomeLoanYearlyAmortizationType[] = [];
 
   paymentYearList.forEach((paymentYear: number, index: number) => {
@@ -229,13 +226,13 @@ export const fetchLoanPrePaymentPredictions = (
   const modifiedInterestDiff: number = Math.abs(interestDiff);
   const interestDiffPercentage: number =
     (modifiedInterestDiff / interestAmount) * 100;
-  
+
   const monthDifference: number = getMonthDifference(
     new Date(loanCompletionPeriod.year, loanCompletionPeriod.month),
     new Date(completionPeriod.year, completionPeriod.month)
   );
 
-  console.log({loanCompletionPeriod,completionPeriod,monthDifference});
+  console.log({ loanCompletionPeriod, completionPeriod, monthDifference });
   return {
     interestAmountDiff: {
       amount: Math.round(Math.abs(interestDiff)),

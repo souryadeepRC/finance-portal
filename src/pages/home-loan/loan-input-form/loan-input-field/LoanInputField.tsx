@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 // library
 import { Input } from "@mui/material";
 import Slider from "@mui/material/Slider";
@@ -13,10 +13,9 @@ type LoanInputFieldProps = {
   icon: string;
   value: number;
   step?: number;
-  defaultValue: number;
   minValue: number;
   maxValue: number;
-  disabledValue: number;
+  disabledValue?: number;
   onChange: ({ enteredId, enteredValue }: HomeLoanInputType) => void;
 };
 const LoanInputField = memo(
@@ -26,19 +25,28 @@ const LoanInputField = memo(
     label,
     icon,
     value,
-    defaultValue,
     step = 1,
     minValue,
     maxValue,
-    disabledValue,
+    disabledValue = 0,
     onChange,
   }: LoanInputFieldProps): JSX.Element => {
+    const [displayMessage, setDisplayMessage] = useState(value);
+
+    useEffect(() => {
+      const timeOutId = setTimeout(
+        () =>
+          onChange({
+            enteredId: id,
+            enteredValue: `${displayMessage}`,
+          }),
+        300
+      );
+      return () => clearTimeout(timeOutId);
+    }, [id, onChange, displayMessage]);
     // fns
     const onSliderChange = (e: Event, newValue: number | number[]): void => {
-      onChange({
-        enteredId: id,
-        enteredValue: `${newValue}`,
-      });
+      setDisplayMessage(+newValue);
     };
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
       const enteredId: string = e.target.id;
@@ -53,7 +61,7 @@ const LoanInputField = memo(
 
     // render fns
     return (
-      <div className={"loan-input-field__container"}>
+      <div className={`${className} ${"loan-input-field__container"}`}>
         <div className={"input-field__box"}>
           <label className={"input-label"}>{label}</label>
           {isInvalidField && (
@@ -61,7 +69,7 @@ const LoanInputField = memo(
               Provide positive non-zero number
             </span>
           )}
-          <div className={`${className} ${"input-value__container"}`}>
+          <div className="input-value__container">
             <Input
               className={isInvalidField ? `${"error"}` : ""}
               disableUnderline={true}
@@ -69,21 +77,17 @@ const LoanInputField = memo(
               value={value}
               onChange={onInputChange}
             />
-            <span className={isInvalidField ? `${"error"}` : ""}>
-              {icon}
-            </span>
+            <span className={isInvalidField ? `${"error"}` : ""}>{icon}</span>
           </div>
         </div>
         <Slider
           className={isInvalidField ? `${"error"}` : ""}
-          defaultValue={defaultValue}
           step={step}
           aria-label={label}
           valueLabelDisplay="auto"
-          value={value}
+          value={displayMessage}
           min={minValue}
           max={maxValue}
-          /* disabled={value === disabledValue} */
           onChange={onSliderChange}
         />
       </div>

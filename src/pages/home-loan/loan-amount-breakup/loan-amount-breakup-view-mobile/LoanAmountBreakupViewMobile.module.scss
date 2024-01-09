@@ -1,12 +1,17 @@
 @import "src/styles/variables.scss";
 
 .amount-breakup-view_tabs {
+  :global(.MuiTabs-flexContainer){
+    flex-wrap: wrap;
+    justify-content: center;
+  }
   :global(.MuiTabs-indicator) { 
     background-color: $app-primary-color;
   }
   .amount-breakup-view_tab {
     text-transform: capitalize;
     font-weight: $font-weight-700;
+    padding: 5px;
     &:global(.Mui-selected) {
       color: $app-primary-color;
     }

@@ -1,10 +1,14 @@
 @import "src/styles/variables.scss";
+ 
 .radio-button-group__container {
+  width: 100%;
+  display: flex;
+  align-items: center;
   :global(.MuiFormLabel-root) {
     color: $app-primary-color;
     font-weight: $font-weight-700;
   }
   :global(.MuiRadio-root.Mui-checked) {
-    color: $app-primary-color; 
+    color: $app-primary-color;
   }
 }

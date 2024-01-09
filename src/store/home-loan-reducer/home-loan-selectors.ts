@@ -1,25 +1,33 @@
 // types
 import { AppStoreType } from "src/store/reducer-types";
 import {
+  LoanDetailsType,
   HomeLoanMonthlyAmortizationType,
   HomeLoanYearlyAmortizationType,
   LoanCompletionPeriod,
   LoanStartPeriodType,
   PaymentYearDetailsType,
-  prePaymentOptionsType
+  prePaymentOptionsType,
 } from "./home-loan-types";
 
+// ====== Loan Parameter Details ======
+export const selectLoanDetails = (store: AppStoreType): LoanDetailsType =>
+  store?.homeLoan?.loanDetails;
+
 export const selectLoanAmount = (store: AppStoreType): number =>
-  store?.homeLoan?.loanAmount;
+  store?.homeLoan?.loanDetails?.amount;
 export const selectLoanInterestRate = (store: AppStoreType): number =>
-  store?.homeLoan?.interestRate;
+  store?.homeLoan?.loanDetails?.interestRate;
 export const selectLoanTenure = (store: AppStoreType): number =>
-  store?.homeLoan?.loanTenure;
-export const selectMonthlyEmi = (store: AppStoreType): number =>
-  store?.homeLoan?.monthlyEmi;
+  store?.homeLoan?.loanDetails?.tenure;
 export const selectLoanStartPeriod = (
   store: AppStoreType
-): LoanStartPeriodType => store?.homeLoan?.loanStartPeriod;
+): LoanStartPeriodType => store?.homeLoan?.loanDetails?.startPeriod;
+export const selectIsInValidLoanDetails = (store: AppStoreType): boolean =>
+  store?.homeLoan?.loanDetails?.isError;
+
+export const selectMonthlyEmi = (store: AppStoreType): number =>
+  store?.homeLoan?.monthlyEmi;
 export const selectMonthlyAmortizationDetails = (
   store: AppStoreType
 ): HomeLoanMonthlyAmortizationType[] =>
@@ -34,24 +42,27 @@ export const selectPaymentYearDetails = (
   store: AppStoreType
 ): PaymentYearDetailsType => store?.homeLoan?.paymentYearDetails;
 
-export const selectTotalPaidAmount = (
-  store: AppStoreType
-): number => store?.homeLoan?.totalPaidAmount;
+export const selectTotalPaidAmount = (store: AppStoreType): number =>
+  store?.homeLoan?.totalPaidAmount;
 
-export const selectLoanCompletionPeriod = (store: AppStoreType): LoanCompletionPeriod =>
-  store?.homeLoan?.loanCompletionPeriod;
-  
+export const selectLoanCompletionPeriod = (
+  store: AppStoreType
+): LoanCompletionPeriod => store?.homeLoan?.loanCompletionPeriod;
+
 export const selectLoanCompletionPeriodText = (store: AppStoreType): string =>
   store?.homeLoan?.loanCompletionPeriod?.displayText;
 
 export const selectInterestAmount = (store: AppStoreType): number =>
   store?.homeLoan?.interestAmount;
 
-  
-export const selectPaymentYearMonthlyBreakup = (store: AppStoreType): HomeLoanMonthlyAmortizationType[] =>
-store?.homeLoan?.paymentYearAmortization?.monthlyBreakup;
+export const selectPaymentYearMonthlyBreakup = (
+  store: AppStoreType
+): HomeLoanMonthlyAmortizationType[] =>
+  store?.homeLoan?.paymentYearAmortization?.monthlyBreakup;
 
-export const selectPaymentYearAmortization = (store: AppStoreType): HomeLoanYearlyAmortizationType =>
-store?.homeLoan?.paymentYearAmortization;
-export const selectPrePaymentOptions = (store: AppStoreType): prePaymentOptionsType[] =>
-store?.homeLoan?.prePaymentOptions;
+export const selectPaymentYearAmortization = (
+  store: AppStoreType
+): HomeLoanYearlyAmortizationType => store?.homeLoan?.paymentYearAmortization;
+export const selectPrePaymentOptions = (
+  store: AppStoreType
+): prePaymentOptionsType[] => store?.homeLoan?.prePaymentOptions;

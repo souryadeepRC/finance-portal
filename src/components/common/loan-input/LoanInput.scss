@@ -1,0 +1,54 @@
+@import "src/styles/variables.scss";
+
+.loan-input__container {
+  width: 100%;
+  .input-error.MuiTextField-root {
+    .MuiInputLabel-root,
+    .MuiOutlinedInput-input,
+    .MuiInputAdornment-root {
+      color: $app-error-color;
+    }
+    .MuiOutlinedInput-notchedOutline {
+      border-color: $app-error-color;
+    }
+  }
+  .input-error-msg {
+    color: $app-error-color;
+    font-size: $font-size-12;
+    text-align: right;
+    width: 100%;
+    display: block;
+    font-style: italic;
+  }
+  .MuiTextField-root {
+    width: 100%;
+    .MuiInputLabel-root {
+      color: $app-primary-color;
+      font-weight: $font-weight-700;
+    }
+    .MuiOutlinedInput-input {
+      font-size: $font-size-16;
+      font-weight: $font-weight-700;
+      color: $app-primary-color;
+      padding: 15px 10px;
+    }
+    .MuiInputAdornment-root {
+      color: $app-primary-color;
+      font-weight: $font-weight-700;
+    }
+    .MuiOutlinedInput-notchedOutline {
+      border-color: $app-primary-color;
+    }
+  }
+  .MuiSlider-root {
+    color: $app-primary-color;
+  }
+}
+
+@media screen and (max-width: $mobile-max-width) {
+  .loan-input__container {
+    .MuiTextField-root .MuiOutlinedInput-input {
+      padding: 10px 20px;
+    }
+  }
+}
