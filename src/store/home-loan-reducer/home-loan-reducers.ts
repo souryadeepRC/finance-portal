@@ -31,6 +31,13 @@ const initialState: HomeLoanReducerType = {
     },
     isError: false,
   },
+  paidAmountBreakup: {
+    monthlyEmi: 0,
+    principalPaid: 0,
+    interestPaid: 0,
+    totalPaidAmount: 0,
+    completionPeriod: { displayText: "", month: 0, year: 0 },
+  },
   monthlyEmi: 0,
   monthlyAmortizationDetails: [],
   yearlyAmortizationDetails: [],
@@ -58,13 +65,13 @@ const HomeLoanReducer = (
 ): HomeLoanReducerType => {
   switch (type) {
     case UPDATE_LOAN_DETAILS: {
-      const { loanDetails } = state; 
+      const { loanDetails } = state;
       return {
         ...state,
-        loanDetails : {
+        loanDetails: {
           ...loanDetails,
           ...payload,
-        }
+        },
       };
     }
     case RESET_LOAN_DETAILS: {
@@ -74,11 +81,11 @@ const HomeLoanReducer = (
         loanDetails,
       };
     }
-    case UPDATE_LOAN_PAYMENT_DETAILS: { 
+    case UPDATE_LOAN_PAYMENT_DETAILS: {
       return {
         ...state,
         ...mapLoanPaymentDetails(payload),
-      }
+      };
     }
     case UPDATE_LOAN_PAYMENT_YEAR: {
       const { yearlyAmortizationDetails } = state;
@@ -93,26 +100,14 @@ const HomeLoanReducer = (
       };
     }
     case UPDATE_LOAN_PRE_PAYMENT_OPTIONS: {
-      const {
-        loanDetails,
-        monthlyEmi,
-        prePaymentOptions,
-        interestAmount,
-        loanCompletionPeriod,
-      } = state;
-      const { amount, interestRate, startPeriod } = loanDetails; 
-      
+      const { loanDetails, paidAmountBreakup, prePaymentOptions } = state;
       return {
         ...state,
         prePaymentOptions: mapLoanPrePaymentOptions(
           payload,
-          amount,
-          interestRate,
-          startPeriod,
-          monthlyEmi,
-          prePaymentOptions,
-          interestAmount,
-          loanCompletionPeriod
+          loanDetails,
+          paidAmountBreakup,
+          prePaymentOptions
         ),
       };
     }

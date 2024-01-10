@@ -33,8 +33,8 @@ const PayByEmi = memo(({ onSave }: PayByEmiProps): JSX.Element => {
   const onSaveBtnClick = (): void => {
     dispatch(
       updatePrePaymentOptions({
-        prePaymentType: PRE_PAYMENT_TYPES.INCREASE_MONTHLY_EMI,
-        prePaymentInfo: { updatedEmi },
+        type: PRE_PAYMENT_TYPES.INCREASE_MONTHLY_EMI,
+        params: { updatedEmi },
       })
     );
     onSave();
@@ -56,7 +56,7 @@ const PayByEmi = memo(({ onSave }: PayByEmiProps): JSX.Element => {
         variant="contained"
         onClick={onSaveBtnClick}
         startIcon={<SaveIcon />}
-        disabled={updatedEmi === monthlyEmi}
+        disabled={updatedEmi === monthlyEmi || updatedEmi === 0}
       >
         Save
       </Button>

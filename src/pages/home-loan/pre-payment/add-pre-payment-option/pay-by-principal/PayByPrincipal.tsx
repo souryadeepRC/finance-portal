@@ -112,10 +112,11 @@ const PayByPrincipal = memo(({ onSave }: PayByEmiProps): JSX.Element => {
       ...(isIncrementChecked ? { incrementFactor: incrementFactor / 100 } : {}),
     };
 
+    if (amount === 0 || year === 0 || !modifiedPrePaidValue) return;
     dispatch(
       updatePrePaymentOptions({
-        prePaymentType: PRE_PAYMENT_TYPES.PAY_PRINCIPAL_AMOUNT,
-        prePaymentInfo: { prePaidPrincipal: modifiedPrePaidValue },
+        type: PRE_PAYMENT_TYPES.PAY_PRINCIPAL_AMOUNT,
+        params: { prePaidPrincipal: modifiedPrePaidValue },
       })
     );
     onSave();

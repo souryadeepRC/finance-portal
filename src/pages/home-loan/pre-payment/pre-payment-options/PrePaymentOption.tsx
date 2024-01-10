@@ -6,8 +6,9 @@ import { Box } from "@mui/material";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 // common components
 import { Button } from "src/components/common/button/Button";
+import { Popover } from "src/components/common/popover/Popover"; 
 // components
-import { LoanAmountInfo } from "src/pages/home-loan/pre-payment-view/loan-amount-info/LoanAmountInfo";
+import { PaidAmountBreakup } from "src/pages/home-loan/loan-details/PaidAmountBreakup";
 import { PrePaymentPredictionDisplay } from "./PrePaymentPredictionDisplay";
 // actions
 import { removePrePaymentOption } from "src/store/home-loan-reducer/home-loan-actions";
@@ -25,8 +26,7 @@ const PrePaymentOption = memo(
   ({ prePaymentOption }: PrePaymentOptionProps): JSX.Element => {
     // store
     const dispatch: AppDispatch = useDispatch();
-    const { prePaymentType,details,prePaymentOptionId, predictions, modifiedLoanDetails } =
-      prePaymentOption;
+    const { info, id, predictions, paidAmountBreakup } = prePaymentOption;
 
     // fns
     const onRemove = (prePaymentOptionId: number) => (): void => {
@@ -35,11 +35,15 @@ const PrePaymentOption = memo(
 
     return (
       <Box className={styles["payment-option__container"]}>
-        <PrePaymentPredictionDisplay predictions={predictions} prePaymentType={prePaymentType} details={details} />
-        <LoanAmountInfo loanAmountInfo={modifiedLoanDetails} />
+        <PrePaymentPredictionDisplay predictions={predictions} info={info} />
+
+        <Popover label="View payment breakup">
+          <PaidAmountBreakup breakupDetails={paidAmountBreakup} />
+        </Popover>
         <Button
+          sx={{ margin: 2 }}
           variant="contained"
-          onClick={onRemove(prePaymentOptionId)}
+          onClick={onRemove(id)}
           startIcon={<DeleteSweepIcon />}
         >
           Remove

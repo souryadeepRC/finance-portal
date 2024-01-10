@@ -1,4 +1,4 @@
-// ====== Loan Parameter Details ====== 
+// ====== Loan Parameter Details ======
 
 export type LoanStartPeriodType = { month: number; year: number };
 
@@ -8,7 +8,7 @@ export type LoanDetailsPayloadType = {
   tenure?: number;
   startPeriod?: LoanStartPeriodType;
   isError: boolean;
-}
+};
 
 export type LoanDetailsType = {
   amount: number;
@@ -16,14 +16,22 @@ export type LoanDetailsType = {
   tenure: number;
   startPeriod: LoanStartPeriodType;
   isError: boolean;
-}
-
+};
 
 export type UpdateLoanInfoType = {
   field: string;
   value: string;
 };
 
+// ====== Loan Paid Amount  Breakup
+
+export type PaidAmountBreakupType = {
+  monthlyEmi: number;
+  principalPaid: number;
+  interestPaid: number;
+  totalPaidAmount: number;
+  completionPeriod: LoanCompletionPeriod;
+};
 /* export type HomeLoanReducerPayloadType = {
   loanAmount?: string;
   interestRate?: string;
@@ -63,6 +71,7 @@ export type PaymentYearDetailsType = {
   minYear: number;
 };
 export type HomeLoanBreakupType = {
+  paidAmountBreakup: PaidAmountBreakupType;
   monthlyEmi: number;
   yearlyAmortizationDetails: HomeLoanYearlyAmortizationType[];
   interestAmount: number;
@@ -97,20 +106,30 @@ export type PrePaymentPrediction = {
   interestAmountDiff: PrePaymentInterestDiff;
   completionPeriodDiff: PrePaymentCompletionPeriodDiff;
 };
-export type prePaymentOptionsType = {
-  prePaymentOptionId: number;
-  prePaymentType: string;
-  predictions: PrePaymentPrediction;
-  details: prePaymentByEmiType | PrePaidPrincipalType;
-  modifiedLoanDetails: prePaymentLoanDetailsType;
+
+
+// --------------
+export type PrePaymentInfoType = {
+  type: string;
+  params: PrePaymentInfoParamType;
 };
+export type PrePaymentInfoParamType = {
+  prePaidPrincipal?: PrePaidPrincipalType;
+  updatedEmi?: number;
+};
+export type prePaymentOptionsType = {
+  id: number;
+  info: PrePaymentInfoType;
+  predictions: PrePaymentPrediction;
+  paidAmountBreakup: PaidAmountBreakupType;
+};
+
+// --------------
+
 
 export type prePaymentOptionsPayloadType = {
   prePaymentType: string;
-  prePaymentInfo: {
-    prePaidPrincipal?: PrePaidPrincipalType;
-    updatedEmi?: number;
-  };
+  prePaymentInfo: PrePaymentInfoType;
 };
 
 export type LoanCompletionPeriod = {

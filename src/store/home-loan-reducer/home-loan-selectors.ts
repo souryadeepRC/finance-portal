@@ -8,6 +8,7 @@ import {
   LoanStartPeriodType,
   PaymentYearDetailsType,
   prePaymentOptionsType,
+  PaidAmountBreakupType,
 } from "./home-loan-types";
 
 // ====== Loan Parameter Details ======
@@ -25,6 +26,11 @@ export const selectLoanStartPeriod = (
 ): LoanStartPeriodType => store?.homeLoan?.loanDetails?.startPeriod;
 export const selectIsInValidLoanDetails = (store: AppStoreType): boolean =>
   store?.homeLoan?.loanDetails?.isError;
+
+// ========== LOAN PAID AMOUNT DETAILS ============
+export const selectLoanPaidAmountBreakup = (
+  store: AppStoreType
+): PaidAmountBreakupType => store?.homeLoan?.paidAmountBreakup;
 
 export const selectMonthlyEmi = (store: AppStoreType): number =>
   store?.homeLoan?.monthlyEmi;
