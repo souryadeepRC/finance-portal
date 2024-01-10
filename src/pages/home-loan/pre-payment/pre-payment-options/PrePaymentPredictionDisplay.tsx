@@ -13,7 +13,7 @@ import {
 } from "src/store/home-loan-reducer/home-loan-constants";
 // types
 import {
-  PrePaidPrincipalType,
+  PrePaidAmountType,
   PrePaymentCompletionPeriodDiff,
   PrePaymentInfoParamType,
   PrePaymentInfoType,
@@ -57,15 +57,15 @@ const getPrePaymentType = ({ type, params }: PrePaymentInfoType): string => {
   switch (type) {
     case PRE_PAYMENT_TYPES.PAY_PRINCIPAL_AMOUNT.value: {
       const { amount = 0, month = 0 } =
-        prePaidPrincipal as PrePaidPrincipalType;
+        prePaidPrincipal as PrePaidAmountType;
       return `Pre Paid ₹${amount} Principal every year after ${MONTH_ARRAY[month]}`;
     }
     case PRE_PAYMENT_TYPES.INCREASE_MONTHLY_EMI.value:
-      return `Increased Emi to ₹${updatedEmi}`;
+      return `Increased Emi to ₹${updatedEmi?.amount}`;
     case PRE_PAYMENT_TYPES.PRINCIPAL_AND_EMI.value: {
       const { amount = 0, month = 0 } =
-        prePaidPrincipal as PrePaidPrincipalType;
-      return `Increased Emi to ₹${updatedEmi}\n and Pre Paid ₹${amount} Principal every year after ${MONTH_ARRAY[month]}`;
+        prePaidPrincipal as PrePaidAmountType;
+      return `Increased Emi to ₹${updatedEmi?.amount}\n and Pre Paid ₹${amount} Principal every year after ${MONTH_ARRAY[month]}`;
     }
     default:
       return "";

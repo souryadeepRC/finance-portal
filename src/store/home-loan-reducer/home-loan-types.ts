@@ -108,14 +108,21 @@ export type PrePaymentPrediction = {
 };
 
 
-// --------------
+// ------------  Pre Paid  
+export type PrePaidAmountType = {
+  amount: number;
+  incrementFactor?: number;
+  month: number;
+  year: number;
+};
+
 export type PrePaymentInfoType = {
   type: string;
   params: PrePaymentInfoParamType;
 };
 export type PrePaymentInfoParamType = {
-  prePaidPrincipal?: PrePaidPrincipalType;
-  updatedEmi?: number;
+  prePaidPrincipal?: PrePaidAmountType;
+  updatedEmi?: PrePaidAmountType;
 };
 export type prePaymentOptionsType = {
   id: number;
@@ -138,10 +145,3 @@ export type LoanCompletionPeriod = {
   year: number;
 };
 
-// -- Pre Paid Principal
-export type PrePaidPrincipalType = {
-  amount: number;
-  incrementFactor?: number;
-  month: number;
-  year: number;
-};

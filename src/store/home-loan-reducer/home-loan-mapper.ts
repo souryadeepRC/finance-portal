@@ -3,7 +3,6 @@ import {
   fetchLoanPrePaymentDetails,
   fetchLoanPrePaymentPredictions,
 } from "src/pages/home-loan/home-loan-utils";
-import { PRE_PAYMENT_TYPES } from "./home-loan-constants";
 import {
   HomeLoanYearlyAmortizationType,
   prePaymentOptionsType,
@@ -11,7 +10,6 @@ import {
   HomeLoanBreakupType,
   PaidAmountBreakupType,
   PrePaymentInfoType,
-  PrePaymentInfoParamType,
 } from "./home-loan-types";
 
 export const mapLoanPaymentDetails = (loanDetails: LoanDetailsType) => {
@@ -62,43 +60,15 @@ export const mapLoanPrePaymentOptions = (
   paidAmountBreakup: PaidAmountBreakupType,
   prePaymentOptions: prePaymentOptionsType[]
 ): prePaymentOptionsType[] => {
-  const { type, params }: PrePaymentInfoType = info;
-  const { prePaidPrincipal, updatedEmi }: PrePaymentInfoParamType = params;
-  let prePaymentPaidAmountBreakup = undefined;
-
+  const { params }: PrePaymentInfoType = info;
   const { monthlyEmi, interestPaid, completionPeriod }: PaidAmountBreakupType =
     paidAmountBreakup;
 
-  if (
-    type === PRE_PAYMENT_TYPES.INCREASE_MONTHLY_EMI.value &&
-    updatedEmi &&
-    updatedEmi > 0
-  ) {
-    prePaymentPaidAmountBreakup = fetchLoanPrePaymentDetails(
-      loanDetails,
-      updatedEmi
-    );
-  } else if (
-    type === PRE_PAYMENT_TYPES.PAY_PRINCIPAL_AMOUNT.value &&
-    prePaidPrincipal
-  ) {
-    prePaymentPaidAmountBreakup = fetchLoanPrePaymentDetails(
-      loanDetails,
-      monthlyEmi,
-      prePaidPrincipal
-    );
-  } else if (
-    type === PRE_PAYMENT_TYPES.PRINCIPAL_AND_EMI.value &&
-    updatedEmi &&
-    updatedEmi > 0 &&
-    prePaidPrincipal
-  ) {
-    prePaymentPaidAmountBreakup = fetchLoanPrePaymentDetails(
-      loanDetails,
-      updatedEmi,
-      prePaidPrincipal
-    );
-  }
+  const prePaymentPaidAmountBreakup = fetchLoanPrePaymentDetails(
+    loanDetails,
+    monthlyEmi,
+    params
+  );
   if (!prePaymentPaidAmountBreakup) return prePaymentOptions;
 
   return [

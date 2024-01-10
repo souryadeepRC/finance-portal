@@ -120,7 +120,11 @@ const PayByPrincipalEmi = memo(
               month,
               year,
             },
-            updatedEmi,
+            updatedEmi:{
+              amount:updatedEmi,
+              month,
+              year,
+            }
           },
         })
       );

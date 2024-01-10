@@ -44,7 +44,7 @@ const BreakupChart = memo(
             },
           ]}
           width={isMobile ? 200 : 200}
-          height={isMobile ? 100 : 80}
+          height={isMobile ? 100 : 200}
         />
       </div>
     );

@@ -12,10 +12,9 @@ import {
   HomeLoanYearlyAmortizationType,
   LoanCompletionPeriod,
   LoanDetailsType,
-  PaidAmountBreakupType,
-  PrePaidPrincipalType,
+  PaidAmountBreakupType, 
+  PrePaymentInfoParamType,
   PrePaymentPrediction,
-  prePaymentLoanDetailsType,
 } from "src/store/home-loan-reducer/home-loan-types";
 import { LoanStartPeriodType } from "src/store/home-loan-reducer/home-loan-types";
 // utils
@@ -50,8 +49,9 @@ const fetchTotalPaidAmount = (
 const fetchLoanMonthlyBreakup = (
   loanDetails: LoanDetailsType,
   monthlyEmi: number,
-  prePaidPrincipal?: PrePaidPrincipalType
+  prePaidDetails?: PrePaymentInfoParamType
 ): HomeLoanAmountBreakup => {
+  const { prePaidPrincipal, updatedEmi }:PrePaymentInfoParamType = prePaidDetails || {};
   const { interestRate, startPeriod, amount } = loanDetails;
   const MONTH_LIMIT: number = MONTH_ARRAY.length - 1;
   const monthlyRate: number = interestRate / (12 * 100);
@@ -64,20 +64,25 @@ const fetchLoanMonthlyBreakup = (
     totalInterestPaid: number = 0;
 
   let prePaidPrincipalAmount: number = prePaidPrincipal?.amount || 0;
-
+  let effectiveEmi: number = monthlyEmi;
   while (remainingBalance > 0) {
     // Pre pay Principal amount
-
-    if (month === prePaidPrincipal?.month && year >= prePaidPrincipal?.year) {
+    if (
+      prePaidPrincipal &&
+      month === prePaidPrincipal?.month &&
+      year >= prePaidPrincipal?.year
+    ) {
       remainingBalance = remainingBalance - prePaidPrincipalAmount;
       totalPrincipalPaid = totalPrincipalPaid + prePaidPrincipalAmount;
 
       prePaidPrincipalAmount =
         prePaidPrincipalAmount * (1 + (prePaidPrincipal?.incrementFactor || 0));
     }
-
+    if (updatedEmi && month === updatedEmi?.month && year >= updatedEmi?.year) {
+      effectiveEmi = updatedEmi?.amount;
+    }
     const interestPaid: number = remainingBalance * monthlyRate;
-    const principalPortion: number = monthlyEmi - interestPaid;
+    const principalPortion: number = effectiveEmi - interestPaid;
 
     const principalPaid: number =
       remainingBalance > principalPortion ? principalPortion : remainingBalance;
@@ -188,7 +193,7 @@ export const calculateLoanBreakup = (
 export const fetchLoanPrePaymentDetails = (
   loanDetails: LoanDetailsType,
   monthlyEmi: number,
-  prePaidPrincipal?: PrePaidPrincipalType
+  prePaidDetails?: PrePaymentInfoParamType
 ): PaidAmountBreakupType => {
   const {
     monthlyBreakup,
@@ -197,7 +202,7 @@ export const fetchLoanPrePaymentDetails = (
   }: HomeLoanAmountBreakup = fetchLoanMonthlyBreakup(
     loanDetails,
     monthlyEmi,
-    prePaidPrincipal
+    prePaidDetails
   );
 
   return {
