@@ -8,9 +8,18 @@ export const UPDATE_LOAN_PRE_PAYMENT_OPTIONS =
 export const REMOVE_PRE_PAYMENT_OPTION = "REMOVE_PRE_PAYMENT_OPTION";
 
 export const PRE_PAYMENT_TYPES = {
-  PAY_PRINCIPAL_AMOUNT: "PAY_PRINCIPAL_AMOUNT",
-  INCREASE_MONTHLY_EMI: "INCREASE_MONTHLY_EMI",
-  PRINCIPAL_AND_EMI: "PRINCIPAL_AND_EMI",
+  PAY_PRINCIPAL_AMOUNT: {
+    value: "PAY_PRINCIPAL_AMOUNT",
+    label: "Pay Principal Amount",
+  },
+  INCREASE_MONTHLY_EMI: {
+    value: "INCREASE_MONTHLY_EMI",
+    label: "Increase Monthly EMI",
+  },
+  PRINCIPAL_AND_EMI: {
+    value: "PRINCIPAL_AND_EMI",
+    label: "Principal & EMI",
+  },
 };
 export const PRE_PAYMENT_INTEREST_DIFF_TYPES = {
   LESSER: "Lesser",

@@ -5,6 +5,7 @@ import {
   PaymentYearDetailsType,
   prePaymentOptionsType,
   LoanCompletionPeriod,
+  PaidAmountBreakupType,
 } from "./home-loan-reducer/home-loan-types";
 
 export type HomeLoanReducerType = {
@@ -15,14 +16,11 @@ export type HomeLoanReducerType = {
     startPeriod: LoanStartPeriodType;
     isError: boolean;
   };
-  monthlyEmi: number;
+  paidAmountBreakup: PaidAmountBreakupType;
   monthlyAmortizationDetails: HomeLoanMonthlyAmortizationType[];
   yearlyAmortizationDetails: HomeLoanYearlyAmortizationType[];
   loanPaymentYear: number;
   paymentYearDetails: PaymentYearDetailsType;
-  interestAmount: number;
-  totalPaidAmount: number;
-  loanCompletionPeriod: LoanCompletionPeriod;
   paymentYearAmortization: HomeLoanYearlyAmortizationType;
   prePaymentOptions: prePaymentOptionsType[];
 };

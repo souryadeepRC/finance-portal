@@ -1,5 +1,5 @@
 // constants
-import { LoanDetailsType, prePaymentOptionsPayloadType } from "./home-loan-types";
+import { LoanDetailsType, PrePaymentInfoType } from "./home-loan-types";
 import {
   UPDATE_LOAN_DETAILS,
   RESET_LOAN_DETAILS,
@@ -44,7 +44,7 @@ export const updateLoanPaymentYear = (
   };
 };
 export const updatePrePaymentOptions = (
-  payload: prePaymentOptionsPayloadType
+  payload: PrePaymentInfoType
 ): HomeLoanReducerActionType => {
   return {
     type: UPDATE_LOAN_PRE_PAYMENT_OPTIONS,

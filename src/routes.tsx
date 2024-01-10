@@ -7,10 +7,10 @@ const HomeLoan = lazy(() =>
     default: HomeLoan,
   }))
 );
-const PrePaymentView = lazy(() =>
-  import("./pages/home-loan/pre-payment-view/PrePaymentView").then(
-    ({ PrePaymentView }) => ({
-      default: PrePaymentView,
+const PrePayment = lazy(() =>
+  import("./pages/home-loan/pre-payment/PrePayment").then(
+    ({ PrePayment }) => ({
+      default: PrePayment,
     })
   )
 );
@@ -38,7 +38,7 @@ const AppRoutes = (): JSX.Element => {
         <Route path="" element={<Navigate to="homeLoan" />} />
         <Route path="homeLoan">
           <Route index element={<HomeLoan />} />
-          <Route path="prePayment" element={<PrePaymentView />}></Route>
+          <Route path="prePayment" element={<PrePayment />}></Route>
         </Route>
         <Route path="about" element={<AboutPortal />} />
         <Route path="*" element={<Navigate to="" />} />

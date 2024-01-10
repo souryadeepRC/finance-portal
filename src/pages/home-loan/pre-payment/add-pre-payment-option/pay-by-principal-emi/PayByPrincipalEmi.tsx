@@ -108,16 +108,23 @@ const PayByPrincipalEmi = memo(
     }, [monthlyEmi, loanStartPeriod]);
     const onSaveBtnClick = (): void => {
       const { amount, updatedEmi, month, year } = prePaidDetails;
+
+      if (amount === 0 || year === 0 || updatedEmi === 0) return;
+
       dispatch(
         updatePrePaymentOptions({
-          prePaymentType: PRE_PAYMENT_TYPES.PRINCIPAL_AND_EMI,
-          prePaymentInfo: {
+          type: PRE_PAYMENT_TYPES.PRINCIPAL_AND_EMI.value,
+          params: {
             prePaidPrincipal: {
               amount,
               month,
               year,
             },
-            updatedEmi,
+            updatedEmi:{
+              amount:updatedEmi,
+              month,
+              year,
+            }
           },
         })
       );

@@ -12,19 +12,16 @@ import {
   HomeLoanYearlyAmortizationType,
   LoanCompletionPeriod,
   LoanDetailsType,
-  PrePaidPrincipalType,
+  PaidAmountBreakupType, 
+  PrePaymentInfoParamType,
   PrePaymentPrediction,
-  prePaymentLoanDetailsType,
 } from "src/store/home-loan-reducer/home-loan-types";
 import { LoanStartPeriodType } from "src/store/home-loan-reducer/home-loan-types";
 // utils
 import { getMonthDifference } from "src/utils/date-utils";
 
-const calculateMonthlyEmi = (
-  amount: number,
-  interestRate: number,
-  tenure: number
-): number => {
+const calculateMonthlyEmi = (loanDetails: LoanDetailsType): number => {
+  const { amount, interestRate, tenure }: LoanDetailsType = loanDetails;
   const tenureInMonth: number = tenure * 12;
   const monthlyRate: number = interestRate / (12 * 100);
 
@@ -50,37 +47,42 @@ const fetchTotalPaidAmount = (
 };
 
 const fetchLoanMonthlyBreakup = (
-  loanAmount: number,
-  interestRate: number,
-  loanStartPeriod: LoanStartPeriodType,
+  loanDetails: LoanDetailsType,
   monthlyEmi: number,
-  prePaidPrincipal?: PrePaidPrincipalType
+  prePaidDetails?: PrePaymentInfoParamType
 ): HomeLoanAmountBreakup => {
+  const { prePaidPrincipal, updatedEmi }:PrePaymentInfoParamType = prePaidDetails || {};
+  const { interestRate, startPeriod, amount } = loanDetails;
   const MONTH_LIMIT: number = MONTH_ARRAY.length - 1;
   const monthlyRate: number = interestRate / (12 * 100);
 
   let monthlyBreakup: HomeLoanMonthlyAmortizationType[] = [];
-  let { month, year }: LoanStartPeriodType = loanStartPeriod;
-  let remainingBalance: number = loanAmount;
+  let { month, year }: LoanStartPeriodType = startPeriod;
+  let remainingBalance: number = amount;
 
   let totalPrincipalPaid: number = 0,
     totalInterestPaid: number = 0;
 
   let prePaidPrincipalAmount: number = prePaidPrincipal?.amount || 0;
-
+  let effectiveEmi: number = monthlyEmi;
   while (remainingBalance > 0) {
     // Pre pay Principal amount
-
-    if (month === prePaidPrincipal?.month && year >= prePaidPrincipal?.year) {
+    if (
+      prePaidPrincipal &&
+      month === prePaidPrincipal?.month &&
+      year >= prePaidPrincipal?.year
+    ) {
       remainingBalance = remainingBalance - prePaidPrincipalAmount;
       totalPrincipalPaid = totalPrincipalPaid + prePaidPrincipalAmount;
 
       prePaidPrincipalAmount =
         prePaidPrincipalAmount * (1 + (prePaidPrincipal?.incrementFactor || 0));
     }
-
+    if (updatedEmi && month === updatedEmi?.month && year >= updatedEmi?.year) {
+      effectiveEmi = updatedEmi?.amount;
+    }
     const interestPaid: number = remainingBalance * monthlyRate;
-    const principalPortion: number = monthlyEmi - interestPaid;
+    const principalPortion: number = effectiveEmi - interestPaid;
 
     const principalPaid: number =
       remainingBalance > principalPortion ? principalPortion : remainingBalance;
@@ -128,31 +130,23 @@ const fetchLoanCompletionPeriod = (
   };
 };
 
-export const calculateLoanBreakup = ({
-  amount,
-  interestRate,
-  tenure,
-  startPeriod,
-}: LoanDetailsType): HomeLoanBreakupType => {
+export const calculateLoanBreakup = (
+  loanDetails: LoanDetailsType
+): HomeLoanBreakupType => {
   // calculate EMI
-  const monthlyEmi: number = calculateMonthlyEmi(amount, interestRate, tenure);
+  const monthlyEmi: number = calculateMonthlyEmi(loanDetails);
   // Find Monthly Payment Breakup
   const {
     monthlyBreakup,
     totalPrincipalPaid,
     totalInterestPaid,
-  }: HomeLoanAmountBreakup = fetchLoanMonthlyBreakup(
-    amount,
-    interestRate,
-    startPeriod,
-    monthlyEmi
-  );
+  }: HomeLoanAmountBreakup = fetchLoanMonthlyBreakup(loanDetails, monthlyEmi);
 
   const paymentYearList: number[] = Array.from(
     new Set(monthlyBreakup.map((monthlyData) => monthlyData.year))
   ).sort((a: number, b: number) => a - b);
 
-  let outstandingBalance: number = amount;
+  let outstandingBalance: number = loanDetails?.amount;
   const yearlyAmortizationDetails: HomeLoanYearlyAmortizationType[] = [];
 
   paymentYearList.forEach((paymentYear: number, index: number) => {
@@ -177,6 +171,13 @@ export const calculateLoanBreakup = ({
   });
 
   return {
+    paidAmountBreakup: {
+      monthlyEmi,
+      principalPaid: totalPrincipalPaid,
+      interestPaid: totalInterestPaid,
+      totalPaidAmount: totalPrincipalPaid + totalInterestPaid,
+      completionPeriod: fetchLoanCompletionPeriod(monthlyBreakup),
+    },
     monthlyEmi,
     yearlyAmortizationDetails,
     interestAmount: totalInterestPaid,
@@ -190,45 +191,44 @@ export const calculateLoanBreakup = ({
 };
 
 export const fetchLoanPrePaymentDetails = (
-  loanAmount: number,
-  interestRate: number,
-  loanStartPeriod: LoanStartPeriodType,
+  loanDetails: LoanDetailsType,
   monthlyEmi: number,
-  prePaidPrincipal?: PrePaidPrincipalType
-): prePaymentLoanDetailsType => {
+  prePaidDetails?: PrePaymentInfoParamType
+): PaidAmountBreakupType => {
   const {
     monthlyBreakup,
     totalPrincipalPaid,
     totalInterestPaid,
   }: HomeLoanAmountBreakup = fetchLoanMonthlyBreakup(
-    loanAmount,
-    interestRate,
-    loanStartPeriod,
+    loanDetails,
     monthlyEmi,
-    prePaidPrincipal
+    prePaidDetails
   );
 
   return {
     principalPaid: totalPrincipalPaid,
     interestPaid: totalInterestPaid,
     monthlyEmi,
-    totalAmountPaid: totalPrincipalPaid + totalInterestPaid,
-    loanCompletionPeriod: fetchLoanCompletionPeriod(monthlyBreakup),
+    totalPaidAmount: totalPrincipalPaid + totalInterestPaid,
+    completionPeriod: fetchLoanCompletionPeriod(monthlyBreakup),
   };
 };
 
 export const fetchLoanPrePaymentPredictions = (
-  { interestPaid, loanCompletionPeriod }: prePaymentLoanDetailsType,
-  interestAmount: number,
+  {
+    interestPaid: prePayInterestPaid,
+    completionPeriod: prePayCompletionPeriod,
+  }: PaidAmountBreakupType,
+  interestPaid: number,
   completionPeriod: LoanCompletionPeriod
 ): PrePaymentPrediction => {
-  const interestDiff: number = interestAmount - interestPaid;
+  const interestDiff: number = interestPaid - prePayInterestPaid;
   const modifiedInterestDiff: number = Math.abs(interestDiff);
   const interestDiffPercentage: number =
-    (modifiedInterestDiff / interestAmount) * 100;
+    (modifiedInterestDiff / interestPaid) * 100;
 
   const monthDifference: number = getMonthDifference(
-    new Date(loanCompletionPeriod.year, loanCompletionPeriod.month),
+    new Date(prePayCompletionPeriod.year, prePayCompletionPeriod.month),
     new Date(completionPeriod.year, completionPeriod.month)
   );
 
