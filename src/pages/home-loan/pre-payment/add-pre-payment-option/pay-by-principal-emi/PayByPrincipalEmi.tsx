@@ -113,7 +113,7 @@ const PayByPrincipalEmi = memo(
 
       dispatch(
         updatePrePaymentOptions({
-          type: PRE_PAYMENT_TYPES.PRINCIPAL_AND_EMI,
+          type: PRE_PAYMENT_TYPES.PRINCIPAL_AND_EMI.value,
           params: {
             prePaidPrincipal: {
               amount,

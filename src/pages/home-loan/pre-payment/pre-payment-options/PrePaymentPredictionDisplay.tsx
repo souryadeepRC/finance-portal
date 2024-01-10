@@ -55,14 +55,14 @@ const getPrePaymentType = ({ type, params }: PrePaymentInfoType): string => {
   const { prePaidPrincipal, updatedEmi }: PrePaymentInfoParamType = params;
 
   switch (type) {
-    case PRE_PAYMENT_TYPES.PAY_PRINCIPAL_AMOUNT: {
+    case PRE_PAYMENT_TYPES.PAY_PRINCIPAL_AMOUNT.value: {
       const { amount = 0, month = 0 } =
         prePaidPrincipal as PrePaidPrincipalType;
       return `Pre Paid ₹${amount} Principal every year after ${MONTH_ARRAY[month]}`;
     }
-    case PRE_PAYMENT_TYPES.INCREASE_MONTHLY_EMI:
+    case PRE_PAYMENT_TYPES.INCREASE_MONTHLY_EMI.value:
       return `Increased Emi to ₹${updatedEmi}`;
-    case PRE_PAYMENT_TYPES.PRINCIPAL_AND_EMI: {
+    case PRE_PAYMENT_TYPES.PRINCIPAL_AND_EMI.value: {
       const { amount = 0, month = 0 } =
         prePaidPrincipal as PrePaidPrincipalType;
       return `Increased Emi to ₹${updatedEmi}\n and Pre Paid ₹${amount} Principal every year after ${MONTH_ARRAY[month]}`;

@@ -33,7 +33,7 @@ const PayByEmi = memo(({ onSave }: PayByEmiProps): JSX.Element => {
   const onSaveBtnClick = (): void => {
     dispatch(
       updatePrePaymentOptions({
-        type: PRE_PAYMENT_TYPES.INCREASE_MONTHLY_EMI,
+        type: PRE_PAYMENT_TYPES.INCREASE_MONTHLY_EMI.value,
         params: { updatedEmi },
       })
     );

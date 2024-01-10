@@ -70,7 +70,7 @@ export const mapLoanPrePaymentOptions = (
     paidAmountBreakup;
 
   if (
-    type === PRE_PAYMENT_TYPES.INCREASE_MONTHLY_EMI &&
+    type === PRE_PAYMENT_TYPES.INCREASE_MONTHLY_EMI.value &&
     updatedEmi &&
     updatedEmi > 0
   ) {
@@ -79,7 +79,7 @@ export const mapLoanPrePaymentOptions = (
       updatedEmi
     );
   } else if (
-    type === PRE_PAYMENT_TYPES.PAY_PRINCIPAL_AMOUNT &&
+    type === PRE_PAYMENT_TYPES.PAY_PRINCIPAL_AMOUNT.value &&
     prePaidPrincipal
   ) {
     prePaymentPaidAmountBreakup = fetchLoanPrePaymentDetails(
@@ -88,7 +88,7 @@ export const mapLoanPrePaymentOptions = (
       prePaidPrincipal
     );
   } else if (
-    type === PRE_PAYMENT_TYPES.PRINCIPAL_AND_EMI &&
+    type === PRE_PAYMENT_TYPES.PRINCIPAL_AND_EMI.value &&
     updatedEmi &&
     updatedEmi > 0 &&
     prePaidPrincipal
