@@ -1,27 +1,22 @@
 import { memo, useState } from "react";
 // library
-import {
-  Typography,
-  IconButton,
-  Box,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-} from "@mui/material/";
+import { Drawer } from "@mui/material/";
 // icons
-import SavingsIcon from "@mui/icons-material/Savings";
 import MenuIcon from "@mui/icons-material/Menu";
 // common components
 import { NavigationLink } from "src/components/common/navigationL-link/NavigationLink";
+import { FlexBox } from "src/components/common/flex-box/FlexBox";
+// components
+import { AppDisplay } from "src/components/app-display/AppDisplay";
+// types
+import { NavigationPath } from "./AppNavigationBar";
 // constants
-import {
-  APP_DISPLAY_NAME,
-  APP_PRIMARY_COLOR,
-} from "src/constants/common-constants";
-import { NAVIGATION_PATHS, NavigationPath } from "./AppNavigationBar";
+import { NAVIGATION_PATHS } from "./AppNavigationBar";
+// styles
+import styles from "./AppNavigationBar.module.scss";
+
 const AppNavigationMobile = memo((): JSX.Element => {
+  // state
   const [menuItemState, setMenuItemState] = useState<boolean>(false);
   // fns
   const toggleDrawer =
@@ -33,69 +28,28 @@ const AppNavigationMobile = memo((): JSX.Element => {
       ) {
         return;
       }
-
       setMenuItemState(open);
     };
   return (
     <>
-      <SavingsIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-      <Typography
-        variant="h6"
-        noWrap
-        sx={{
-          mr: 2,
-          fontFamily: "Tahoma",
-          fontWeight: 700,
-          color: "inherit",
-          textDecoration: "none",
-          display: { xs: "none", md: "flex" },
-        }}
-      >
-        {APP_DISPLAY_NAME}
-      </Typography>
-
-      <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="menu-appbar"
-          aria-haspopup="true"
-          onClick={toggleDrawer(true)}
-          color="inherit"
+      <FlexBox sx={{ width: "100%" }}>
+        <MenuIcon onClick={toggleDrawer(true)} />
+        <AppDisplay sx={{ flex: 2 }} />
+      </FlexBox>
+      <Drawer anchor="left" open={menuItemState} onClose={toggleDrawer(false)}>
+        <div
+          className={styles["navigation-mobile__container"]}
+          role="presentation"
+          onClick={toggleDrawer(false)}
+          onKeyDown={toggleDrawer(false)}
         >
-          <MenuIcon />
-        </IconButton>
-        <Drawer
-          anchor="left"
-          open={menuItemState}
-          onClose={toggleDrawer(false)}
-        >
-          <Box
-            sx={{
-              width: 250,
-              height: "100%",
-              backgroundColor: APP_PRIMARY_COLOR,
-            }}
-            role="presentation"
-            onClick={toggleDrawer(false)}
-            onKeyDown={toggleDrawer(false)}
-          >
-            <List>
-              {NAVIGATION_PATHS.map(
-                ({ label, path }: NavigationPath, index: number) => (
-                  <ListItem key={index} disablePadding>
-                    <ListItemButton>
-                      <ListItemText>
-                        <NavigationLink path={path} label={label} />
-                      </ListItemText>
-                    </ListItemButton>
-                  </ListItem>
-                )
-              )}
-            </List>
-          </Box>
-        </Drawer>
-      </Box>
+          {NAVIGATION_PATHS.map(
+            ({ label, path }: NavigationPath, index: number) => (
+              <NavigationLink key={index} path={path} label={label} />
+            )
+          )}
+        </div>
+      </Drawer>
     </>
   );
 });

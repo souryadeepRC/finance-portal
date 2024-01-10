@@ -1,43 +1,26 @@
 import { memo } from "react";
-// library
-import { Button, Typography, Box } from "@mui/material/";
-// icons
-import SavingsIcon from "@mui/icons-material/Savings";
 // common components
 import { NavigationLink } from "src/components/common/navigationL-link/NavigationLink";
+import { FlexBox } from "src/components/common/flex-box/FlexBox";
+// components
+import { AppDisplay } from "src/components/app-display/AppDisplay";
+// types
+import { NavigationPath } from "./AppNavigationBar";
 // constants
-import { APP_DISPLAY_NAME } from "src/constants/common-constants";
-import { NAVIGATION_PATHS, NavigationPath } from "./AppNavigationBar";
+import { NAVIGATION_PATHS } from "./AppNavigationBar";
 
 const AppNavigationDesktop = memo((): JSX.Element => {
   return (
-    <>
-      <SavingsIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-      <Typography
-        variant="h5"
-        noWrap
-        sx={{
-          mr: 2,
-          fontFamily: "Tahoma",
-          fontWeight: 700,
-          color: "inherit",
-          textDecoration: "none",
-          display: { xs: "flex", md: "none" },
-          flexGrow: 1,
-        }}
-      >
-        <NavigationLink path="" label={APP_DISPLAY_NAME} />
-      </Typography>
-      <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+    <FlexBox sx={{ width: "100%" }}>
+      <AppDisplay sx={{ flex: 1 }} />
+      <FlexBox sx={{ flex: 2, justifyContent: "flex-end", gap: '20px' }}>
         {NAVIGATION_PATHS.map(
           ({ label, path }: NavigationPath, index: number) => (
-            <Button key={index}>
-              <NavigationLink path={path} label={label} />
-            </Button>
+            <NavigationLink key={index} path={path} label={label} />
           )
         )}
-      </Box>
-    </>
+      </FlexBox>
+    </FlexBox>
   );
 });
 AppNavigationDesktop.displayName = "AppNavigationDesktop";

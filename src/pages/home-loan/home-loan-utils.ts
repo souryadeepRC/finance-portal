@@ -232,7 +232,6 @@ export const fetchLoanPrePaymentPredictions = (
     new Date(completionPeriod.year, completionPeriod.month)
   );
 
-  console.log({ loanCompletionPeriod, completionPeriod, monthDifference });
   return {
     interestAmountDiff: {
       amount: Math.round(Math.abs(interestDiff)),

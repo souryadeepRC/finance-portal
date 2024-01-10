@@ -51,7 +51,6 @@ const getInterestPredictionText = ({
   return `Save Rs. ${amountDiff} ${percentageDiff}`;
 };
 const getPrePaymentType = (prePaymentType: string, details: any): string => {
-
   switch (prePaymentType) {
     case PRE_PAYMENT_TYPES.PAY_PRINCIPAL_AMOUNT: {
       const { amount = 0, month = 0 }: PrePaidPrincipalType = details;
@@ -59,6 +58,11 @@ const getPrePaymentType = (prePaymentType: string, details: any): string => {
     }
     case PRE_PAYMENT_TYPES.INCREASE_MONTHLY_EMI:
       return `Increased Emi to ₹${details?.updatedEmi}`;
+    case PRE_PAYMENT_TYPES.PRINCIPAL_AND_EMI: {
+      const { prePaidPrincipal, updatedEmi }: any = details;
+      const { amount = 0, month = 0 }: PrePaidPrincipalType = prePaidPrincipal;
+      return `Increased Emi to ₹${updatedEmi}\n and Pre Paid ₹${amount} Principal every year after ${MONTH_ARRAY[month]}`;
+    }
     default:
       return "";
   }
@@ -78,11 +82,11 @@ const PrePaymentPredictionDisplay = memo(
           display: "flex",
           flexDirection: "column",
           gap: 1,
-          padding:'0 10px'
+          padding: "0 10px",
         }}
       >
         <DisplayLabel
-          className={styles["payment-option-prediction__text"]}
+          className={styles["payment-option-type__text"]}
           value={getPrePaymentType(prePaymentType, details)}
         />
         <DisplayLabel

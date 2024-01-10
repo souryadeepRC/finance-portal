@@ -8,12 +8,12 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
 // styles
-import styles from "./DatePicker.module.scss";
+import "./DatePicker.scss";
 
 const DatePicker = memo((props: DatePickerProps<Dayjs>): JSX.Element => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <MuiDatePicker className={styles["date-picker__container"]} {...props} />
+      <MuiDatePicker className="date-picker__container" {...props} />
     </LocalizationProvider>
   );
 });
