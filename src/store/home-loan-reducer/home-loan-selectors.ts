@@ -4,7 +4,6 @@ import {
   LoanDetailsType,
   HomeLoanMonthlyAmortizationType,
   HomeLoanYearlyAmortizationType,
-  LoanCompletionPeriod,
   LoanStartPeriodType,
   PaymentYearDetailsType,
   prePaymentOptionsType,
@@ -17,10 +16,7 @@ export const selectLoanDetails = (store: AppStoreType): LoanDetailsType =>
 
 export const selectLoanAmount = (store: AppStoreType): number =>
   store?.homeLoan?.loanDetails?.amount;
-export const selectLoanInterestRate = (store: AppStoreType): number =>
-  store?.homeLoan?.loanDetails?.interestRate;
-export const selectLoanTenure = (store: AppStoreType): number =>
-  store?.homeLoan?.loanDetails?.tenure;
+
 export const selectLoanStartPeriod = (
   store: AppStoreType
 ): LoanStartPeriodType => store?.homeLoan?.loanDetails?.startPeriod;
@@ -33,33 +29,17 @@ export const selectLoanPaidAmountBreakup = (
 ): PaidAmountBreakupType => store?.homeLoan?.paidAmountBreakup;
 
 export const selectMonthlyEmi = (store: AppStoreType): number =>
-  store?.homeLoan?.monthlyEmi;
-export const selectMonthlyAmortizationDetails = (
-  store: AppStoreType
-): HomeLoanMonthlyAmortizationType[] =>
-  store?.homeLoan?.monthlyAmortizationDetails;
-export const selectYearlyAmortizationDetails = (
-  store: AppStoreType
-): HomeLoanYearlyAmortizationType[] =>
-  store?.homeLoan?.yearlyAmortizationDetails;
+  store?.homeLoan?.paidAmountBreakup?.monthlyEmi;
+
+// ======== LOAN MONTHLY & YEARLY AMORTIZATION DETAILS ========
+
+// ===== LOAN PAYMENT YEAR BREAKUP DETAILS ========
 export const selectLoanPaymentYear = (store: AppStoreType): number =>
   store?.homeLoan?.loanPaymentYear;
+
 export const selectPaymentYearDetails = (
   store: AppStoreType
 ): PaymentYearDetailsType => store?.homeLoan?.paymentYearDetails;
-
-export const selectTotalPaidAmount = (store: AppStoreType): number =>
-  store?.homeLoan?.totalPaidAmount;
-
-export const selectLoanCompletionPeriod = (
-  store: AppStoreType
-): LoanCompletionPeriod => store?.homeLoan?.loanCompletionPeriod;
-
-export const selectLoanCompletionPeriodText = (store: AppStoreType): string =>
-  store?.homeLoan?.loanCompletionPeriod?.displayText;
-
-export const selectInterestAmount = (store: AppStoreType): number =>
-  store?.homeLoan?.interestAmount;
 
 export const selectPaymentYearMonthlyBreakup = (
   store: AppStoreType
@@ -69,6 +49,8 @@ export const selectPaymentYearMonthlyBreakup = (
 export const selectPaymentYearAmortization = (
   store: AppStoreType
 ): HomeLoanYearlyAmortizationType => store?.homeLoan?.paymentYearAmortization;
+
+// ======== LOAN PRE PAYMENT DETAILS ========
 export const selectPrePaymentOptions = (
   store: AppStoreType
 ): prePaymentOptionsType[] => store?.homeLoan?.prePaymentOptions;

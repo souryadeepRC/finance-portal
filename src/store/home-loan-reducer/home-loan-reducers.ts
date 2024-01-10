@@ -38,7 +38,6 @@ const initialState: HomeLoanReducerType = {
     totalPaidAmount: 0,
     completionPeriod: { displayText: "", month: 0, year: 0 },
   },
-  monthlyEmi: 0,
   monthlyAmortizationDetails: [],
   yearlyAmortizationDetails: [],
   loanPaymentYear: latestDate.getFullYear(),
@@ -46,9 +45,6 @@ const initialState: HomeLoanReducerType = {
     maxYear: 0,
     minYear: 0,
   },
-  interestAmount: 0,
-  totalPaidAmount: 0,
-  loanCompletionPeriod: { displayText: "", month: 0, year: 0 },
   paymentYearAmortization: {
     principalPaid: 0,
     interestPaid: 0,
@@ -57,7 +53,7 @@ const initialState: HomeLoanReducerType = {
     outstandingBalance: 0,
     monthlyBreakup: [],
   },
-  prePaymentOptions: [], // fetchPrePaymentOptionsTestData(),
+  prePaymentOptions: [],
 };
 const HomeLoanReducer = (
   state = initialState,
