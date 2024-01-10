@@ -104,6 +104,33 @@ const mapPrePayByPrincipal = (
     modifiedLoanDetails,
   };
 };
+const mapPrePayByPrincipalAndEmi = (
+  {
+    prePaidPrincipal,
+    updatedEmi,
+  }: {
+    prePaidPrincipal?: PrePaidPrincipalType;
+    updatedEmi?: number;
+  },
+  loanAmount: number,
+  interestRate: number,
+  loanStartPeriod: LoanStartPeriodType
+) => {
+  if (!prePaidPrincipal || !updatedEmi) return undefined;
+
+  const modifiedLoanDetails = fetchLoanPrePaymentDetails(
+    loanAmount,
+    interestRate,
+    loanStartPeriod,
+    updatedEmi,
+    prePaidPrincipal
+  );
+
+  return {
+    details: { prePaidPrincipal, updatedEmi },
+    modifiedLoanDetails,
+  };
+};
 export const mapLoanPrePaymentOptions = (
   { prePaymentType, prePaymentInfo }: prePaymentOptionsPayloadType,
   loanAmount: number,
@@ -130,6 +157,13 @@ export const mapLoanPrePaymentOptions = (
       interestRate,
       loanStartPeriod,
       monthlyEmi
+    );
+  } else if (prePaymentType === PRE_PAYMENT_TYPES.PRINCIPAL_AND_EMI) {
+    prePaymentOption = mapPrePayByPrincipalAndEmi(
+      prePaymentInfo,
+      loanAmount,
+      interestRate,
+      loanStartPeriod
     );
   }
   if (!prePaymentOption) return prePaymentOptions;

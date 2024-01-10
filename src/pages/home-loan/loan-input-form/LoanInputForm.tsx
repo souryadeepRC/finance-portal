@@ -55,7 +55,7 @@ const LoanInputForm = memo((): JSX.Element => {
       <div className={styles["loan-rate-tenure__container"]}>
         <LoanInput
           id={INPUT_FORM_ID.INTEREST_RATE}
-          label="Rate of interest (p.a)"
+          label="Rate of interest"
           value={interestRate}
           step={0.1}
           minValue={1}

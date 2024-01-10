@@ -1,17 +1,18 @@
 @import "src/styles/variables.scss";
 
 .date-picker__container {
-  :global(.MuiInputLabel-root) {
+  .MuiInputLabel-root{
     color: $app-primary-color;
     font-weight: $font-weight-700;
   }
-  :global(.MuiOutlinedInput-input) {
+  .MuiOutlinedInput-input{
     font-weight: $font-weight-700;
-  }
-  :global(.MuiSvgIcon-root) {
     color: $app-primary-color;
   }
-  :global(.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline) {
+  .MuiSvgIcon-root{
+    color: $app-primary-color;
+  }
+  .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline{
     border-color: $app-primary-color;
   }
 }

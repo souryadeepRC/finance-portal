@@ -1,12 +1,13 @@
 import { memo } from "react";
 // library
-import { AppBar, Container, Toolbar, } from "@mui/material";
+import { AppBar } from "@mui/material";
 // components
 import { AppNavigationMobile } from "./AppNavigationMobile";
 import { AppNavigationDesktop } from "./AppNavigationDesktop";
+// hooks
+import { useMedia } from "src/hooks/useMedia";
 // constants
 import { APP_PRIMARY_COLOR } from "src/constants/common-constants";
-// styles
 // types
 export type NavigationPath = {
   label: string;
@@ -18,14 +19,17 @@ export const NAVIGATION_PATHS: NavigationPath[] = [
 ];
 
 const AppNavigationBar = memo((): JSX.Element => {
+  // hooks
+  const isMobile: boolean = useMedia();
   return (
-    <AppBar position="static" sx={{ backgroundColor: APP_PRIMARY_COLOR }}>
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <AppNavigationMobile />
-          <AppNavigationDesktop />
-        </Toolbar>
-      </Container>
+    <AppBar
+      sx={{
+        position: "static",
+        padding: 3,
+        backgroundColor: APP_PRIMARY_COLOR,
+      }}
+    >
+      {isMobile ? <AppNavigationMobile /> : <AppNavigationDesktop />}
     </AppBar>
   );
 });

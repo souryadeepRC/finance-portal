@@ -1,0 +1,37 @@
+@import "src/styles/variables.scss";
+
+.pay-by-principal-emi__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px; 
+  padding: 20px;
+  .amount__container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+    :global(.loan-input__container) {
+      width: 45%;
+    }
+    :global(.date-picker__container) {
+      width: 45%;
+    }
+  }
+}
+@media screen and (max-width: $mobile-max-width) {
+  .pay-by-principal-emi__container {
+    gap: 10px;
+
+    .amount__container {
+      flex-direction: column;
+      :global(.loan-input__container) {
+        width: 90%;
+      }
+      :global(.date-picker__container) {
+        width: 90%;
+      }
+    }
+  }
+}

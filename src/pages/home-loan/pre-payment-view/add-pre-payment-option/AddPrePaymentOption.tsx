@@ -3,10 +3,15 @@ import { memo, useState } from "react";
 import { RadioButtonGroup } from "src/components/common/radio-button-group/RadioButtonGroup";
 import { PayByEmi } from "./pay-by-emi/PayByEmi";
 import { PayByPrincipal } from "./pay-by-principal/PayByPrincipal";
+import { PayByPrincipalEmi } from "./pay-by-principal-emi/PayByPrincipalEmi";
+// constants
+import { PRE_PAYMENT_TYPES } from "src/store/home-loan-reducer/home-loan-constants";
 
+ 
 const PrePaymentOption = [
-  { value: "payPrincipal", label: "Pay Principal Amount" },
-  { value: "increaseEmi", label: "Increase Monthly EMI" },
+  { value: PRE_PAYMENT_TYPES.PAY_PRINCIPAL_AMOUNT, label: "Pay Principal Amount" },
+  { value: PRE_PAYMENT_TYPES.INCREASE_MONTHLY_EMI, label: "Increase Monthly EMI" },
+  { value: PRE_PAYMENT_TYPES.PRINCIPAL_AND_EMI, label: "Both" },
 ];
 // types
 type AddPrePaymentOptionProps = {
@@ -27,10 +32,12 @@ const AddPrePaymentOption = memo(
     // render fns
     const renderPaymentOption = (paymentOption: string): JSX.Element => {
       switch (paymentOption) {
-        case "payPrincipal":
+        case PRE_PAYMENT_TYPES.PAY_PRINCIPAL_AMOUNT:
           return <PayByPrincipal onSave={onSave} />;
-        case "increaseEmi":
+        case PRE_PAYMENT_TYPES.INCREASE_MONTHLY_EMI:
           return <PayByEmi onSave={onSave} />;
+        case PRE_PAYMENT_TYPES.PRINCIPAL_AND_EMI:
+          return <PayByPrincipalEmi onSave={onSave} />;
         default:
           return <></>;
       }

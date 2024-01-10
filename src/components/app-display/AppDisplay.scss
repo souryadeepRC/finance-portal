@@ -1,0 +1,17 @@
+@import "src/styles/variables.scss";
+
+.app-display__container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: $font-size-20;
+  .app-display__title {
+    font-weight: $font-weight-700;
+  }
+}
+@media screen and (max-width: $mobile-max-width) {
+  .app-display__container {
+    font-size: $font-size-16;
+  }
+}

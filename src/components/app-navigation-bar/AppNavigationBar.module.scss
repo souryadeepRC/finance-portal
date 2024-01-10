@@ -1,0 +1,12 @@
+@import "src/styles/variables.scss";
+.navigation-mobile__container {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  height: 100%;
+  background-color: $app-primary-color;
+  align-items: center;
+  gap: 25px;
+  padding: 40px 0 0 0;
+}
+ 

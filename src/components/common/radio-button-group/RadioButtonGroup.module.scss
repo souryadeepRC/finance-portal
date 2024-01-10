@@ -1,14 +1,26 @@
 @import "src/styles/variables.scss";
- 
+
 .radio-button-group__container {
   width: 100%;
   display: flex;
   align-items: center;
+  :global(.MuiFormGroup-root) {
+    align-items: center;
+    justify-content: center;
+  }
   :global(.MuiFormLabel-root) {
     color: $app-primary-color;
     font-weight: $font-weight-700;
   }
   :global(.MuiRadio-root.Mui-checked) {
     color: $app-primary-color;
+  }
+}
+
+@media screen and (max-width: $small-mobile-max-width) {
+  .radio-button-group__container {
+    :global(.MuiFormGroup-root) {
+      justify-content: flex-start;
+    }
   }
 }

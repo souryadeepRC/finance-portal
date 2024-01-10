@@ -100,7 +100,8 @@ const HomeLoanReducer = (
         interestAmount,
         loanCompletionPeriod,
       } = state;
-      const { amount, interestRate, startPeriod } = loanDetails;
+      const { amount, interestRate, startPeriod } = loanDetails; 
+      
       return {
         ...state,
         prePaymentOptions: mapLoanPrePaymentOptions(

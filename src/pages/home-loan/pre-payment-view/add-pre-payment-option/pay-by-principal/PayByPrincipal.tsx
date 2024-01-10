@@ -1,15 +1,15 @@
 import { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // library
-// icons
-import { Checkbox, FormControlLabel } from "@mui/material";
-import SaveIcon from "@mui/icons-material/Save";
 import dayjs from "dayjs";
+import { Checkbox, FormControlLabel } from "@mui/material";
+// icons
+import SaveIcon from "@mui/icons-material/Save";
 // common components
-import { Loader } from "src/components/common/loader/Loader";
 import { Button } from "src/components/common/button/Button";
 import { DatePicker } from "src/components/common/date-picker/DatePicker";
 import { LoanInput } from "src/components/common/loan-input/LoanInput";
+import { SkeletonPrePayment } from "src/components/common/skeleton/HomeLoanSkeleton";
 // actions
 import { updatePrePaymentOptions } from "src/store/home-loan-reducer/home-loan-actions";
 // selectors
@@ -123,7 +123,7 @@ const PayByPrincipal = memo(({ onSave }: PayByEmiProps): JSX.Element => {
 
   const { amount, incrementFactor, month, year } = prePaidPrincipal;
   if (year === 0) {
-    return <Loader />;
+    return <SkeletonPrePayment />;
   }
   // render fns
   return (
