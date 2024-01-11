@@ -4,7 +4,7 @@ import { RadioButtonGroup } from "src/components/common/radio-button-group/Radio
 // components
 import { PayByEmi } from "./PayByEmi";
 import { PayByPrincipal } from "./PayByPrincipal";
-import { PayByPrincipalEmi } from "./pay-by-principal-emi/PayByPrincipalEmi";
+import { PayByPrincipalEmi } from "./PayByPrincipalEmi";
 // constants
 import { PRE_PAYMENT_TYPES } from "src/store/home-loan-reducer/home-loan-constants";
 // styles

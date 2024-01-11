@@ -9,7 +9,7 @@ import { Button } from "src/components/common/button/Button";
 // components
 import { PrePayAmount } from "./PrePayAmount";
 // hooks
-import { useUpdatePrePayment } from "./useUpdatePrePayment";
+import { useUpdatePrePayment } from "../../../../hooks/home-loan/useUpdatePrePayment";
 // actions
 import { updatePrePaymentOptions } from "src/store/home-loan-reducer/home-loan-actions";
 // selectors
@@ -23,6 +23,7 @@ import {
 } from "src/components/common/loan-input/LoanInput";
 // constants
 import { PRE_PAYMENT_TYPES } from "src/store/home-loan-reducer/home-loan-constants";
+import { PRE_PAY_AMOUNT_INITIAL_STATE } from "src/constants/home-loan-constants";
 import { MONTH_ARRAY } from "src/constants/common-constants";
 // styles
 import styles from "./AddPrePaymentOption.module.scss";
@@ -30,19 +31,15 @@ type PayByEmiProps = {
   onSave: () => void;
 };
 
-const INITIAL_STATE: PrePaidAmountType = {
-  amount: 1000,
-  incrementFactor: 10,
-  month: 0,
-  year: 0,
-};
 const PayByPrincipal = memo(({ onSave }: PayByEmiProps): JSX.Element => {
   // store
   const dispatch: AppDispatch = useDispatch();
   const loanAmount: number = useSelector(selectLoanAmount);
   // state
-  const [prePaidPrincipal, setPrePaidPrincipal] =
-    useState<PrePaidAmountType>(INITIAL_STATE);
+  const [prePaidPrincipal, setPrePaidPrincipal] = useState<PrePaidAmountType>({
+    ...PRE_PAY_AMOUNT_INITIAL_STATE,
+    incrementFactor: 5,
+  });
   const [isIncrementChecked, setIsIncrementChecked] = useState<boolean>(false);
   // hooks
   useUpdatePrePayment(setPrePaidPrincipal);
@@ -111,7 +108,7 @@ const PayByPrincipal = memo(({ onSave }: PayByEmiProps): JSX.Element => {
             id="incrementFactor"
             label="Increase every year By"
             value={incrementFactor}
-            minValue={INITIAL_STATE.incrementFactor || 0}
+            minValue={1}
             maxValue={100}
             step={5}
             adornmentIcon={<span>%</span>}

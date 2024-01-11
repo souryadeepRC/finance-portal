@@ -5,9 +5,9 @@ import SaveIcon from "@mui/icons-material/Save";
 // common components
 import { Button } from "src/components/common/button/Button";
 // components
-import { PrePayAmount } from "./PrePayAmount";
+import {  PrePayAmount } from "./PrePayAmount";
 // hooks
-import { useUpdatePrePayment } from "./useUpdatePrePayment";
+import { useUpdatePrePayment } from "../../../../hooks/home-loan/useUpdatePrePayment";
 // actions
 import { updatePrePaymentOptions } from "src/store/home-loan-reducer/home-loan-actions";
 // selectors
@@ -17,25 +17,23 @@ import { AppDispatch } from "src/store/store";
 import { PrePaidAmountType } from "src/store/home-loan-reducer/home-loan-types";
 // constants
 import { PRE_PAYMENT_TYPES } from "src/store/home-loan-reducer/home-loan-constants";
-import { MONTH_ARRAY } from "src/constants/common-constants";
+import { MONTH_ARRAY } from "src/constants/common-constants"; 
 // styles
 import styles from "./AddPrePaymentOption.module.scss";
+import { PRE_PAY_AMOUNT_INITIAL_STATE } from "src/constants/home-loan-constants";
 type PayByEmiProps = {
   onSave: () => void;
 };
-
+ 
 const PayByEmi = memo(({ onSave }: PayByEmiProps): JSX.Element => {
   // store
   const dispatch: AppDispatch = useDispatch();
   const monthlyEmi: number = Math.round(useSelector(selectMonthlyEmi));
   // state
-  const [prePaidEmi, setPrePaidEmi] = useState<PrePaidAmountType>({
-    amount: monthlyEmi,
-    month: 0,
-    year: 0,
-  });
+  const [prePaidEmi, setPrePaidEmi] =
+    useState<PrePaidAmountType>(PRE_PAY_AMOUNT_INITIAL_STATE);
   // hooks
-  useUpdatePrePayment(setPrePaidEmi);
+  useUpdatePrePayment(setPrePaidEmi, true);
   // fns
   const onSaveBtnClick = (): void => {
     dispatch(
@@ -67,7 +65,7 @@ const PayByEmi = memo(({ onSave }: PayByEmiProps): JSX.Element => {
         variant="contained"
         onClick={onSaveBtnClick}
         startIcon={<SaveIcon />}
-        disabled={amount === monthlyEmi || amount === 0}
+        disabled={amount <= monthlyEmi || amount === 0}
       >
         Save
       </Button>
