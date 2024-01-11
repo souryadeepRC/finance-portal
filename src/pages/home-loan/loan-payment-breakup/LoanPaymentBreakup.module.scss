@@ -1,0 +1,22 @@
+@import "src/styles/variables.scss";
+
+.payment-breakup_tabs {
+  :global(.MuiTabs-scroller) {
+    height: 45px;
+    :global(.MuiTabs-flexContainer) {
+      flex-wrap: wrap;
+      justify-content: center;
+      :global(.MuiTab-root) {
+        text-transform: capitalize;
+        font-weight: $font-weight-700;
+        padding: 5px;
+        &:global(.Mui-selected) {
+          color: $app-primary-color;
+        }
+      }
+    }
+    :global(.MuiTabs-indicator) {
+      background-color: $app-primary-color;
+    }
+  }
+}

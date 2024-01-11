@@ -1,7 +1,7 @@
 import { memo } from "react";
 // components
 import { LoanInputForm } from "src/pages/home-loan/loan-input-form/LoanInputForm";
-import { LoanAmountBreakup } from "src/pages/home-loan/loan-amount-breakup/LoanAmountBreakup";
+import { LoanPaymentBreakup } from "src/pages/home-loan/loan-payment-breakup/LoanPaymentBreakup";
 // styles
 import styles from "./HomeLoan.module.scss";
 
@@ -11,7 +11,7 @@ const HomeLoan = memo((): JSX.Element => {
     <>
       <div className={styles["home-loan__container"]}>
         <LoanInputForm />
-        <LoanAmountBreakup /> 
+        <LoanPaymentBreakup /> 
       </div>
     </>
   );
