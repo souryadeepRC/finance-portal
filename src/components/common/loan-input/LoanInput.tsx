@@ -2,7 +2,7 @@ import { memo } from "react";
 // library
 import { InputAdornment, Slider, TextField } from "@mui/material";
 // utils
-import { isValidData } from "src/utils/string-utils";
+import { isNumeric, isValidData } from "src/utils/string-utils";
 // styles
 import "./LoanInput.scss";
 
@@ -63,22 +63,30 @@ const LoanInput = memo(
       e: React.ChangeEvent<HTMLInputElement>
     ): void => {
       const enteredValue: string = e.target.value;
+
       if (!isValidData(enteredValue)) return;
+
       if (validityFunc && !validityFunc(enteredValue)) return;
 
+      const modifiedTextValue: string = isNumeric(enteredValue)
+        ? `${+enteredValue}`
+        : enteredValue;
       onChange({
         id,
         value: +enteredValue,
-        ...(textValue && { textValue: enteredValue }),
+        ...(textValue && { textValue: modifiedTextValue }),
       });
     };
-    const onSliderChange = (
-      e: Event,
-      modifiedValue: number | number[]
-    ): void => {
+    const onSliderChange = (e: Event, value: number | number[]): void => {
+      const sliderTextValue = `${value}`;
+      const modifiedTextValue: string = isNumeric(sliderTextValue)
+        ? `${+sliderTextValue}`
+        : sliderTextValue;
+        
       onChange({
         id,
-        value: +modifiedValue,
+        value: +value,
+        ...(textValue && { textValue: modifiedTextValue }),
       });
     };
     const isInvalidField: boolean = value === disabledValue;
