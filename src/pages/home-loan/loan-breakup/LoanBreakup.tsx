@@ -28,8 +28,8 @@ const LoanBreakup = memo((): JSX.Element => {
   };
   // return fns
   return (
-    <div className={styles["loan-result__container"]}>
-      <div className={styles["loan-breakup-data__container"]}>
+    <div className={styles["loan-breakup__container"]}>
+      <div className={styles["loan-breakup-amount__container"]}>
         <LoanDetails />
         <Button
           variant="contained"

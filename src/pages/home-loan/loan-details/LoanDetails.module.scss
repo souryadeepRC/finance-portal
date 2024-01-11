@@ -2,24 +2,27 @@
 .loan-details__container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
-  width: 60%;
-  padding: 10px 0;
-  gap: 20px; 
+  justify-content: flex-start;
+  gap: 20px;
 }
-.loan-amount-info__container {
+.paid-amount-breakup__container {
   display: flex;
   flex-direction: column;
   gap: 5px;
   font-size: $font-size-13;
-  padding: 10px 16px;
+  padding: 16px;
+}
+:global(.MuiChartsLegend-root .MuiChartsLegend-label) {
+  font-size: $font-size-14;
+  font-family: $primary-font-family;
 }
 
 @media screen and (max-width: $small-mobile-max-width) {
   .loan-details__container {
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    width: 95%;
+  }
+  :global(.MuiChartsLegend-root .MuiChartsLegend-label) {
+    font-size: $font-size-12;
   }
 }
