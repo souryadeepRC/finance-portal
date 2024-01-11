@@ -1,18 +1,18 @@
 export const DEFAULT_CONSTANT_TEXT: string = "";
 export const APP_DISPLAY_NAME:string = 'My Gullak';
 export const MONTH_ARRAY: string[] = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
+  "January",
+  "February",
+  "March",
+  "April",
   "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 export const APP_PRIMARY_COLOR: string = "#057156";

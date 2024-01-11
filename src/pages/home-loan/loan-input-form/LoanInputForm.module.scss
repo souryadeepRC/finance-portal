@@ -22,20 +22,33 @@
       }
     }
   }
+  :global(.date-picker__container){
+    width: 50%;
+  }
 }
 :global(.MuiDateCalendar-root){
   height: 40vh;
 }
-@media screen and (max-width: $mobile-max-width) {
+@media screen and (max-width:$tablet-max-width){
+  
+.loan-details__container {
+  flex-basis: 40%;
+}
+}
+@media screen and (max-width: $small-mobile-max-width) {
   .loan-details__container {
     padding: 0 10px 0 10px;
     :global(.loan-input__container) {
-      width: 55%;
+      width: 75%;
     }
     .loan-rate-tenure__container {
+      flex-direction: column;
       :global(.loan-input__container) {
-        width: 35%;
+        width: 75%;
       }
+    }
+    :global(.date-picker__container){
+      width: 75%;
     }
   }
 }

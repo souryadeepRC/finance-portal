@@ -50,15 +50,18 @@ const PrePayment = memo((): JSX.Element => {
         Modify Loan Details
       </Button>
       <div className={styles["pre-payment__container"]}>
-        <LoanDetails />
-        <Button
-          variant="contained"
-          onClick={handleOpen}
-          startIcon={<PlaylistAddIcon />}
-          sx={{ alignSelf: "flex-start" }}
-        >
-          Add Pre payment Option
-        </Button>
+        <div className={styles["loan-details__container"]}>
+          <LoanDetails />
+        </div>
+          <Button
+            variant="contained"
+            onClick={handleOpen}
+            startIcon={<PlaylistAddIcon />}
+            sx={{ alignSelf: "flex-start" }}
+          >
+            Add Pre payment Option
+          </Button>
+
         <PrePaymentOptions />
       </div>
     </>
