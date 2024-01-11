@@ -1,46 +1,45 @@
-# Getting Started with Create React App
+# A ReactJs Web Application for Finance management
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This web-app provides a variety of financial data and information all in one place. They act as information hubs for users or clients, who are often individual investors and provide up-to-date financial information and data to make their investment decisions.
 
-## Available Scripts
+Application : [My Gullak](https://my-gullak.netlify.app/).
 
-In the project directory, you can run:
+# Available Features
 
-### `npm start`
+## Home Loan
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+By entering
+`loan amount`
+`loan tenure`
+`loan interest rate`
+`loan start period` user can enjoy these following benefits.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### `Loan Amount Breakup`
 
-### `npm test`
+User can know about their home loan `Monthly emi`, `Completion month-year` , `interest paid amount` & a nice `Pie chart` view of paid amount breakup.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### `Loan Amortization`
 
-### `npm run build`
+User can choose a specific year and get to know about paid `principal` , `interest` , `outstanding balance` , `remaining year` for that selected year .
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Also `detailed month wise breakup` for that particular year.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### `Loan Pre Payment`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+User can choose any of the option to pre pay home loan earlier
 
-### `npm run eject`
+`By paying Principal Amount`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+User can choose a specific amount to pay in the form of principal after a specific month and a  specific year onwards.
+Also user can increase the principal amount every year with a specific percentage from the last year
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+`By Increasing Emi`
+User can choose to increase the monthly emi after a specific month and year onwards.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+`By paying Principal Amount & Increasing Emi`
+User can choose a specific amount to pay in the form of principal and increase the monthly emi after a specific month and year onwards.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Based on the choice user can see the loan break up.
+It will come with a prediction of
+`how fast the loan will get completed`
+`how much user can save in paid interest amount`
