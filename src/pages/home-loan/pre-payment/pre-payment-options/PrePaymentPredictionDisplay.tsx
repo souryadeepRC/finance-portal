@@ -7,10 +7,11 @@ import { DisplayLabel } from "src/components/common/display-label/DisplayLabel";
 import { getGrammaticalText } from "src/utils/string-utils";
 // constants
 import {
+  PRE_PAYMENT_TYPES,
   PRE_PAYMENT_COMPLETION_PERIOD_DIFF_TYPES,
   PRE_PAYMENT_INTEREST_DIFF_TYPES,
-  PRE_PAYMENT_TYPES,
-} from "src/store/home-loan-reducer/home-loan-constants";
+} from "src/constants/home-loan-constants";
+import { MONTH_ARRAY } from "src/constants/common-constants";
 // types
 import {
   PrePaidAmountType,
@@ -20,8 +21,6 @@ import {
   PrePaymentInterestDiff,
   PrePaymentPrediction,
 } from "src/store/home-loan-reducer/home-loan-types";
-// constants
-import { MONTH_ARRAY } from "src/constants/common-constants";
 // styles
 import styles from "./PrePaymentOptions.module.scss";
 
@@ -51,24 +50,50 @@ const getInterestPredictionText = ({
   const amountDiff: string = `${amount.toLocaleString("en-IN")}`;
   return `Save Rs. ${amountDiff} ${percentageDiff}`;
 };
-const getPrePaymentType = ({ type, params }: PrePaymentInfoType): string => {
-  const { prePaidPrincipal, updatedEmi }: PrePaymentInfoParamType = params;
+
+const getPrePayChoicePrincipal = (
+  prePaidPrincipal: PrePaidAmountType | undefined
+): string => {
+  if (!prePaidPrincipal) return "";
+  const { incrementFactor, amount, month, year } = prePaidPrincipal;
+
+  let predictionText: string = `Pre Paid ₹${amount} Principal every year on ${MONTH_ARRAY[month]} from ${year}.`;
+  if (incrementFactor && incrementFactor >= 0) {
+    predictionText = `Also increased by ${incrementFactor}% every year`;
+  }
+  return predictionText;
+};
+
+const getPrePayChoiceEmi = (
+  prePaidEmi: PrePaidAmountType | undefined
+): string => {
+  if (!prePaidEmi) return "";
+  const { amount, month, year } = prePaidEmi;
+  return `Increased Emi to ₹${amount} from ${MONTH_ARRAY[month]}-${year}.`;
+};
+
+const getPrePaymentChoice = ({
+  type,
+  params,
+}: PrePaymentInfoType): JSX.Element => {
+  const { prePaidPrincipal, prePaidEmi }: PrePaymentInfoParamType = params;
 
   switch (type) {
-    case PRE_PAYMENT_TYPES.PAY_PRINCIPAL_AMOUNT.value: {
-      const { amount = 0, month = 0 } =
-        prePaidPrincipal as PrePaidAmountType;
-      return `Pre Paid ₹${amount} Principal every year after ${MONTH_ARRAY[month]}`;
-    }
+    case PRE_PAYMENT_TYPES.PAY_PRINCIPAL_AMOUNT.value:
+      return <>{getPrePayChoicePrincipal(prePaidPrincipal)}</>;
     case PRE_PAYMENT_TYPES.INCREASE_MONTHLY_EMI.value:
-      return `Increased Emi to ₹${updatedEmi?.amount}`;
+      return <>{getPrePayChoiceEmi(prePaidEmi)}</>;
     case PRE_PAYMENT_TYPES.PRINCIPAL_AND_EMI.value: {
-      const { amount = 0, month = 0 } =
-        prePaidPrincipal as PrePaidAmountType;
-      return `Increased Emi to ₹${updatedEmi?.amount}\n and Pre Paid ₹${amount} Principal every year after ${MONTH_ARRAY[month]}`;
+      return (
+        <>
+          {getPrePayChoicePrincipal(prePaidPrincipal)}
+          <br />
+          {getPrePayChoiceEmi(prePaidEmi)}
+        </>
+      );
     }
     default:
-      return "";
+      return <></>;
   }
 };
 const PrePaymentPredictionDisplay = memo(
@@ -85,10 +110,10 @@ const PrePaymentPredictionDisplay = memo(
           padding: "0 10px",
         }}
       >
-        <DisplayLabel
-          className={styles["payment-option-type__text"]}
-          value={getPrePaymentType(info)}
-        />
+        <div className={styles["payment-option-type__text"]}>
+          {getPrePaymentChoice(info)}
+        </div>
+
         <DisplayLabel
           className={styles["payment-option-prediction__text"]}
           label="loan Completion"

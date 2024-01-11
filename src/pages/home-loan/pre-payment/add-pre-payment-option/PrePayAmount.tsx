@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { memo } from "react";
 import { useSelector } from "react-redux";
- // common components
+// common components
 import { DatePicker } from "src/components/common/date-picker/DatePicker";
 import {
   LoanInput,
@@ -9,17 +9,17 @@ import {
 } from "src/components/common/loan-input/LoanInput";
 import { SkeletonPrePayment } from "src/components/common/skeleton/HomeLoanSkeleton";
 // selectors
-import {
-  selectPaymentYearDetails,
-} from "src/store/home-loan-reducer/home-loan-selectors";
+import { selectPaymentYearDetails } from "src/store/home-loan-reducer/home-loan-selectors";
 // types
 import {
   PaymentYearDetailsType,
   PrePaidAmountType,
 } from "src/store/home-loan-reducer/home-loan-types";
 // styles
-import styles from "./AddPrePaymentOption.module.scss"; 
-  
+import styles from "./AddPrePaymentOption.module.scss";
+import { useMaxPrePaidAmount } from "../../../../hooks/home-loan/useMaxPrePaidAmount";
+
+
 type PrePayAmountProps = {
   prePaidAmount: {
     amount: number;
@@ -28,9 +28,9 @@ type PrePayAmountProps = {
   };
   id: string;
   label: string;
-  minAmount:number;
+  minAmount: number;
   setPrePaidAmount: any;
-  maxAmount: number;
+  maxAmount?: number;
 };
 const PrePayAmount = memo(
   ({
@@ -39,11 +39,13 @@ const PrePayAmount = memo(
     label,
     setPrePaidAmount,
     minAmount,
-    maxAmount,
   }: PrePayAmountProps): JSX.Element => {
     const { maxYear, minYear }: PaymentYearDetailsType = useSelector(
       selectPaymentYearDetails
     );
+
+    // hooks
+    const maxAmount: number = useMaxPrePaidAmount(prePaidAmount?.year);
 
     const onpPrePaidAmountDateChange = (
       selectedDate: dayjs.Dayjs | null
@@ -67,7 +69,7 @@ const PrePayAmount = memo(
           amount: value,
         };
       });
-    }; 
+    };
 
     const { amount, month, year } = prePaidAmount;
     if (year === 0) {

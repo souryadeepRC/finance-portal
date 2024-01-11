@@ -22,18 +22,7 @@
     color: $app-primary-color; 
     text-align: center;
   }
-  .principal-month__container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 25px;
-    :global(.loan-input__container) {
-      width: 45%;
-    }
-    :global(.date-picker__container) {
-      width: 45%;
-    }
-  }
+   
   .pay-by-principal-increase__checkbox {
     :global(.MuiCheckbox-root.Mui-checked) {
       color: $app-primary-color;

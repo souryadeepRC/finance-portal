@@ -107,8 +107,7 @@ export type PrePaymentPrediction = {
   completionPeriodDiff: PrePaymentCompletionPeriodDiff;
 };
 
-
-// ------------  Pre Paid  
+// ------------  Pre Paid
 export type PrePaidAmountType = {
   amount: number;
   incrementFactor?: number;
@@ -122,7 +121,7 @@ export type PrePaymentInfoType = {
 };
 export type PrePaymentInfoParamType = {
   prePaidPrincipal?: PrePaidAmountType;
-  updatedEmi?: PrePaidAmountType;
+  prePaidEmi?: PrePaidAmountType;
 };
 export type prePaymentOptionsType = {
   id: number;
@@ -132,7 +131,6 @@ export type prePaymentOptionsType = {
 };
 
 // --------------
-
 
 export type prePaymentOptionsPayloadType = {
   prePaymentType: string;
@@ -144,4 +142,3 @@ export type LoanCompletionPeriod = {
   month: number;
   year: number;
 };
-

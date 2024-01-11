@@ -1,19 +1,21 @@
-@import 'src/styles/variables.scss';
+@import "src/styles/variables.scss";
 
 .about-portal__container {
-    padding: 20px 10px 20px 30px;
-    .about-content {
-        font-size: $font-size-20;
-        font-weight: $font-weight-500;
-        color: $color-eerie-black;
-    }
+  padding: 50px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 70%; 
+  margin: auto;
+  font-size: 20px;
+  font-weight: 500;
+  color: $app-primary-color;
+  justify-content: center;
 }
 
-@media screen and (max-width:$mobile-max-width) {
-    .about-portal__container {
-        padding: 10px 20px;
-        .about-content {
-            font-size: $font-size-16;
-        }
-    }
+@media screen and (max-width: $mobile-max-width) {
+  .about-portal__container {
+    font-size: $font-size-16; 
+    padding: 20px 0 0 0;
+  }
 }

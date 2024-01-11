@@ -6,8 +6,9 @@ import SaveIcon from "@mui/icons-material/Save";
 import { Button } from "src/components/common/button/Button";
 // components
 import { PrePayAmount } from "./PrePayAmount";
+import { PrePayChoiceText } from "./PrePayChoiceText";
 // hooks
-import { useUpdatePrePayment } from "./useUpdatePrePayment";
+import { useUpdatePrePayment } from "src/hooks/home-loan/useUpdatePrePayment";
 // actions
 import { updatePrePaymentOptions } from "src/store/home-loan-reducer/home-loan-actions";
 // selectors
@@ -16,10 +17,10 @@ import { selectMonthlyEmi } from "src/store/home-loan-reducer/home-loan-selector
 import { AppDispatch } from "src/store/store";
 import { PrePaidAmountType } from "src/store/home-loan-reducer/home-loan-types";
 // constants
-import { PRE_PAYMENT_TYPES } from "src/store/home-loan-reducer/home-loan-constants";
-import { MONTH_ARRAY } from "src/constants/common-constants";
-// styles
-import styles from "./AddPrePaymentOption.module.scss";
+import {
+  PRE_PAYMENT_TYPES,
+  PRE_PAY_AMOUNT_INITIAL_STATE,
+} from "src/constants/home-loan-constants";
 type PayByEmiProps = {
   onSave: () => void;
 };
@@ -29,32 +30,26 @@ const PayByEmi = memo(({ onSave }: PayByEmiProps): JSX.Element => {
   const dispatch: AppDispatch = useDispatch();
   const monthlyEmi: number = Math.round(useSelector(selectMonthlyEmi));
   // state
-  const [prePaidEmi, setPrePaidEmi] = useState<PrePaidAmountType>({
-    amount: monthlyEmi,
-    month: 0,
-    year: 0,
-  });
+  const [prePaidEmi, setPrePaidEmi] = useState<PrePaidAmountType>(
+    PRE_PAY_AMOUNT_INITIAL_STATE
+  );
   // hooks
-  useUpdatePrePayment(setPrePaidEmi);
+  useUpdatePrePayment(setPrePaidEmi, true);
   // fns
   const onSaveBtnClick = (): void => {
     dispatch(
       updatePrePaymentOptions({
         type: PRE_PAYMENT_TYPES.INCREASE_MONTHLY_EMI.value,
-        params: { updatedEmi: prePaidEmi },
+        params: { prePaidEmi },
       })
     );
     onSave();
   };
-  const { amount, month, year } = prePaidEmi;
+  const { amount } = prePaidEmi;
   // render fns
   return (
     <>
-      <span className={styles["pre-payment-choice__text"]}>
-        You choose to change your emi to &#8377;
-        {amount.toLocaleString("en-IN")} from {MONTH_ARRAY[month]} from {year}{" "}
-        onwards
-      </span>
+      <PrePayChoiceText prePaidChoice={prePaidEmi} isPayByEmi={true} />
       <PrePayAmount
         prePaidAmount={prePaidEmi}
         setPrePaidAmount={setPrePaidEmi}
@@ -67,7 +62,7 @@ const PayByEmi = memo(({ onSave }: PayByEmiProps): JSX.Element => {
         variant="contained"
         onClick={onSaveBtnClick}
         startIcon={<SaveIcon />}
-        disabled={amount === monthlyEmi || amount === 0}
+        disabled={amount <= monthlyEmi || amount === 0}
       >
         Save
       </Button>

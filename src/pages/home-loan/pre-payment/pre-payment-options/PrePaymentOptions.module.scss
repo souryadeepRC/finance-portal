@@ -1,5 +1,5 @@
 @import "src/styles/variables.scss";
-.payment-options__container { 
+.payment-options__container {
   display: flex;
   overflow-x: auto;
   max-width: 90vw;
@@ -8,8 +8,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 5px; 
-    background-color: rgba($app-secondary-color, 0.4);
+    margin: 5px;
+    // background-color: rgba($app-secondary-color, 0.4);
+    background: linear-gradient(
+      340deg,
+      rgba($app-primary-color ,0.1),
+      $app-secondary-color 90%
+    );
     border-radius: 20px;
     justify-content: space-between;
     padding: 20px 15px;
@@ -17,11 +22,11 @@
       font-size: $font-size-14;
     }
     .payment-option-type__text {
-      font-size: $font-size-14;
-      width: 200px; 
-      border-bottom: 1px solid $app-primary-color;
-      height: 76px;
-      justify-content: center;
+      font-weight: $font-weight-700; 
+      padding: 0 0 10px 0;
+      font-size: $font-size-12;
+      width: 200px;
+      border-bottom: 1px solid $app-primary-color;  
     }
   }
 }

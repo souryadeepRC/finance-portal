@@ -33,6 +33,8 @@ export const selectMonthlyEmi = (store: AppStoreType): number =>
 
 // ======== LOAN MONTHLY & YEARLY AMORTIZATION DETAILS ========
 
+export const selectYearlyAmortization = (store: AppStoreType): HomeLoanYearlyAmortizationType[] =>
+  store?.homeLoan?.yearlyAmortizationDetails;
 // ===== LOAN PAYMENT YEAR BREAKUP DETAILS ========
 export const selectLoanPaymentYear = (store: AppStoreType): number =>
   store?.homeLoan?.loanPaymentYear;

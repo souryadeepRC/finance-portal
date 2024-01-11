@@ -6,7 +6,7 @@ import { LoanAmortization } from "src/pages/home-loan/loan-amortization/LoanAmor
 import { LoanPaymentBreakupMobile } from "./LoanPaymentBreakupMobile";
 // hooks
 import { useMedia } from "src/hooks/useMedia";
-import { usePaidAmountBreakup } from "src/hooks/usePaidAmountBreakup";
+import { usePaidAmountBreakup } from "src/hooks/home-loan/usePaidAmountBreakup";
 // selectors
 import { selectIsInValidLoanDetails } from "src/store/home-loan-reducer/home-loan-selectors";
 
