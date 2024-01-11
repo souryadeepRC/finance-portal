@@ -22,15 +22,16 @@ const LoanDetails = memo((): JSX.Element => {
   const completionPeriodText: string = completionPeriod?.displayText;
 
   return (
-    <div className={styles["loan-details__container"]}>
-      <LoanAmountLabel label="Monthly EMI" value={monthlyEmi} />
-      <LoanAmountLabel label="Total Interest" value={interestPaid} />
-      <DisplayLabel label="Loan Completion" value={completionPeriodText} />
-
+    <>
+      <div className={styles["loan-details__container"]}>
+        <LoanAmountLabel label="Monthly EMI" value={monthlyEmi} />
+        <LoanAmountLabel label="Total Interest" value={interestPaid} />
+        <DisplayLabel label="Loan Completion" value={completionPeriodText} />
+      </div>
       <Popover label="View Loan Breakup">
         <PaidAmountBreakup breakupDetails={paidAmountBreakup} />
       </Popover>
-    </div>
+    </>
   );
 });
 LoanDetails.displayName = "LoanDetails";

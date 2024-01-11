@@ -25,7 +25,7 @@ const AppNavigationBar = memo((): JSX.Element => {
     <AppBar
       sx={{
         position: "static",
-        padding: 3,
+        padding: 2,
         backgroundColor: APP_PRIMARY_COLOR,
       }}
     >

@@ -1,8 +1,9 @@
 import { memo } from "react";
 import { useSelector } from "react-redux";
+// library
+import { List, ListItem, Alert } from "@mui/material";
 // common components
 import { LoanAmountLabel } from "src/components/common/loan-amount-label/LoanAmountLabel";
-import { DisplayLabel } from "src/components/common/display-label/DisplayLabel";
 //selectors
 import {
   selectLoanAmount,
@@ -10,9 +11,14 @@ import {
 } from "src/store/home-loan-reducer/home-loan-selectors";
 // types
 import { HomeLoanYearlyAmortizationType } from "src/store/home-loan-reducer/home-loan-types";
+// utils
+import { getGrammaticalText } from "src/utils/string-utils";
 // styles
 import styles from "./YearlyAmortization.module.scss";
-
+type AmortizationAmountType = {
+  label: string;
+  value: number;
+};
 const YearlyAmortization = memo((): JSX.Element => {
   const loanAmount: number = useSelector(selectLoanAmount);
   const {
@@ -23,31 +29,46 @@ const YearlyAmortization = memo((): JSX.Element => {
   }: HomeLoanYearlyAmortizationType = useSelector(
     selectPaymentYearAmortization
   );
+  const amortizationAmounts: AmortizationAmountType[] = [
+    {
+      label: "Principal Paid",
+      value: principalPaid,
+    },
+    {
+      label: "Interest Paid",
+      value: interestPaid,
+    },
+    {
+      label: "Outstanding Balance",
+      value: outstandingBalance,
+    },
+    {
+      label: "Loan Recovered",
+      value: loanAmount - outstandingBalance,
+    },
+  ];
+  // render fns
+  const renderCompletionStatus = (): JSX.Element => {
+    return remainingYearCount === 0 ? (
+      <Alert severity="success">Congratulations! Loan paid completely</Alert>
+    ) : (
+      <Alert severity="info">
+        {getGrammaticalText(remainingYearCount, "Year")} Left
+      </Alert>
+    );
+  };
   return (
     <>
-      <div className={styles["amortization-amount__container"]}>
-        <div className={styles["paid-amount__container"]}>
-          <LoanAmountLabel label="Principal Paid" value={principalPaid} />
-          <LoanAmountLabel label="Interest Paid" value={interestPaid} />
-        </div>
-        <div className={styles["recovered-amount__container"]}>
-          <LoanAmountLabel
-            label="Outstanding Balance"
-            value={outstandingBalance}
-          />
-          <LoanAmountLabel
-            label="Loan Recovered"
-            value={loanAmount - outstandingBalance}
-          />
-        </div>
-      </div>
-      {remainingYearCount === 0 ? (
-        <DisplayLabel label="Congratulations! " value="Loan paid completely" />
-      ) : (
-        <DisplayLabel
-          value={`${remainingYearCount} Year${remainingYearCount > 1 ? "s" : ""} Left`}
-        />
-      )}
+      <List className={styles["amortization-amount__container"]}>
+        {amortizationAmounts?.map(
+          ({ label, value }: AmortizationAmountType, index: number) => (
+            <ListItem key={index} sx={{ display: "list-item" }}>
+              <LoanAmountLabel label={label} value={value} />
+            </ListItem>
+          )
+        )}
+      </List>
+      {renderCompletionStatus()}
     </>
   );
 });

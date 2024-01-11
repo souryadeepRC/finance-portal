@@ -14,9 +14,10 @@
     width: 70%;
   }
   .amortization-breakup__heading {
+    display: block;
     font-weight: $font-weight-700;
     text-align: center;
-    text-transform: uppercase;
+    text-transform: capitalize;
   }
   .amortization-breakup__container {
     display: flex;
@@ -32,6 +33,7 @@
       flex-direction: column;
       gap: 5px;
       width: 25%;
+      max-width: 250px;
       padding: 10px;
       animation: zoom-in-zoom-out 1s ease;
       background: linear-gradient(
@@ -48,6 +50,9 @@
         text-align: end;
         text-transform: uppercase;
       }
+      :global(.label__info .label__value){
+        font-size: $font-size-14;
+      }
     }
   }
 }
@@ -56,6 +61,9 @@
     .amortization-breakup__container {
       .amortization-breakup__element {
         width: 35%;
+        font-size: $font-size-12;
+      }
+      :global(.loan-amount-label__container .label__info .label__value){
         font-size: $font-size-12;
       }
     }

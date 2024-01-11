@@ -1,5 +1,5 @@
 @import "src/styles/variables.scss";
-.payment-options__container {
+.payment-options__container { 
   display: flex;
   overflow-x: auto;
   max-width: 90vw;
@@ -28,6 +28,6 @@
 
 @media screen and (max-width: $small-mobile-max-width) {
   .payment-options__container {
-    max-width: 80vw;
+    max-width: 85vw;
   }
 }

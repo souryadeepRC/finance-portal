@@ -1,6 +1,4 @@
 import { memo } from "react";
-// library
-import { Box } from "@mui/material";
 // common components
 import { DisplayLabel } from "src/components/common/display-label/DisplayLabel";
 import { LoanAmountLabel } from "src/components/common/loan-amount-label/LoanAmountLabel";
@@ -26,10 +24,7 @@ const PaidAmountBreakup = memo(
     }: PaidAmountBreakupType = breakupDetails;
 
     return (
-      <Box
-        sx={{ padding: 2 }}
-        className={styles["loan-amount-info__container"]}
-      >
+      <div className={styles["paid-amount-breakup__container"]}>
         <LoanAmountLabel label="Monthly EMI" value={monthlyEmi} />
         <LoanAmountLabel label="Principal Amount" value={principalPaid} />
         <LoanAmountLabel label="Total Interest" value={interestPaid} />
@@ -42,7 +37,7 @@ const PaidAmountBreakup = memo(
           principalPaid={principalPaid}
           interestPaid={Math.round(interestPaid)}
         />
-      </Box>
+      </div>
     );
   }
 );

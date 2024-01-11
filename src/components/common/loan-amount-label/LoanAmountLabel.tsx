@@ -1,5 +1,5 @@
 // styles
-import styles from "./LoanAmountLabel.module.scss";
+import "./LoanAmountLabel.scss";
 // types
 type LoanAmountLabelProps = {
   label: string;
@@ -10,11 +10,11 @@ const LoanAmountLabel = ({
   value,
 }: LoanAmountLabelProps): JSX.Element => {
   return (
-    <div className={styles["loan-amount-label__container"]}>
-      <label className={styles["label__heading"]}>{label} </label>
-      <label className={styles["label__info"]}>
-        <span className={styles["label__icon"]}>&#8377;</span>
-        <span className={styles["label__value"]}>{Math.round(value).toLocaleString("en-IN")}</span>
+    <div className="loan-amount-label__container">
+      <label className="label__heading">{label} </label>
+      <label className="label__info">
+        <span className="label__icon">&#8377;</span>
+        <span className="label__value">{Math.round(value).toLocaleString("en-IN")}</span>
       </label>
     </div>
   );
