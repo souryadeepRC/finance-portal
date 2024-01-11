@@ -10,16 +10,24 @@ type PrePayChoiceTextProps = {
   prePaidChoice: PrePaidAmountType;
   isPayByEmi?: boolean;
   isIncrementChecked?: boolean;
+  isInvalidEmiChoice?: boolean;
 };
 const PrePayChoiceText = memo(
   ({
     prePaidChoice,
     isPayByEmi,
     isIncrementChecked,
+    isInvalidEmiChoice,
   }: PrePayChoiceTextProps): JSX.Element => {
     const { amount, incrementFactor, month, year }: PrePaidAmountType =
       prePaidChoice;
-
+    if (isInvalidEmiChoice) {
+      return (
+        <span className={styles["pre-payment-choice__text"]}>
+          Same as current EMI. Please increase the amount
+        </span>
+      );
+    }
     if (isPayByEmi) {
       return (
         <span className={styles["pre-payment-choice__text"]}>

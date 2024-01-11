@@ -60,11 +60,17 @@ const PayByPrincipalEmi = memo(
       onSave();
     };
 
+    const isInvalidEmiChoice: boolean =
+      prePaidEmi?.amount <= monthlyEmi || prePaidEmi?.amount === 0;
     // render fns
     return (
       <>
         <PrePayChoiceText prePaidChoice={prePaidPrincipal} />
-        <PrePayChoiceText prePaidChoice={prePaidEmi} isPayByEmi={true} />
+        <PrePayChoiceText
+          isInvalidEmiChoice={isInvalidEmiChoice}
+          prePaidChoice={prePaidEmi}
+          isPayByEmi={true}
+        />
         <PrePayAmount
           prePaidAmount={prePaidPrincipal}
           setPrePaidAmount={setPrePaidPrincipal}

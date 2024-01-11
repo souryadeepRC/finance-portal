@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // components
 import { LoanInput } from "src/components/common/loan-input/LoanInput";
@@ -28,9 +28,13 @@ const LoanInputForm = memo((): JSX.Element => {
 
   const { amount, interestRate, tenure }: LoanDetailsType =
     useSelector(selectLoanDetails);
+  const [interestRateText,setInterestRateText] = useState<string>(`${interestRate}`);
 
   // fns
-  const onChangeLoanDetails = ({ id, value }: LoanInputOnChangeType): void => {
+  const onChangeLoanDetails = ({ id, value,textValue }: LoanInputOnChangeType): void => {
+    if(textValue){
+      setInterestRateText(textValue);
+    }
     dispatch(
       updateLoanDetails({
         [id]: value,
@@ -56,6 +60,7 @@ const LoanInputForm = memo((): JSX.Element => {
         <LoanInput
           id={INPUT_FORM_ID.INTEREST_RATE}
           label="Rate of interest"
+          textValue={interestRateText}
           value={interestRate}
           step={0.1}
           minValue={1}

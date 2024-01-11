@@ -4,7 +4,6 @@ import {
   LoanStartPeriodType,
   PaymentYearDetailsType,
   prePaymentOptionsType,
-  LoanCompletionPeriod,
   PaidAmountBreakupType,
 } from "./home-loan-reducer/home-loan-types";
 

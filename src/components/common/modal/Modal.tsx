@@ -10,7 +10,9 @@ const ModalContainerStyle = {
   boxShadow: 24,
   p: 4,
   width:'70%',
-  borderRadius: '10px'
+  borderRadius: '10px',
+  overflowY:'auto',
+  maxHeight:'65vh'
 };
 type ModalProps = {
   isOpen: boolean;

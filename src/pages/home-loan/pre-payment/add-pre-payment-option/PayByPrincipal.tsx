@@ -42,6 +42,9 @@ const PayByPrincipal = memo(({ onSave }: PayByEmiProps): JSX.Element => {
     ...PRE_PAY_AMOUNT_INITIAL_STATE,
     incrementFactor: 0,
   });
+  const [incFactorText, setIncFactorText] = useState<string>(
+    `${PRE_PAY_AMOUNT_INITIAL_STATE.incrementFactor}`
+  );
   const [isIncrementChecked, setIsIncrementChecked] = useState<boolean>(false);
   // hooks
   useUpdatePrePayment(setPrePaidPrincipal);
@@ -51,6 +54,7 @@ const PayByPrincipal = memo(({ onSave }: PayByEmiProps): JSX.Element => {
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
     setIsIncrementChecked(event.target.checked);
+    setIncFactorText("5");
     setPrePaidPrincipal((prePaidPrincipal) => {
       return {
         ...prePaidPrincipal,
@@ -59,7 +63,10 @@ const PayByPrincipal = memo(({ onSave }: PayByEmiProps): JSX.Element => {
     });
   };
 
-  const onPrePaidPrincipalChange = ({ value }: LoanInputOnChangeType): void => {
+  const onIncFactorChange = ({ value,textValue }: LoanInputOnChangeType): void => {
+    if(textValue){
+      setIncFactorText(textValue);
+    }
     setPrePaidPrincipal((prePaidPrincipal) => {
       return {
         ...prePaidPrincipal,
@@ -109,12 +116,13 @@ const PayByPrincipal = memo(({ onSave }: PayByEmiProps): JSX.Element => {
           <LoanInput
             id="incrementFactor"
             label="Increase every year By"
+            textValue={incFactorText}
             value={prePaidPrincipal?.incrementFactor || 1}
             minValue={1}
             maxValue={100}
             step={5}
             adornmentIcon={<span>%</span>}
-            onChange={onPrePaidPrincipalChange}
+            onChange={onIncFactorChange}
           />
         </div>
       )}

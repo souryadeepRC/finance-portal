@@ -9,11 +9,13 @@ import "./LoanInput.scss";
 export type LoanInputOnChangeType = {
   id: string;
   value: number;
+  textValue?: string;
 };
 type LoanInputProps = {
   className?: string;
   id: string;
   label: string;
+  textValue?: string;
   value: number;
   step?: number;
   minValue: number;
@@ -29,6 +31,7 @@ const LoanInput = memo(
   ({
     id,
     label,
+    textValue,
     value,
     disabledValue = 0,
     adornmentPosition = "end",
@@ -60,13 +63,13 @@ const LoanInput = memo(
       e: React.ChangeEvent<HTMLInputElement>
     ): void => {
       const enteredValue: string = e.target.value;
-
       if (!isValidData(enteredValue)) return;
       if (validityFunc && !validityFunc(enteredValue)) return;
 
       onChange({
         id,
         value: +enteredValue,
+        ...(textValue && { textValue: enteredValue }),
       });
     };
     const onSliderChange = (
@@ -85,7 +88,7 @@ const LoanInput = memo(
         <TextField
           className={isInvalidField ? "input-error" : ""}
           id={id}
-          value={value}
+          value={textValue || value}
           onChange={onTextFieldChange}
           label={label}
           variant="outlined"

@@ -46,10 +46,15 @@ const PayByEmi = memo(({ onSave }: PayByEmiProps): JSX.Element => {
     onSave();
   };
   const { amount } = prePaidEmi;
+  const isInvalidEmiChoice: boolean = amount <= monthlyEmi || amount === 0;
   // render fns
   return (
     <>
-      <PrePayChoiceText prePaidChoice={prePaidEmi} isPayByEmi={true} />
+      <PrePayChoiceText
+        isInvalidEmiChoice={isInvalidEmiChoice}
+        prePaidChoice={prePaidEmi}
+        isPayByEmi={true}
+      />
       <PrePayAmount
         prePaidAmount={prePaidEmi}
         setPrePaidAmount={setPrePaidEmi}
@@ -62,7 +67,7 @@ const PayByEmi = memo(({ onSave }: PayByEmiProps): JSX.Element => {
         variant="contained"
         onClick={onSaveBtnClick}
         startIcon={<SaveIcon />}
-        disabled={amount <= monthlyEmi || amount === 0}
+        disabled={isInvalidEmiChoice}
       >
         Save
       </Button>
