@@ -8,6 +8,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import { Button } from "src/components/common/button/Button";
 // components
 import { PrePayAmount } from "./PrePayAmount";
+import { PrePayChoiceText } from "./PrePayChoiceText";
 // hooks
 import { useUpdatePrePayment } from "src/hooks/home-loan/useUpdatePrePayment";
 // actions
@@ -18,8 +19,10 @@ import { selectMonthlyEmi } from "src/store/home-loan-reducer/home-loan-selector
 import { AppDispatch } from "src/store/store";
 import { PrePaidAmountType } from "src/store/home-loan-reducer/home-loan-types";
 // constants
-import { PRE_PAYMENT_TYPES } from "src/store/home-loan-reducer/home-loan-constants";
-import { PRE_PAY_AMOUNT_INITIAL_STATE } from "src/constants/home-loan-constants";
+import {
+  PRE_PAY_AMOUNT_INITIAL_STATE,
+  PRE_PAYMENT_TYPES,
+} from "src/constants/home-loan-constants";
 
 type PayByPrincipalEmiProps = {
   onSave: () => void;
@@ -50,7 +53,7 @@ const PayByPrincipalEmi = memo(
           type: PRE_PAYMENT_TYPES.PRINCIPAL_AND_EMI.value,
           params: {
             prePaidPrincipal,
-            updatedEmi: prePaidEmi,
+            prePaidEmi,
           },
         })
       );
@@ -60,6 +63,8 @@ const PayByPrincipalEmi = memo(
     // render fns
     return (
       <>
+        <PrePayChoiceText prePaidChoice={prePaidPrincipal} />
+        <PrePayChoiceText prePaidChoice={prePaidEmi} isPayByEmi={true} />
         <PrePayAmount
           prePaidAmount={prePaidPrincipal}
           setPrePaidAmount={setPrePaidPrincipal}

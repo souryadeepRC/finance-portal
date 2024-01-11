@@ -2,6 +2,8 @@ import { memo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // common components
 import { FlexBox } from "src/components/common/flex-box/FlexBox";
+// constants
+import { APP_PRIMARY_COLOR } from "src/constants/common-constants";
 
 const PrePaymentErrorPage = memo((): JSX.Element => {
   // hooks
@@ -29,7 +31,7 @@ const PrePaymentErrorPage = memo((): JSX.Element => {
         justifyContent: "center",
         padding: "60px",
         fontSize: "20px",
-        color: " green",
+        color: APP_PRIMARY_COLOR,
         gap: "10px",
         textAlign: "center",
         fontWeight: "700",

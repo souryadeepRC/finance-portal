@@ -13,7 +13,7 @@ const AppNavigationDesktop = memo((): JSX.Element => {
   return (
     <FlexBox sx={{ width: "100%" }}>
       <AppDisplay sx={{ flex: 1 }} />
-      <FlexBox sx={{ flex: 2, justifyContent: "flex-end", gap: '20px' }}>
+      <FlexBox sx={{ flex: 2, justifyContent: "flex-end", gap: '20px',padding: '0 35px 0 0' }}>
         {NAVIGATION_PATHS.map(
           ({ label, path }: NavigationPath, index: number) => (
             <NavigationLink key={index} path={path} label={label} />

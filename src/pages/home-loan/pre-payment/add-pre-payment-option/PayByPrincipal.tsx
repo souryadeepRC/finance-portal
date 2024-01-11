@@ -8,8 +8,9 @@ import SaveIcon from "@mui/icons-material/Save";
 import { Button } from "src/components/common/button/Button";
 // components
 import { PrePayAmount } from "./PrePayAmount";
+import { PrePayChoiceText } from "./PrePayChoiceText";
 // hooks
-import { useUpdatePrePayment } from "../../../../hooks/home-loan/useUpdatePrePayment";
+import { useUpdatePrePayment } from "src/hooks/home-loan/useUpdatePrePayment";
 // actions
 import { updatePrePaymentOptions } from "src/store/home-loan-reducer/home-loan-actions";
 // selectors
@@ -22,9 +23,10 @@ import {
   LoanInputOnChangeType,
 } from "src/components/common/loan-input/LoanInput";
 // constants
-import { PRE_PAYMENT_TYPES } from "src/store/home-loan-reducer/home-loan-constants";
-import { PRE_PAY_AMOUNT_INITIAL_STATE } from "src/constants/home-loan-constants";
-import { MONTH_ARRAY } from "src/constants/common-constants";
+import {
+  PRE_PAYMENT_TYPES,
+  PRE_PAY_AMOUNT_INITIAL_STATE,
+} from "src/constants/home-loan-constants";
 // styles
 import styles from "./AddPrePaymentOption.module.scss";
 type PayByEmiProps = {
@@ -38,7 +40,7 @@ const PayByPrincipal = memo(({ onSave }: PayByEmiProps): JSX.Element => {
   // state
   const [prePaidPrincipal, setPrePaidPrincipal] = useState<PrePaidAmountType>({
     ...PRE_PAY_AMOUNT_INITIAL_STATE,
-    incrementFactor: 5,
+    incrementFactor: 0,
   });
   const [isIncrementChecked, setIsIncrementChecked] = useState<boolean>(false);
   // hooks
@@ -49,12 +51,15 @@ const PayByPrincipal = memo(({ onSave }: PayByEmiProps): JSX.Element => {
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
     setIsIncrementChecked(event.target.checked);
+    setPrePaidPrincipal((prePaidPrincipal) => {
+      return {
+        ...prePaidPrincipal,
+        incrementFactor: 5,
+      };
+    });
   };
 
-  const onPrePaidPrincipalChange = ({
-    id,
-    value,
-  }: LoanInputOnChangeType): void => {
+  const onPrePaidPrincipalChange = ({ value }: LoanInputOnChangeType): void => {
     setPrePaidPrincipal((prePaidPrincipal) => {
       return {
         ...prePaidPrincipal,
@@ -73,16 +78,13 @@ const PayByPrincipal = memo(({ onSave }: PayByEmiProps): JSX.Element => {
     onSave();
   };
 
-  const { amount, incrementFactor = 0, month, year } = prePaidPrincipal;
   // render fns
   return (
     <>
-      <span className={styles["pre-payment-choice__text"]}>
-        You choose to pre pay &#8377;{amount.toLocaleString("en-IN")} on every{" "}
-        {MONTH_ARRAY[month]} from {year} onwards
-        {isIncrementChecked &&
-          `. Also increasing Principal by ${incrementFactor}% every year`}
-      </span>
+      <PrePayChoiceText
+        prePaidChoice={prePaidPrincipal}
+        isIncrementChecked={isIncrementChecked}
+      />
       <PrePayAmount
         prePaidAmount={prePaidPrincipal}
         setPrePaidAmount={setPrePaidPrincipal}
@@ -107,7 +109,7 @@ const PayByPrincipal = memo(({ onSave }: PayByEmiProps): JSX.Element => {
           <LoanInput
             id="incrementFactor"
             label="Increase every year By"
-            value={incrementFactor}
+            value={prePaidPrincipal?.incrementFactor || 1}
             minValue={1}
             maxValue={100}
             step={5}

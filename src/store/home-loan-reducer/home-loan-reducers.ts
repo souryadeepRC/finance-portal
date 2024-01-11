@@ -22,7 +22,7 @@ const latestDate: Date = new Date();
 
 const initialState: HomeLoanReducerType = {
   loanDetails: {
-    amount: 3783000,
+    amount: 5000000,
     interestRate: 8.5,
     tenure: 30,
     startPeriod: {

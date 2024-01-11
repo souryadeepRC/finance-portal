@@ -121,7 +121,7 @@ export type PrePaymentInfoType = {
 };
 export type PrePaymentInfoParamType = {
   prePaidPrincipal?: PrePaidAmountType;
-  updatedEmi?: PrePaidAmountType;
+  prePaidEmi?: PrePaidAmountType;
 };
 export type prePaymentOptionsType = {
   id: number;
