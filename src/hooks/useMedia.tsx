@@ -1,18 +1,9 @@
-import { useState } from "react";
+// library
+import { useMediaQuery } from "@mui/material";
 
-const useMedia = (): boolean => {  
-  // state
-  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth<=769);
-
+const useMedia = (): boolean => {
   const mediaQuery: string = "(max-width: 769px)";
-  const mediaQueryList: MediaQueryList = window.matchMedia(mediaQuery);
-
-  mediaQueryList.addEventListener(
-    "change",
-    (event: MediaQueryListEvent): void => {
-      setIsMobile(event.matches);
-    }
-  );
+  const isMobile: boolean = useMediaQuery(mediaQuery);
   return isMobile;
 };
 export { useMedia };

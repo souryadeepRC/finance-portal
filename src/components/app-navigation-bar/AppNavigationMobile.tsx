@@ -33,12 +33,13 @@ const AppNavigationMobile = memo((): JSX.Element => {
   return (
     <>
       <FlexBox sx={{ width: "100%" }}>
-        <MenuIcon onClick={toggleDrawer(true)} />
+        <MenuIcon role="navigation-menu-icon" onClick={toggleDrawer(true)} />
         <AppDisplay sx={{ flex: 2 }} />
       </FlexBox>
       <Drawer anchor="left" open={menuItemState} onClose={toggleDrawer(false)}>
         <div
           className={styles["navigation-mobile__container"]}
+          data-testid="app-navigation-drawer"
           role="presentation"
           onClick={toggleDrawer(false)}
           onKeyDown={toggleDrawer(false)}
