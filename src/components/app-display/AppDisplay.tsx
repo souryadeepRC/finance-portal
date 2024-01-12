@@ -11,7 +11,7 @@ type AppDisplayProps = {
 const AppDisplay = memo(({ sx = {} }: AppDisplayProps): JSX.Element => {
   return (
     <div className="app-display__container" style={sx}>
-      <SavingsIcon />
+      <SavingsIcon role="app-icon"/>
       <span className="app-display__title">{APP_DISPLAY_NAME}</span>
     </div>
   );
