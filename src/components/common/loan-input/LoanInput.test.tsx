@@ -55,12 +55,12 @@ describe("Loan Input value check", () => {
         onChange={onValueChange}
       />
     );
-    const errorMsgElement = screen.getByTestId("testInput-error-msg");
+    const errorMsgElement = screen.getByText("Provide positive non-zero number");
     expect(errorMsgElement).toBeInTheDocument();
     expect(errorMsgElement).toHaveTextContent(
       "Provide positive non-zero number"
     );
-    expect(errorMsgElement).toHaveClass("input-error-msg");
+    expect(errorMsgElement).toHaveClass("Mui-error");
   });
   it("input value should limit to max and min value", () => {
     // min test
