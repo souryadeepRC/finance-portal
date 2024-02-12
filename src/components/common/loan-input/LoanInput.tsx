@@ -18,8 +18,8 @@ type LoanInputProps = {
   textValue?: string;
   value: number;
   step?: number;
-  minValue: number;
-  maxValue: number;
+  minValue?: number;
+  maxValue?: number;
   disabledValue?: number;
   adornmentPosition?: string;
   adornmentIcon?: JSX.Element;
@@ -64,9 +64,11 @@ const LoanInput = memo(
     ): void => {
       const enteredValue: string = e.target.value;
 
+      // validation
       if (!isValidData(enteredValue)) return;
-
       if (validityFunc && !validityFunc(enteredValue)) return;
+      if (maxValue && +enteredValue > maxValue) return;
+      if (minValue && +enteredValue < minValue) return;
 
       const modifiedTextValue: string = isNumeric(enteredValue)
         ? `${+enteredValue}`
@@ -82,7 +84,7 @@ const LoanInput = memo(
       const modifiedTextValue: string = isNumeric(sliderTextValue)
         ? `${+sliderTextValue}`
         : sliderTextValue;
-        
+
       onChange({
         id,
         value: +value,
@@ -94,19 +96,16 @@ const LoanInput = memo(
     return (
       <div className="loan-input__container">
         <TextField
-          className={isInvalidField ? "input-error" : ""}
           id={id}
+          inputProps={{ "data-testid": id, step }}
           value={textValue || value}
           onChange={onTextFieldChange}
           label={label}
           variant="outlined"
           InputProps={getInputProps()}
+          error={isInvalidField}
+          helperText={isInvalidField && "Provide positive non-zero number"}
         />
-        {isInvalidField && (
-          <span className={"input-error-msg"}>
-            Provide positive non-zero number
-          </span>
-        )}
         <Slider
           className={isInvalidField ? "input-error" : ""}
           step={step}
